@@ -57,7 +57,7 @@ public class AppTest
 			SqlSession session = factory.openSession();
 			BlogMapper mapper = session.getMapper(BlogMapper.class);
 			Blog blog = mapper.selectBlog(102);
-			System.out.println("blog digest " + blog.getDigest() + blog + "fff");
+			System.out.println("blog digest 111 " + blog.getDigest() + blog + "fff");
 			System.out.println(session.getConfiguration().getParameterMapNames());
 			System.out.println("session." + session.getConnection());
 		} catch (IOException e) {
