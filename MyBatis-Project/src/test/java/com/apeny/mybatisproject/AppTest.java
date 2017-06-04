@@ -60,7 +60,7 @@ public class AppTest
 			Blog blog = mapper.selectBlog(102);
 			System.out.println("blog digest 111 222 333 444 " + blog.getDigest() + blog + "fff");
 			System.out.println(session.getConfiguration().getParameterMapNames());
-			System.out.println("session. one edit" + session.getConnection().getSchema());
+			System.out.println("session. one edit two edit three edit" + session.getConnection().getSchema());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
