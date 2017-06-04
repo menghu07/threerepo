@@ -61,7 +61,7 @@ public class AppTest
 			System.out.println("blog digest 111 222 333 444 555" + blog.getDigest() + blog + "fff");
 			System.out.println("branch code is added");
 			System.out.println(session.getConfiguration().getParameterMapNames());
-			System.out.println("session. one edit two edit three edit add branch not dev" + session.getConnection().getSchema());
+			System.out.println("session. one edit test merge from branch" + session.getConnection().getSchema());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
