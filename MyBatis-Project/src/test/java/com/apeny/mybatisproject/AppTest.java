@@ -62,6 +62,7 @@ public class AppTest
 			System.out.println("branch code is added");
 			System.out.println(session.getConfiguration().getParameterMapNames());
 			System.out.println("session. one edit test merge let we see no-fastfoward no-ff" + session.getConnection().getSchema());
+			System.out.println("add one line to dev");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
