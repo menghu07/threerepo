@@ -30,7 +30,7 @@ public class FormServlet extends HttpServlet {
 		.append("</head>")
 		.append("<body>")
 		.append("<form method='post' action='" + contextPath + servletPath + "'>")
-		.append("Name:<input name='name' value='" + contextPath + "||" + servletPath + "'/>" + br)
+		.append("Name:<input name='name' value='" + contextPath + "||" + servletPath + "||"+ req.getRequestURI() + "'/>" + br)
 		.append("Address:<textarea name='address' cols='40' rows='5'></textarea>" + br)
 		.append("Country:<select name='country'>")
 		.append("<option>USA</option>")
