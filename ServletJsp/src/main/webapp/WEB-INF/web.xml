@@ -10,13 +10,4 @@
 
 	<!-- <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 
 		2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" > -->
-		<servlet>
-			<servlet-name>simpleservlet</servlet-name>
-			<servlet-class>com.apeny.servletjsp.chapter01.SimpleServlet</servlet-class>
-			<load-on-startup>10</load-on-startup>
-		</servlet>
-		<servlet-mapping>
-			<servlet-name>simpleservlet</servlet-name>
-			<url-pattern>/simpleservlet</url-pattern>
-		</servlet-mapping>
 </web-app>
