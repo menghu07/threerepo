@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.apeny.servletjsp.domain.Customer;
 
+/**
+ * 隐藏域，管理session
+ * @author ahu
+ *
+ */
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/customer", "/editCustomer", "/updateCustomer"})
 public class CustomerServlet extends HttpServlet {
     

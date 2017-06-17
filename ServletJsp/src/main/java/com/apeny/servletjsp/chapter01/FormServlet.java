@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Form 表单提交
+ * @author ahu
+ *
+ */
 @WebServlet(name = "FormServlet", urlPatterns={"/form/formdo/get.do", "/form/formdo/post.do"})
 public class FormServlet extends HttpServlet {
 	

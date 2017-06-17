@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 重写url管理session
+ * @author ahu
+ *
+ */
 @WebServlet(name = "top10servlet", value={"/top10servlet/sub10", "/top10servlet/sub11"})
 public class Top10Servlet extends HttpServlet {
 	
