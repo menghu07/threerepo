@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "FormServlet", urlPatterns={"/form/formdo/htmldo"})
+@WebServlet(name = "FormServlet", urlPatterns={"/form/formdo/get.do", "/form/formdo/post.do"})
 public class FormServlet extends HttpServlet {
 	
 	/**
@@ -29,7 +29,8 @@ public class FormServlet extends HttpServlet {
 		.append("<title>form form list</title>")
 		.append("</head>")
 		.append("<body>")
-		.append("<form method='post' action='" + contextPath + servletPath + "'>")
+//		.append("<form method='post' action='" + contextPath + servletPath + "'>")
+		.append("<form method='post' action='post.do'>")
 		.append("Name:<input name='name' value='" + contextPath + "||" + servletPath + "||"+ req.getRequestURI() + "'/>" + br)
 		.append("Address:<textarea name='address' cols='40' rows='5'></textarea>" + br)
 		.append("Country:<select name='country'>")
