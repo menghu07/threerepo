@@ -19,9 +19,9 @@ import com.apeny.servletjsp.constant.HtmlConstant;
 @WebServlet(name = "preferenceServlet", value = {"/cookiesession2/youlike/preferenceget.do", "/cookiesession3/youlike3/preferencepost.do"})
 public class PreferenceServlet extends HttpServlet {
 	
-	public static final String MENU = "<div style='background:#f8f8f8;padding=15px'"
-			+ "<a href='${cookieclass}'>Cookie Class</a>" + HtmlConstant.CR
-			+ "<a href='/ServletJsp/cookiesession2/youlike/cookieclassget.do'>Cookie Info</a>" + HtmlConstant.CR
+	public static final String MENU = "<div style='background:#f8f8f8;padding=15px'>"
+			+ "<a href='/ServletJsp/cookiesession4/youlike/cookieinfoget.do'>Cookie Info</a>" + HtmlConstant.CR
+			+ "<a href='/ServletJsp/cookiesession5/youlike/cookieclassget.do'>Cookie Class</a>" + HtmlConstant.CR
 			+ "<a href='/ServletJsp/cookiesession2/youlike/preferenceget.do'>Preference</a>" + HtmlConstant.CR
 			+ "</div>";
 	
@@ -38,8 +38,9 @@ public class PreferenceServlet extends HttpServlet {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html>")
 		.append("<head>")
+		.append(HtmlConstant.BODY_CENTER)
 		.append("<title>喜欢的设置</title>")
-		.append("<style>table {font-size:small; background:NavajoWhite}</style>")
+		.append("<style>table {/*水平居中*/ margin:0 auto; font-size:small; background:NavajoWhite}</style>")
 		.append("</head>")
 		.append("<body>")
 		.append(HtmlConstant.CR + MENU )
@@ -48,8 +49,8 @@ public class PreferenceServlet extends HttpServlet {
 		.append("<table>")
 		.append("<tr>")
 		.append("<td>Title Font Size</td>")
-		.append("<td>").append("<select name='titleFontSize'>").append("<option>small</option><option>x-large</option>"
-				+ "<option>xx-large</option><option>xxx-large</option>").append("</select></td>")
+		.append("<td>").append("<select name='titleFontSize'>").append("<option>8</option><option>16</option><option>24</option>"
+				+ "<option>32</option><option>36</option>").append("</select></td>")
 		.append("<td>Title Style & Weight</td>")
 		.append("<td>").append("<select name='titleSytleAndWeight' multiple='multiple'>").append("<option>italic</option><option>bold</option>")
 		.append("</select></td>")
@@ -85,17 +86,17 @@ public class PreferenceServlet extends HttpServlet {
 			//浏览器中直接删除 cookie maxAge = 0
 			//浏览器关闭，要保存到文件中cookie maxAge > 0
 			c.setMaxAge(0);
+			//必须要在此处设置path，才可以删除之前添加的cookie，即path要与之前添加cookie的path相等
 			c.setPath("/");
-//			c.setPath(req.getContextPath());
 			resp.addCookie(c);
 		}
 		Cookie cookieMaxRecords = new Cookie("maxRecords", maxRecords);
 //		cookieMaxRecords.setMaxAge(600);
+		//path是相对于整个网站的，而不是整个应用
 		cookieMaxRecords.setPath("/");
 		resp.addCookie(cookieMaxRecords);
 		System.out.println("set cookie from post [maxRcords]: " + cookieMaxRecords.getPath());
 		Cookie cookieTitleFontSize = new Cookie("titleFontSize", titleFontSize);
-//		cookieTitleFontSize.setMaxAge(600);
 		cookieTitleFontSize.setPath("/");
 		resp.addCookie(cookieTitleFontSize);
 		if (titleStyleAndWeight != null) {
@@ -105,7 +106,7 @@ public class PreferenceServlet extends HttpServlet {
 					fontStyle.setPath("/");
 					resp.addCookie(fontStyle);
 				} else if ("bold".equals(sw)) {
-					Cookie fontWeight = new Cookie("titleFontStyle", "bold");
+					Cookie fontWeight = new Cookie("titleFontWeight", "bold");
 					fontWeight.setPath("/");
 					resp.addCookie(fontWeight);
 				}
@@ -115,6 +116,7 @@ public class PreferenceServlet extends HttpServlet {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html>")
 		.append("<head>")
+		.append(HtmlConstant.BODY_CENTER)
 		.append("<title>喜欢的设置</title>")
 		.append("</head>")
 		.append("<body>")

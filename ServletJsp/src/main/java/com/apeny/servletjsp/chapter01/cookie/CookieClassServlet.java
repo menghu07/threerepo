@@ -16,7 +16,7 @@ import com.apeny.servletjsp.constant.HtmlConstant;
  * @author ahu
  *
  */
-@WebServlet(name = "cookieinfoservlet", value = {"/cookiesession2/youlike/cookieclassget.do"})
+@WebServlet(name = "cookieclassservlet", value = {"/cookiesession5/youlike/cookieclassget.do"})
 public class CookieClassServlet extends HttpServlet {
 
 	/**
@@ -35,6 +35,7 @@ public class CookieClassServlet extends HttpServlet {
 		String maxRecordsCookie = null;
 		if (cookies != null) {
 			for (Cookie c : cookies) {
+				//取cookie时或者说request发送cookie时，会发送路径（path）最匹配的cookie
 				if (c.getName().equals("maxRecords")) {
 					maxRecordsCookie = c.getValue();
 					break;
@@ -51,6 +52,7 @@ public class CookieClassServlet extends HttpServlet {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html>")
 		.append("<head>")
+		.append(HtmlConstant.BODY_CENTER)
 		.append("<title>喜欢的设置</title>")
 		.append("<style>table {font-size:small; background:NavajoWhite}</style>")
 		.append("</head>")
