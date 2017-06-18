@@ -47,6 +47,7 @@ public class CookieClassServlet extends HttpServlet {
 				maxRecords = Integer.parseInt(maxRecordsCookie);
 			}
 		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
 			//do nothing
 		}
 		StringBuilder builder = new StringBuilder();
@@ -54,7 +55,6 @@ public class CookieClassServlet extends HttpServlet {
 		.append("<head>")
 		.append(HtmlConstant.BODY_CENTER)
 		.append("<title>喜欢的设置</title>")
-		.append("<style>table {font-size:small; background:NavajoWhite}</style>")
 		.append("</head>")
 		.append("<body>")
 		.append(HtmlConstant.CR + PreferenceServlet.MENU)

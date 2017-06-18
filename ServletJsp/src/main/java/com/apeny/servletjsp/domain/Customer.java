@@ -1,5 +1,10 @@
 package com.apeny.servletjsp.domain;
 
+/**
+ * 隐藏表单中使用的客户类
+ * @author ahu
+ *
+ */
 public class Customer {
     
     private Integer id;
