@@ -91,12 +91,14 @@ public class PreferenceServlet extends HttpServlet {
 			resp.addCookie(c);
 		}
 		Cookie cookieMaxRecords = new Cookie("maxRecords", maxRecords);
-//		cookieMaxRecords.setMaxAge(600);
+		//保存到文件中maxAge > 0
+		cookieMaxRecords.setMaxAge(600);
 		//path是相对于整个网站的，而不是整个应用
 		cookieMaxRecords.setPath("/");
 		resp.addCookie(cookieMaxRecords);
 		System.out.println("set cookie from post [maxRcords]: " + cookieMaxRecords.getPath());
 		Cookie cookieTitleFontSize = new Cookie("titleFontSize", titleFontSize);
+		cookieTitleFontSize.setMaxAge(600);
 		cookieTitleFontSize.setPath("/");
 		resp.addCookie(cookieTitleFontSize);
 		if (titleStyleAndWeight != null) {
@@ -104,6 +106,7 @@ public class PreferenceServlet extends HttpServlet {
 				if ("italic".equals(sw)) {
 					Cookie fontStyle = new Cookie("titleFontSytle", "italic");
 					fontStyle.setPath("/");
+					//不保存到文件中，生命周期为会话级
 					resp.addCookie(fontStyle);
 				} else if ("bold".equals(sw)) {
 					Cookie fontWeight = new Cookie("titleFontWeight", "bold");
