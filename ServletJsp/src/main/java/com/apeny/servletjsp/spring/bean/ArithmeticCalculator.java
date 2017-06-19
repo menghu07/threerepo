@@ -1,7 +1,7 @@
 package com.apeny.servletjsp.spring.bean;
 
 /**
- * 接口aop切入
+ * 接口aop
  * @author mengqh
  *
  */
