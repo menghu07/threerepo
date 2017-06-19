@@ -1,5 +1,10 @@
 package com.apeny.servletjsp.spring.bean;
 
+/**
+ * 接口aop切入
+ * @author mengqh
+ *
+ */
 public interface ArithmeticCalculator {
     
     void add(int i, int j);
