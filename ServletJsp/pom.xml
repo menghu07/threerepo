@@ -45,6 +45,21 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
 		  <groupId>org.aspectj</groupId>
 		  <artifactId>aspectjweaver</artifactId>
 		  <version>${aspectj.version}</version>
@@ -52,11 +67,11 @@
 
 	</dependencies>
 	<repositories>
-		<repository>
+		<!-- <repository>
 			<id>nexus</id>
 			<name>nexus repository</name>
 			<url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
-		</repository>
+		</repository> -->
 	</repositories>
 	<build>
 		<finalName>ServletJsp</finalName>

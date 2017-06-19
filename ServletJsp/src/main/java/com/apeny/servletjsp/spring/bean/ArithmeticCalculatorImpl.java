@@ -5,20 +5,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArithmeticCalculatorImpl implements ArithmeticCalculator  {
 
-    public void add(int i, int j) {
+    public int add(int i, int j) {
         System.out.println("i = " + i + ", j = " + j + " === " + (i + j) );
+        return i + j;
     }
 
-    public void sub(int i, int j) {
+    public int sub(int i, int j) {
         System.out.println("i = " + i + ", j = " + j + " === " + (i - j) );
+        return i - j;
     }
 
-    public void mul(int i, int j) {
+    public int mul(int i, int j) {
         System.out.println("i = " + i + ", j = " + j + " === " + (i * j) );
+        return i * j;
     }
 
-    public void div(int i, int j) {
+    public int div(int i, int j) {
         System.out.println("i = " + i + ", j = " + j + " === " + (i / j) );
+        return i / j;
     }
     
     public String toString() {
