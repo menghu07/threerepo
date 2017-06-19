@@ -9,7 +9,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<spring.version>3.2.18.RELEASE</spring.version>
+		<spring.version>4.3.8.RELEASE</spring.version>
 		<aspectj.version>1.8.10</aspectj.version>
 	</properties>
 
