@@ -11,6 +11,8 @@
 	<display-name>Archetype Created Web Application</display-name>
 	
 	<servlet>
+		<description>simple servlet in deployment description</description>
+		<display-name>simple servlet</display-name>
 		<servlet-name>simpleservlet</servlet-name>
 		<servlet-class>com.apeny.servletjsp.chapter01.SimpleServlet</servlet-class>
 	</servlet>
@@ -37,4 +39,10 @@
 		<filter-name>setencoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<scripting-invalid>false</scripting-invalid>
+		</jsp-property-group>
+	</jsp-config>
 </web-app>

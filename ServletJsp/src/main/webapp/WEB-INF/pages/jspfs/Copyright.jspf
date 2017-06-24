@@ -1,0 +1,4 @@
+<h4>&copy; 2017-2018 apeny</h4>
+<%
+out.println("Server info: " + application.getServerInfo());
+%>

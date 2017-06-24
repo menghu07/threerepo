@@ -1,0 +1,3 @@
+<%@ page import="java.util.Date" %>
+<h2>Welcome to Apeny GoMall</h2>
+<p>Today is: <%=new Date()%></p>

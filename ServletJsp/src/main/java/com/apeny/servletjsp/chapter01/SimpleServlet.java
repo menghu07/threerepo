@@ -17,17 +17,27 @@ public class SimpleServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		System.out.println("post here");
 		String br = "<br/>";
-		res.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = res.getWriter();
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html>")
 		.append("<head>")
 		.append("<title>posted form form list</title>")
-		.append("</head>")
-		.append("<body>")
-		.append("<p>" + req.getAuthType() + "" + br)
+		.append("</head>");
+		builder.append("<body>")
+		.append("<p>" + req.getAuthType() + "中文是否错误？" + getServletInfo() + "</p>" + br)
 		.append("</body>")
 		.append("</html>");		
 		pw.print(builder);
+		//response提交的方法
+		//1 response.getWrite() response.getOutputStream() buffer缓冲区满啦8k
+		//2 response.flushBuffer()
+		//3 response.sendError()
+		//4 reponse.sendRedirect()
+		//提交response
+		res.flushBuffer();
+		//临时重定向指定URL
+//		res.sendRedirect("/ServletJsp");
+		//getWriter()调用后character encoding重新设置会失效，response提交后contentType()的调用会失效
+		res.setContentType("text/json;charset=iso-8859-1");
 	}
 }
