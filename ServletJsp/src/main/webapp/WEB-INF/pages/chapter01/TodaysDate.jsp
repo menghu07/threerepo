@@ -42,7 +42,7 @@
 		}
 		out.println(cr + "Buffer size: " + response.getBufferSize());
 		//必须要创建session才不会报错
-		out.println(cr + "Session Id: " + request.getSession(true).getId());
+		out.println(cr + "Session Id: " + request.getSession(false).getId());
 		out.println(
 				cr + "Servlet name: " + config.getServletName() + " servlet info: " + localPage.getServletInfo());
 		out.println(cr + "Server info: " + application.getServerInfo());
