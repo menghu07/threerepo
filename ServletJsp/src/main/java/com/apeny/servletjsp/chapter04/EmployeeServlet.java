@@ -58,9 +58,14 @@ public class EmployeeServlet extends HttpServlet {
 		 map.put("Austria", "Vienna");
 		 map.put("Austrilia", "Canberra");
 		 map.put("Canada", "Ottawa");
+		 Map<String, String[]> bigCities = new HashMap<>();
+		 bigCities.put("Austrilia", new String[] {"Sydney", "Canberra", "Melbourne", "Perth"});
+		 bigCities.put("New Zealand", new String[] {"Auckland", "Christchurch", "Wellington"});
+		 bigCities.put("Indonesia", new String[] {"Jakarta", "Surabaya", "Meda"});
 		 req.setAttribute("capitals", map);
 		 req.setAttribute("employee", emp);
 		 req.setAttribute("books", books);
+		 req.setAttribute("bigCities", bigCities);
 		 String servletPath = req.getServletPath();
 		 servletPath = servletPath.replaceAll("\\.ch0.do", "\\.jsp");
 		 req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);
