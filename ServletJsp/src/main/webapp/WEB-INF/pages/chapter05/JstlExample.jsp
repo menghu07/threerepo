@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" errorPage="../errors/error404.jsp"%>
 <!DOCTYPE html>
@@ -127,6 +128,8 @@
 	<a href="#">Defined Tokens:
 	   <c:forTokens items="I,O,U,Z,K,H" delims="," var="name" varStatus="stat">${name}<c:if test="${!stat.last}">,</c:if></c:forTokens>
 	</a>
+	<fmt:formatNumber var="num1" type="number" value="1298989901.89902" pattern="#,##00.0#" />
+	<br/>Number1>>${num1}<br/>
 	</p>
 </body>
 </html>
