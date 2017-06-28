@@ -2,6 +2,7 @@ package com.apeny.servletjsp.chapter04;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,7 @@ public class EmployeeServlet extends HttpServlet {
 		 req.setAttribute("employee", emp);
 		 req.setAttribute("books", books);
 		 req.setAttribute("bigCities", bigCities);
+		 req.setAttribute("now", new Date());
 		 String servletPath = req.getServletPath();
 		 servletPath = servletPath.replaceAll("\\.ch0.do", "\\.jsp");
 		 req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);

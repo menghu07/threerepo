@@ -138,6 +138,8 @@
 	<c:out value="${ii }"></c:out>
 	<fmt:formatNumber var="num4" value="192345.89790" pattern="0.##"/>
 	<br/>Percentage4 1000>>${num4}<br/>
+	<fmt:formatDate value="${now}" timeStyle="default" dateStyle="default" var="fomdate1" type="both"/>
+	<br/>FormatDate1 fomdate1>>${fomdate1}<br/>
 	
 	</p>
 </body>
