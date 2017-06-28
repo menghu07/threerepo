@@ -128,8 +128,17 @@
 	<a href="#">Defined Tokens:
 	   <c:forTokens items="I,O,U,Z,K,H" delims="," var="name" varStatus="stat">${name}<c:if test="${!stat.last}">,</c:if></c:forTokens>
 	</a>
-	<fmt:formatNumber var="num1" type="number" value="1298989901.89902" pattern="#,##00.0#" />
-	<br/>Number1>>${num1}<br/>
+	<fmt:formatNumber var="num1" type="number" value="1298989901.88602" pattern="#,##00.####" maxIntegerDigits="7" minFractionDigits="4"/>
+	<br/>Number1模式#不包括0>>${num1}<br/>
+	<fmt:formatNumber var="num2" type="currency" value="192345.89790" currencyCode="GBP"/>
+	<br/>Currency2>>${num2}<br/>
+	<fmt:formatNumber var="num3" type="percent" value="192345.89790"  minFractionDigits="2"/>
+	<br/>Percentage3>>${num3}<br/>	
+	<c:set var="ii" value="ff\u2030"></c:set>
+	<c:out value="${ii }"></c:out>
+	<fmt:formatNumber var="num4" value="192345.89790" pattern="0.##"/>
+	<br/>Percentage4 1000>>${num4}<br/>
+	
 	</p>
 </body>
 </html>

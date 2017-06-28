@@ -42,7 +42,7 @@ public class TestLogAspect {
 //        // 以百分比方式计数，并取两位小数
 //        System.out.println(new DecimalFormat("#.##%").format(pi)); // 314.16%
         //with #
-        System.out.println(new DecimalFormat("#,##00.").format(pi)); // 314.16%
+        System.out.println(new DecimalFormat("#,##00.##\u2030").format(pi)); // 314.16%
 
         long c = 299792458; // 光速
         // 显示为科学计数法，并取五位小数
