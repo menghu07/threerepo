@@ -1,0 +1,12 @@
+<%@ tag pageEncoding="UTF-8" %>
+<% out.println("hello, i'm from tagf."); %>
+<table>
+	<thead><tr><th>TagIncludeName</th><th>TagIncludeValue</th></tr></thead>
+	<tbody>
+		<tr><td>display-name</td><td>通过xml工具显示的简称</td></tr>
+		<tr><td>dynamic-attributes</td><td>表明对动态属性的支持。她的值表明放置map的有界属性</td></tr>
+		<tr><td>small-icon</td><td>xml工具要用到的小图片</td></tr>
+		<tr><td>large-icon</td><td>xml工具要用到的大图片</td></tr>
+	</tbody>
+	<tfoot><tr><td>tool</td><td>tool value</td></tr></tfoot>
+</table>

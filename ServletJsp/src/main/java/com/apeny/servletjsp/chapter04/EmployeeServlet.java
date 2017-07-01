@@ -17,7 +17,7 @@ import com.apeny.servletjsp.domain.Address;
 import com.apeny.servletjsp.domain.Book;
 import com.apeny.servletjsp.domain.Employee;
 
-@WebServlet(name = "EmployeeServlet", value={"*.ch04do", "*.ch05do"})
+@WebServlet(name = "EmployeeServlet", value={"*.ch04do", "*.ch05do", "*.ch06do"})
 public class EmployeeServlet extends HttpServlet {
 
 	/**

@@ -1,7 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" errorPage="../errors/error404.jsp"%>
+	pageEncoding="UTF-8" errorPage="../errors/error404.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -125,23 +126,68 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="#">Defined Tokens:
-	   <c:forTokens items="I,O,U,Z,K,H" delims="," var="name" varStatus="stat">${name}<c:if test="${!stat.last}">,</c:if></c:forTokens>
+	<a href="#">Defined Tokens: <c:forTokens items="I,O,U,Z,K,H"
+			delims="," var="name" varStatus="stat">${name}<c:if
+				test="${!stat.last}">,</c:if>
+		</c:forTokens>
 	</a>
-	<fmt:formatNumber var="num1" type="number" value="1298989901.88602" pattern="#,##00.####" maxIntegerDigits="7" minFractionDigits="4"/>
-	<br/>Number1模式#不包括0>>${num1}<br/>
-	<fmt:formatNumber var="num2" type="currency" value="192345.89790" currencyCode="CNY" />
-	<br/>Currency2>>${num2}<br/>
-	<fmt:formatNumber var="num3" type="percent" value="192345.89790"  minFractionDigits="2"/>
-	<br/>Percentage3>>${num3}<br/>	
+	<fmt:formatNumber var="num1" type="number" value="1298989901.88602"
+		pattern="#,##00.####" maxIntegerDigits="7" minFractionDigits="4" />
+	<br />Number1模式#不包括0>>${num1}
+	<br />
+	<fmt:formatNumber var="num2" type="currency" value="192345.89790"
+		currencyCode="CNY" />
+	<br />Currency2>>${num2}
+	<br />
+	<fmt:formatNumber var="num3" type="percent" value="192345.89790"
+		minFractionDigits="2" />
+	<br />Percentage3>>${num3}
+	<br />
 	<c:set var="ii" value="ff\u2030"></c:set>
 	<c:out value="${ii }"></c:out>
-	<fmt:formatNumber var="num4" value="192345.89790" pattern="0.##"/>
-	<br/>Percentage4 1000>>${num4}<br/>
-	<fmt:formatDate value="${now}" timeStyle="default" dateStyle="default" var="fomdate1" type="both" timeZone="CST"/>
-	<br/>FormatDate1 fomdate1>>${fomdate1}<br/>
-	<fmt:parseNumber var="parseNumb1" value="${num2}" type="currency" parseLocale="zh_CN"></fmt:parseNumber>
-	<br/>ParseNumber parseNumb1>>${parseNumb1}<br/>
+	<fmt:formatNumber var="num4" value="192345.89790" pattern="0.##" />
+	<br />Percentage4 1000>>${num4}
+	<br />
+	<fmt:formatDate value="${now}" timeStyle="default" dateStyle="default"
+		var="fomdate1" type="both" timeZone="EST"/>
+	<br />FormatDate1 fomdate1>>${fomdate1}
+	<fmt:formatDate value="${now}" timeStyle="default" dateStyle="default"
+		var="fomdate2" type="both" />
+	<br />FormatDate2 fomdate2>>${fomdate2}
+	<br />
+	<fmt:parseNumber var="parseNumb1" value="${num2}" type="currency"
+		parseLocale="zh_CN"></fmt:parseNumber>
+	<br />ParseNumber parseNumb1>>${parseNumb1}
+	<br />
+	<fmt:setTimeZone value="EST+9:00" var="timeZone1" />
+	<fmt:formatDate var="date1" value="${now}" type="both"
+		dateStyle="full" timeStyle="full" timeZone="${timeZone1}" />
+	<br />format date1>>${date1}
+	<fmt:timeZone value="GMT">
+	<fmt:formatDate var="date2" value="${now}" type="both"
+		dateStyle="full" timeStyle="full"/>
+	</fmt:timeZone>
+	<br />format Date format2>>${date2}
+	<fmt:parseDate value="${fomdate1}" var="parseDate3" type="both" dateStyle="default" timeStyle="default" timeZone="EST"/>
+	<br />parseDate3 parseDate3 from formdate1>>${parseDate3}
+	</p>
+	<p>
+	--------------------Function----------------------------
+	</p>
+	<p>
+	<c:set var="str1" value="   Hello '<World ,ff"/>
+	<c:set var="str2" value="far"></c:set>
+	<br/>contains:${fn:contains(str1, "lo")}
+	<br/>str1 是变量fn:containsIgnoreCase:${fn:containsIgnoreCase(str1, "lO")}
+	<br/><p>escapeXml:${str2.concat(fn:escapeXml(str1).concat("fff"))}END</p>
+	<br/>endsWith:${fn:endsWith(str1, "ld")}
+	<br/>replace e to E:${fn:escapeXml(fn:replace(str1, "e", "E"))}
+	<c:set var="spt" value="${fn:split(fn:escapeXml(str1), ',')}" />
+	<br/>
+	<c:forEach var="it" items="${spt}">
+		split item:${it}<br/>
+	</c:forEach>
+	<br/>subStringAfter is:${fn:escapeXml(fn:substringAfter(str1, "or"))}
 	
 	</p>
 </body>

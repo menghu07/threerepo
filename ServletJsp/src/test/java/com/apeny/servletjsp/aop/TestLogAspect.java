@@ -1,8 +1,11 @@
 package com.apeny.servletjsp.aop;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import com.apeny.servletjsp.spring.bean.ArithmeticCalculator;
 
 public class TestLogAspect {
@@ -12,7 +15,8 @@ public class TestLogAspect {
         System.out.println("args " + args);
         TestLogAspect testAspect = new TestLogAspect();
 //        testAspect.callLog();
-        testAspect.testFormat();
+//        testAspect.testFormat();
+        testAspect.testFormatDate();
     }
 
     public void callLog() {
@@ -25,7 +29,10 @@ public class TestLogAspect {
         impl.add(9, 293);
         context.close();
     }
-
+    
+    public void testFormatDate() {
+    	System.out.println(new Date());
+    }
     public void testFormat() {
 
 //        double pi = 3.1415927;

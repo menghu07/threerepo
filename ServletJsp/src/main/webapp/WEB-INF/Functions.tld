@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<description>Custom Function i Created</description>
+	<display-name>Custom Function</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>fun</short-name>
+	<function>
+		<description>Reverse a String</description>
+		<display-name>reverse a string</display-name>
+		<name>rev</name>
+		<function-class>com.apeny.servletjsp.function.StringFunctions</function-class>
+		<function-signature>java.lang.String reverseString(java.lang.String)</function-signature>
+	</function>
+</taglib>
