@@ -83,11 +83,12 @@ class ReadThread implements Runnable {
             synchronized (SynchronizedMain.MUTEX) {
                 newCount = SynchronizedMain.writeCount;
             }
+            System.out.print("readed i " + i + " end ");
             int oldCount = counted.size();
             counted.add(i);
-            System.out.println(System.currentTimeMillis() + " read thread equals oldCount = j : oldCount =" + oldCount + "; j = " + j + " ii = " + i);
+            System.out.println(System.currentTimeMillis() + " map size: " +  SynchronizedMain.NO_SYNC_MAP.size() +  " iii " + i + " read thread equals oldCount = j : oldCount =" + oldCount + "; newCount = " + newCount + " ii = " + i + " set: " + counted);
             if (oldCount != 0 && newCount != i) {
-                System.out.println("break oldCount = " + oldCount + "; NO_SYNC_MAP = " + j + " ii = " + i);
+                System.out.println("break oldCount = " + oldCount + "; NO_SYNC_MAP = " + newCount + " ii = " + i);
                 System.exit(1);
             }
             //end-------------------------
