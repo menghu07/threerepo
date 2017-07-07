@@ -24,5 +24,6 @@
 	   <jsp:attribute name="type">属性</jsp:attribute>
 	   <jsp:body>Element Body</jsp:body>
 	</jsp:element>
+	<tagm:Encode input="<br/>&#39means c'hanging line"></tagm:Encode>
 	<%@ include file="../htmls/IncludedHtml.html" %>
 </html>
