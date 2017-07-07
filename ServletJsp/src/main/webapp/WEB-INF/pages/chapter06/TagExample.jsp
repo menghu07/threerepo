@@ -19,5 +19,10 @@
 	</smp3:dataFormatterTag>
 	<p>Reverse String: ${fun3:rev("can who i")}</p>
 	Today is my dateformat:<tagm:DateFormat/>
+	<p>jsp 动作指令</p>
+	<jsp:element name="Element">
+	   <jsp:attribute name="type">属性</jsp:attribute>
+	   <jsp:body>Element Body</jsp:body>
+	</jsp:element>
 	<%@ include file="../htmls/IncludedHtml.html" %>
 </html>
