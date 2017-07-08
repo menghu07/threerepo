@@ -6,5 +6,6 @@
 	request.getContextPath();
 %>
 <p><%=pageContextApp%>  <%=request.getContextPath() %></p>
+<p>from ${sessionScope.referer}</p>
 </body>
 </html>

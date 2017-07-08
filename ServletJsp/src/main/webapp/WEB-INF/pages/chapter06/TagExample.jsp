@@ -25,13 +25,23 @@
 	   <jsp:body>Element Body</jsp:body>
 	</jsp:element>
 	<p>jsp${pageContext}; request:${pageContext.request} </p>
-	<tagm:Encode tagsf="<br/>&">
+	<tagm:Encode tagsf="shortDate4">
 		<jsp:attribute name="input"><br/><p>changing line;${pageContext}</p></jsp:attribute>
 		<jsp:body>
 		in long format: ${longDate}<br/>
-		in small format: ${shortDate}
+		in small format: ${shortDate4}
 		</jsp:body>
 	</tagm:Encode>
-	
+	<a href="./MainPage2.ch06do">go to MainPage</a>
+	<p>Invoke Example call here</p>
+	<tagm:Invoke>
+		<jsp:attribute name="productDetails">
+			<table border="1">
+				<tr><td>Name</td><td>${productName}</td></tr>
+				<tr><td>Discription</td><td>${description}</td></tr>
+				<tr><td>Price</td><td>${price}</td></tr>
+			</table>
+		</jsp:attribute>
+	</tagm:Invoke>
 	<%@ include file="../htmls/IncludedHtml.html" %>
 </html>

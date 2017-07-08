@@ -1,7 +1,7 @@
 <%@ tag pageEncoding="UTF-8"
 	import="java.text.DateFormat,java.util.Date,javax.servlet.jsp.tagext.JspFragment,java.io.IOException"%>
 <%@ attribute name="input" required="true" fragment="true"%>
-<%@ attribute name="tagsf" required="true"%>
+<%@ attribute name="tagsf" required="true" rtexprvalue="false"%>
 <%! 
     public String encodeHtmlString(String tags) {
 		if (tags == null) {
@@ -44,7 +44,7 @@
 	<%=out == jspContext.getOut()%></p>
 <!-- 调用页面可以访问的变量 -->
 <%@ variable name-given="longDate"%>
-<%@ variable name-given="shortDate"%>
+<%@ variable name-from-attribute="tagsf" alias="shortDate4" %>
 <p>tag EL implicit object: ${pageContext.request}
 	pageContext:${pageContext} ${header['cookie']}</p>
 <%
@@ -52,6 +52,7 @@
 	DateFormat longFormat = DateFormat.getDateInstance(DateFormat.LONG);
 	DateFormat smallFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 	jspContext.setAttribute("longDate", longFormat.format(now));
-	jspContext.setAttribute("shortDate", smallFormat.format(now));
+	System.out.println("tagsf:::::" + tagsf);
+	jspContext.setAttribute(tagsf, smallFormat.format(now));
 %>
 <jsp:doBody />
