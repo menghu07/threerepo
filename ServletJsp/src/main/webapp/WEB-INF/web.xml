@@ -53,8 +53,8 @@
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>
-			<scripting-invalid>false</scripting-invalid>
 			<el-ignored>false</el-ignored>
+			<scripting-invalid>false</scripting-invalid>
 		</jsp-property-group>
 	</jsp-config>
 </web-app>

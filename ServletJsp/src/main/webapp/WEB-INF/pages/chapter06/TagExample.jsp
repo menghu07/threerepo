@@ -24,6 +24,14 @@
 	   <jsp:attribute name="type">属性</jsp:attribute>
 	   <jsp:body>Element Body</jsp:body>
 	</jsp:element>
-	<tagm:Encode input="<br/>&#39means c'hanging line"></tagm:Encode>
+	<p>jsp${pageContext}; request:${pageContext.request} </p>
+	<tagm:Encode tagsf="<br/>&">
+		<jsp:attribute name="input"><br/><p>changing line;${pageContext}</p></jsp:attribute>
+		<jsp:body>
+		in long format: ${longDate}<br/>
+		in small format: ${shortDate}
+		</jsp:body>
+	</tagm:Encode>
+	
 	<%@ include file="../htmls/IncludedHtml.html" %>
 </html>
