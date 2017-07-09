@@ -12,7 +12,7 @@ i can see ${header.referer}
 <dobody:DoBody>${header.referer}</dobody:DoBody>
 <br/>
 i want to see session id <%=session.getId()%>ppp${cookie.JSESSIONID}
-<br/>NO sessionid:错误写法${sessionScope.id}${sessionScope.sessionid}<%=session.getAttribute("sessionid")%>
+<br/>NO sessionid:${pageContext.session.id} createtime${pageContext.session.creationTime}错误写法${sessionScope.id}${sessionScope.sessionid}<%=session.getAttribute("sessionid")%>
 <a href="/ServletJsp">go to home page</a>
 </body>
 </html>

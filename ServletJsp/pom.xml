@@ -9,7 +9,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<spring.version>4.3.8.RELEASE</spring.version>
+		<spring.version>4.1.4.RELEASE</spring.version>
 		<aspectj.version>1.8.10</aspectj.version>
 	</properties>
 
@@ -73,7 +73,16 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+		<dependency>
+  <groupId>cglib</groupId>
+  <artifactId>cglib</artifactId>
+  <version>3.2.5</version>
+</dependency>
 	</dependencies>
 	<repositories>
 		<!-- <repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url> 

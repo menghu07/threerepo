@@ -3,7 +3,8 @@
 <%@ taglib uri="/WEB-INF/Functions.tld" prefix="fun3"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tagm" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" session="true"%>
+<!-- 默认需要创建session jsp ... servlet -->
 <!DOCTYPE html>
 <html>
 <head>

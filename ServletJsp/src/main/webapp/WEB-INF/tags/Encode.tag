@@ -46,7 +46,7 @@
 <%@ variable name-given="longDate"%>
 <%@ variable name-from-attribute="tagsf" alias="shortDate4" %>
 <p>tag EL implicit object: ${pageContext.request}
-	pageContext:${pageContext} ${header['cookie']}</p>
+	pageContext:${pageContext} ${header['cookie']} + return cookie ${cookie}</p>
 <%
 	Date now = new Date();
 	DateFormat longFormat = DateFormat.getDateInstance(DateFormat.LONG);
