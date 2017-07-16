@@ -8,7 +8,7 @@
 <title>All Listeners</title>
 </head>
 <body>
-	<p>applicationScope=${applicationScope}<br/>java 大神${applicationScope['org.springframework.web.context.support.ServletContextScope']}</p>
+	<p>applicationScope=${applicationScope.size()}<br/>java 大神${applicationScope['org.springframework.web.context.support.ServletContextScope']}</p>
 	applicationScope true ${applicationScope==applicationScope}:${applicationScope==applicationScope['org.springframework.web.context.support.ServletContextScope']}
 	<ul>
 	<c:forEach items="${countries}" var="i">
