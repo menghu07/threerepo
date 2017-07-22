@@ -9,6 +9,9 @@ import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Configuration
 public class ApplicationContextImpl implements ApplicationContextAware {
 	
@@ -48,5 +51,13 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 	public JedisCluster jedisCluster() {
 		HostAndPort host1 = new HostAndPort("192.168.56.121", 10001);
 		return new JedisCluster(host1, jedisPoolConfig());
+	}
+
+	@Bean
+	public JedisClusterSupport jedisClusterSupport() {
+		HostAndPort host1 = new HostAndPort("192.168.56.121", 10001);
+        Set<HostAndPort> hosts = new HashSet<>();
+        hosts.add(host1);
+		return new JedisClusterSupport(hosts, jedisPoolConfig());
 	}
 }

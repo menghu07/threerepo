@@ -12,7 +12,7 @@
 		<spring.version>4.1.4.RELEASE</spring.version>
 		<aspectj.version>1.8.10</aspectj.version>
 		<jedis.version>2.8.2</jedis.version>
-		<!-- <redis-data.version>1.8.0.RELEASE</redis-data.version> -->
+		<redis-data.version>1.8.0.RELEASE</redis-data.version>
 	</properties>
 
 	<dependencies>
@@ -92,11 +92,11 @@
 			<version>${jedis.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 			<version>${redis-data.version}</version>
-		</dependency> -->
+		</dependency>
 
 	</dependencies>
 	<repositories>
