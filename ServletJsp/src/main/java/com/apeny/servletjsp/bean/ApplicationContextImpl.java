@@ -4,10 +4,12 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
+@Configuration
 public class ApplicationContextImpl implements ApplicationContextAware {
 	
 	private ApplicationContext context;
@@ -16,6 +18,10 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
 		this.context = context;
 	}
+
+	public ApplicationContext getApplicationContext() {
+	    return context;
+    }
 
 	@Bean
 	public JedisPoolConfig jedisPoolConfig() {
@@ -40,8 +46,7 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 	
 	@Bean
 	public JedisCluster jedisCluster() {
-		HostAndPort host1 = new HostAndPort("192.168.56.121", 101);
-		JedisCluster cluster = new JedisCluster(host1, jedisPoolConfig());
-		return cluster;
+		HostAndPort host1 = new HostAndPort("192.168.117.235", 6380);
+		return new JedisCluster(host1, jedisPoolConfig());
 	}
 }

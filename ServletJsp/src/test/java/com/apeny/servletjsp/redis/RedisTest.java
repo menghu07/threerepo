@@ -13,6 +13,8 @@ public class RedisTest {
                 "src/main/resources/config/applicationContext.xml");
 		JedisCluster cluster = (JedisCluster) context.getBean("jedisCluster");
 		System.out.println(cluster);
-		
+		for (int i = 0; i < 10000; i++) {
+			System.out.println("{Risk:InstTxWhiteList}:000020:20:11:6321423000000003503293");
+		}
 	}
 }
