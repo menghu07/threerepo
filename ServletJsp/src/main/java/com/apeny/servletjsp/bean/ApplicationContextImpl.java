@@ -1,5 +1,6 @@
 package com.apeny.servletjsp.bean;
 
+import com.apeny.servletjsp.redis.ImportToRedis;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,9 +30,9 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 	public JedisPoolConfig jedisPoolConfig() {
 		JedisPoolConfig config = new JedisPoolConfig();
 		config.setBlockWhenExhausted(true);
-		config.setMaxWaitMillis(3000);
+		config.setMaxWaitMillis(10000);
 		config.setMaxIdle(20);
-		config.setMaxTotal(30);
+		config.setMaxTotal(5000);
 		config.setTestOnBorrow(true);
 		config.setTestOnCreate(true);
 		config.setTestOnReturn(true);
@@ -58,6 +58,11 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 		HostAndPort host1 = new HostAndPort("192.168.56.121", 10001);
         Set<HostAndPort> hosts = new HashSet<>();
         hosts.add(host1);
-		return new JedisClusterSupport(hosts, jedisPoolConfig());
+		return new JedisClusterSupport(hosts, 2000, 20000, 3, jedisPoolConfig());
+	}
+
+	@Bean
+	public ImportToRedis importToRedis(JedisClusterSupport support) {
+        return new ImportToRedis(support);
 	}
 }
