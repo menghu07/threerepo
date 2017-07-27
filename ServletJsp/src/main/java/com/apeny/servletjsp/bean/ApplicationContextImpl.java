@@ -55,7 +55,7 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 
 	@Bean
 	public JedisClusterSupport jedisClusterSupport() {
-		HostAndPort host1 = new HostAndPort("192.168.56.121", 10001);
+		HostAndPort host1 = new HostAndPort("192.168.117.235", 6380);
         Set<HostAndPort> hosts = new HashSet<>();
         hosts.add(host1);
 		return new JedisClusterSupport(hosts, 2000, 20000, 3, jedisPoolConfig());

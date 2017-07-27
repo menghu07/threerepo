@@ -49,6 +49,7 @@ public class RedisPipelineUtil {
         if (pipeline == null || keys == null || keys.isEmpty()) {
             return;
         }
+        long beginToRedis = System.nanoTime();
         List<Response<String>> rs = new ArrayList<>();
         for (RedisObjectVO key : keys) {
             rs.add(pipeline.set(key.getKey(), key.getValue()));
@@ -59,6 +60,7 @@ public class RedisPipelineUtil {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        System.out.println("end Time size: " + keys.size() + " ellapse: " + (System.nanoTime() - beginToRedis) / 1_000_000 + "ms");
         ImportToRedis.toRedis.remove(JedisClusterCRC16.getCRC16(keys.get(0).getKey()));
     }
 

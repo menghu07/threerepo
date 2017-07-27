@@ -26,7 +26,7 @@ public class ImportToRedis {
 
     public void fromDB() {
         List<RedisObjectVO> objectFromDB = new ArrayList<>();
-        for (int i = 0; i < 4000000; i++) {
+        for (int i = 0; i < 10_000_000; i++) {
             RedisObjectVO vo = new RedisObjectVO();
             vo.setKey("w" + i);
             vo.setValue("v" + i);
