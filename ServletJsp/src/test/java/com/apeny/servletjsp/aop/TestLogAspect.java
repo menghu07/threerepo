@@ -15,8 +15,8 @@ public class TestLogAspect {
         System.out.println("args " + args);
         TestLogAspect testAspect = new TestLogAspect();
         testAspect.callLog();
-        testAspect.testFormat();
-        testAspect.testFormatDate();
+//        testAspect.testFormat();
+//        testAspect.testFormatDate();
     }
 
     public void callLog() {
