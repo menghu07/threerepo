@@ -1,11 +1,10 @@
 package com.apeny.servletjsp.chapter07;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @WebListener
 public class HttpSessionListenerImpl implements HttpSessionListener {

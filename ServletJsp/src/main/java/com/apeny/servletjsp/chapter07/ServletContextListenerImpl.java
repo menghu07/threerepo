@@ -27,9 +27,9 @@ public class ServletContextListenerImpl implements ServletContextListener {
 		countries.put("cn", "china");
 		context = sce.getServletContext();
 		context.setAttribute("countries", countries);
-		System.out.println("ServletContext Listener initialized");
 		AtomicInteger sessionCounter = new AtomicInteger();
 		context.setAttribute("counter", sessionCounter);
+		System.out.println("ServletJsp user-defined ServletContext Listener initialized");
 	}
 
 	@Override
