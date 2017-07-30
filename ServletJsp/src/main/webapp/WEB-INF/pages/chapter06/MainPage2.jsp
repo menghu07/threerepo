@@ -11,8 +11,10 @@
 i can see ${header.referer}
 <dobody:DoBody>${header.referer}</dobody:DoBody>
 <br/>
-i want to see session id <%=session.getId()%>ppp${cookie.JSESSIONID}
-<br/>NO sessionid:${pageContext.session.id} createtime${pageContext.session.creationTime}错误写法${sessionScope.id}${sessionScope.sessionid}<%=session.getAttribute("sessionid")%>
+i want to see session id sesion.getId() <%=session.getId()%><br/>
+另一种写法:${pageContext.session.id} &nbsp; createtime${pageContext.session.creationTime}<br/>
+JSESSIONID Session对应的cookie${cookie.JSESSIONID}<br/>属性写法${cookie['JSESSIONID']} id获取方法name=${cookie.JSESSIONID.name};value=${cookie.JSESSIONID.value}<br/>
+NO sessionid错误写法${sessionScope.id}${sessionScope.sessionid}<%=session.getAttribute("sessionid")%>
 <a href="/ServletJsp">go to home page</a>
 </body>
 </html>

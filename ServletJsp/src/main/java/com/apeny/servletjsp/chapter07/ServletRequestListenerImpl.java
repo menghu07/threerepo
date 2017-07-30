@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebListener;
 public class ServletRequestListenerImpl implements ServletRequestListener {
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
-        System.out.println("i am a servlet request destroyed" + sre.getServletRequest());
+        System.out.println("i am a servlet request destroyed" + sre.getServletRequest() + " class: " + sre.getServletRequest().getClass());
     }
 
     @Override

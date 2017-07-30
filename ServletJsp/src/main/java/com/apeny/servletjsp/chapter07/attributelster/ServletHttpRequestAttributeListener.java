@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebListener;
 public class ServletHttpRequestAttributeListener implements ServletRequestAttributeListener {
     @Override
     public void attributeAdded(ServletRequestAttributeEvent srae) {
-        System.out.println("a request attribute added");
+        System.out.println("a request attribute added" + "name: " + srae.getName() + ", value: " + srae.getValue());
     }
 
     @Override

@@ -68,6 +68,8 @@ public class EmployeeServlet extends HttpServlet {
 		 req.setAttribute("books", books);
 		 req.setAttribute("bigCities", bigCities);
 		 req.setAttribute("now", new Date());
+		 req.setAttribute("name1", "new name");
+		 req.setAttribute("name1", null);
 		 String servletPath = req.getServletPath();
 		 servletPath = servletPath.replaceAll("\\.ch0.do", "\\.jsp");
 		 req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);
