@@ -13,6 +13,7 @@
 		<aspectj.version>1.8.10</aspectj.version>
 		<jedis.version>2.8.2</jedis.version>
 		<redis-data.version>1.8.0.RELEASE</redis-data.version>
+        <source.encoding>utf-8</source.encoding>
 	</properties>
 
 	<dependencies>
@@ -100,10 +101,21 @@
 
 	</dependencies>
 	<repositories>
-		<!-- <repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url> 
-			</repository> -->
+		<!--<repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
+			</repository>-->
 	</repositories>
+
 	<build>
 		<finalName>ServletJsp</finalName>
+		<!--<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>-->
 	</build>
 </project>
