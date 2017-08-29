@@ -9,6 +9,7 @@ import redis.clients.jedis.Pipeline;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ahu on 2017年08月20日.
@@ -31,7 +32,7 @@ public class RedisClientTest {
             //Hash
             System.out.println("hash hset: " + jedis.hset("hkey3", "field1", "val1"));
             //Set
-            System.out.println("set sadd: " + jedis.sadd("skey5", "aa", "bb", "cc") );
+            System.out.println("set sadd: " + jedis.sadd("skey5", "aa", "bb", "cc"));
             //ZSet
             HashMap<String, Double> zmembers = new HashMap<>();
             zmembers.put("mem1", 10d);
@@ -40,7 +41,7 @@ public class RedisClientTest {
             System.out.println("zset zadd: " + jedis.zadd("zset2", zmembers));
             jedis1 = new Jedis("192.168.56.122", 10020);
             System.out.println("key8 from 122: " + jedis1.get("key8"));
-            System.out.println("titles from 122: " + jedis1.lrange("titles", 0 , -1));
+            System.out.println("titles from 122: " + jedis1.lrange("titles", 0, -1));
             JSONObject jsonObject = JSONObject.parseObject("{\"userName\":\"aa\", \"age\": 23}");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -57,7 +58,7 @@ public class RedisClientTest {
     @Test
     public void jedisPoolTest() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-        JedisPool jedisPool = new JedisPool(config,"192.168.56.121", 10009);
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -74,7 +75,7 @@ public class RedisClientTest {
     @Test
     public void pipelineTest() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-        JedisPool jedisPool = new JedisPool(config,"192.168.56.121", 10009);
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -96,7 +97,7 @@ public class RedisClientTest {
     @Test
     public void redisLuaTest() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-        JedisPool jedisPool = new JedisPool(config,"192.168.56.121", 10009);
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -110,6 +111,43 @@ public class RedisClientTest {
         } finally {
             if (jedis != null) {
                 jedis.close();
+            }
+        }
+    }
+
+    @Test
+    public void testBatchInsert() {
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009, 300000);
+        Jedis jedis = null;
+        Jedis jedis2 = null;
+        int count = 500890000;
+        try {
+            jedis = jedisPool.getResource();
+            jedis2 = jedisPool.getResource();
+            System.out.println("jedis begin");
+            int pre = new Random().nextInt(500000000);
+            for (int i = 0; i < 1; i++) {
+                try {
+                    jedis.set(pre + "key" + i, "value：" + i + "zade:" + i % 1000);
+                } catch (Exception ex) {
+                    new Exception("jedis" + jedis, ex).printStackTrace();
+                    System.out.println("key: value: " + jedis.getClient());
+                }
+                try {
+                    jedis2.set(pre + "key" + i, "value：" + i + "zade:" + i % 1000);
+                    jedis2.keys("*");
+                } catch (Exception ex) {
+                    new Exception("jedis2" + jedis2, ex).printStackTrace();
+                    System.out.println("key: value: " + jedis2.getClient());
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (jedis != null) {
+//                jedis.close();
+                System.out.println("old jedis: " + jedis);
             }
         }
     }
