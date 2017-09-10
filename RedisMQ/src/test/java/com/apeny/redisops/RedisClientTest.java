@@ -3,22 +3,57 @@ package com.apeny.redisops;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ahu on 2017年08月20日.
  */
 public class RedisClientTest {
 
+    /**
+     * 主节点挂了，不能自动重连
+     */
+    @Test
+    public void testJedisWithLoop() {
+        Jedis jedis = null;
+        try {
+            jedis = new Jedis("192.168.56.121", 10009);
+            long begin = -1;
+            long end = -1;
+            while (true) {
+                try {
+                    jedis.set("key34", "yui");
+                    if (begin != -1 && end != -1) {
+                        System.out.println("中断时间......" + (end - begin));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    long cur = System.nanoTime();
+                    if (begin == -1) {
+                        begin = cur;
+                    }
+                    end = cur;
+                }
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
     @Test
     public void jedisTest() {
-
         Jedis jedis = null;
         Jedis jedis1 = null;
         try {
@@ -55,6 +90,9 @@ public class RedisClientTest {
         }
     }
 
+    /**
+     * 连接池
+     */
     @Test
     public void jedisPoolTest() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
@@ -73,7 +111,53 @@ public class RedisClientTest {
     }
 
     @Test
+    public void jedisPoolWithloopTest() {
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
+        Jedis jedis = null;
+        try {
+            while (true) {
+                jedis = jedisPool.getResource();
+                try {
+                    System.out.println("key4 resource: " + jedis.set("key4", "fff"));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+
+    @Test
     public void pipelineTest() {
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            Pipeline pipeline = jedis.pipelined();
+            pipeline.set("key6", "you in pipeline");
+            pipeline.del("one", "two");
+            pipeline.incr("counter1");
+            List<Object> responses = pipeline.syncAndReturnAll();
+            System.out.println("responses: " + responses);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    @Test
+    public void testLoopget() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
         Jedis jedis = null;
@@ -148,6 +232,76 @@ public class RedisClientTest {
             if (jedis != null) {
 //                jedis.close();
                 System.out.println("old jedis: " + jedis);
+            }
+        }
+    }
+
+    @Test
+    public void testClusterPool() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestOnCreate(true);
+        jedisPoolConfig.setTestOnReturn(true);
+        jedisPoolConfig.setTestWhileIdle(true);
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60);
+        jedisPoolConfig.setMinEvictableIdleTimeMillis(3_600_000);
+
+        HostAndPort hostAndPort = new HostAndPort("192.168.56.121", 30001);
+        JedisCluster jedisCluster = new JedisCluster(hostAndPort, 6000000, 3, jedisPoolConfig);
+        while (true) {
+            try {
+                String key1 = "key" + new Random().nextInt(16384 * 10);
+                jedisCluster.set(key1, "val1");
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    public void multiThreadSender() {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestOnCreate(true);
+        jedisPoolConfig.setTestOnReturn(true);
+        jedisPoolConfig.setTestWhileIdle(true);
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60);
+        jedisPoolConfig.setMinEvictableIdleTimeMillis(3_600_000);
+
+        HostAndPort hostAndPort = new HostAndPort("192.168.56.121", 30001);
+        JedisCluster jedisCluster = new JedisCluster(hostAndPort, 6000000, 3, jedisPoolConfig);
+
+        for (int i = 0; i < 10; i++) {
+            executorService.submit(new Sender(jedisCluster));
+        }
+        try {
+            TimeUnit.DAYS.sleep(1);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    class Sender implements Runnable {
+        JedisCluster jedisCluster;
+
+        Sender(JedisCluster cluster) {
+            jedisCluster = cluster;
+        }
+
+        @Override
+        public void run() {
+            String currentThreadName = Thread.currentThread().toString();
+            while (true) {
+                String key1 = "key" + new Random().nextInt(16384 * 10);
+                try {
+                    jedisCluster.set("key85994", "val" + key1);
+                    System.out.println(currentThreadName + " set key : " + "key85994");
+                    TimeUnit.MICROSECONDS.sleep(1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
