@@ -46,6 +46,15 @@
 		<filter-name>setencoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter>
+        <description>前后包围</description>
+        <filter-name>AroundFilter</filter-name>
+        <filter-class>com.apeny.servletjsp.filter.AroundFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AroundFilter</filter-name>
+        <servlet-name>FormServlet</servlet-name>
+    </filter-mapping>
 	<error-page>
 	   <error-code>404</error-code>
 	   <location>/WEB-INF/pages/errors/error404.jsp</location>
