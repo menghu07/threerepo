@@ -1,10 +1,12 @@
 package com.apeny.redisops;
 
 import com.alibaba.fastjson.JSONObject;
+import com.apeny.system.SystemInit;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.Test;
 import redis.clients.jedis.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -112,16 +114,28 @@ public class RedisClientTest {
 
     @Test
     public void jedisPoolWithloopTest() {
+        SystemInit.init();
+        SystemInit.LOGGER.info("jedis startup.......");
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 10009);
+        JedisPool jedisPool = new JedisPool(config, "192.168.56.121", 30001);
         Jedis jedis = null;
         try {
+            long begin = -1;
+            long end = -1;
+            jedis = jedisPool.getResource();
             while (true) {
-                jedis = jedisPool.getResource();
                 try {
-                    System.out.println("key4 resource: " + jedis.set("key4", "fff"));
+                    jedis.set("key4", "fff");
+                    if (begin != -1 && end != -1) {
+                        System.out.println("中断时间......" + (end - begin));
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    long cur = System.nanoTime();
+                    if (begin == -1) {
+                        begin = cur;
+                    }
+                    end = cur;
                 }
             }
         } catch (Exception ex) {
@@ -255,6 +269,43 @@ public class RedisClientTest {
                 TimeUnit.SECONDS.sleep(1);
             } catch (Exception ex) {
                 ex.printStackTrace();
+            }
+        }
+    }
+
+
+    @Test
+    public void testClusterDown() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestOnCreate(true);
+        jedisPoolConfig.setTestOnReturn(true);
+        jedisPoolConfig.setTestWhileIdle(true);
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60);
+        jedisPoolConfig.setMinEvictableIdleTimeMillis(3_600_000);
+
+        HostAndPort hostAndPort = new HostAndPort("192.168.56.121", 30001);
+        JedisCluster jedisCluster = new JedisCluster(hostAndPort, 6000000, 3, jedisPoolConfig);
+        String key4 = "key4";
+        long begin = -1;
+        long end = -1;
+        while (true) {
+            try {
+                jedisCluster.set(key4, "val1");
+//                TimeUnit.SECONDS.sleep(1);
+                if (begin != -1 && end != -1) {
+                    System.out.println("中断时间......" + (end - begin));
+                    begin = -1;
+                    end = -1;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.out.println(new Date());
+                long cur = System.nanoTime();
+                if (begin == -1) {
+                    begin = cur;
+                }
+                end = cur;
             }
         }
     }
