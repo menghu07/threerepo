@@ -1,7 +1,6 @@
 package com.apeny.log;
 
 import org.apache.log4j.xml.DOMConfigurator;
-
 import java.util.logging.Logger;
 
 /**
@@ -17,6 +16,8 @@ public class Log4jMain {
         jdkLoggerComApeny.info("Com.Apeny");
         org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("com.apeny");
         logger.info("xyoffff");
+        org.apache.log4j.Logger loggerJoke = org.apache.log4j.Logger.getLogger("conSoleJoke");
+        loggerJoke.error("fffff");
     }
 
 }
