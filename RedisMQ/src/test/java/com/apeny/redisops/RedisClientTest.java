@@ -6,10 +6,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.Test;
 import redis.clients.jedis.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -284,8 +281,14 @@ public class RedisClientTest {
         jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60);
         jedisPoolConfig.setMinEvictableIdleTimeMillis(3_600_000);
 
+        Set<HostAndPort> hosts = new HashSet<>();
         HostAndPort hostAndPort = new HostAndPort("192.168.56.121", 30001);
-        JedisCluster jedisCluster = new JedisCluster(hostAndPort, 6000000, 3, jedisPoolConfig);
+        HostAndPort hostAndPort1 = new HostAndPort("192.168.56.121", 30004);
+        HostAndPort hostAndPort2 = new HostAndPort("192.168.56.121", 30005);
+        hosts.add(hostAndPort);
+        hosts.add(hostAndPort1);
+        hosts.add(hostAndPort2);
+        JedisCluster jedisCluster = new JedisCluster(hosts, 6000000, 3, jedisPoolConfig);
         String key4 = "key4";
         long begin = -1;
         long end = -1;
@@ -321,8 +324,14 @@ public class RedisClientTest {
         jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60);
         jedisPoolConfig.setMinEvictableIdleTimeMillis(3_600_000);
 
+        Set<HostAndPort> hosts = new HashSet<>();
         HostAndPort hostAndPort = new HostAndPort("192.168.56.121", 30001);
-        JedisCluster jedisCluster = new JedisCluster(hostAndPort, 6000000, 3, jedisPoolConfig);
+        HostAndPort hostAndPort1 = new HostAndPort("192.168.56.121", 30004);
+        HostAndPort hostAndPort2 = new HostAndPort("192.168.56.121", 30005);
+        hosts.add(hostAndPort);
+        hosts.add(hostAndPort1);
+        hosts.add(hostAndPort2);
+        JedisCluster jedisCluster = new JedisCluster(hosts, 6000000, 3, jedisPoolConfig);
 
         for (int i = 0; i < 10; i++) {
             executorService.submit(new Sender(jedisCluster));
