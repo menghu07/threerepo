@@ -31,6 +31,7 @@
 	<filter>
 		<filter-name>setencoding</filter-name>
 		<filter-class>com.apeny.servletjsp.filter.CharacterEncodingFilter</filter-class>
+        <async-supported>true</async-supported>
 		<init-param>
 			<description>是否忽略请求中设置的characterset</description>
 			<param-name>ignore</param-name>
@@ -50,6 +51,7 @@
         <description>前后包围</description>
         <filter-name>AroundFilter</filter-name>
         <filter-class>com.apeny.servletjsp.filter.AroundFilter</filter-class>
+		<async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>AroundFilter</filter-name>
