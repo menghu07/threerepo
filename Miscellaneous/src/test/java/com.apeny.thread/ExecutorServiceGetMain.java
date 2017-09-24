@@ -10,7 +10,6 @@ import java.util.concurrent.*;
  * Created by apeny on 2017年07月29日.
  * 这个测试的结论：
  * 1. 任务未完成java.util.concurrent.FutureTask@5cad8086，抛出异常时；
- *
  */
 public class ExecutorServiceGetMain {
     public static void main(String[] args) {
@@ -36,5 +35,31 @@ public class ExecutorServiceGetMain {
             }
         }
         System.out.println("main thread ended.......");
+    }
+
+    private static class SuperClass {
+        private int id;
+
+        public SuperClass(int xy) {
+            id = xy;
+        }
+
+        public boolean equals(Object obj) {
+            if (obj instanceof SuperClass) {
+                return id == ((SuperClass) obj).id;
+            }
+            return false;
+        }
+    }
+
+    static class ExtendClass extends SuperClass {
+        public ExtendClass(int xt) {
+            super(xt);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
     }
 }
