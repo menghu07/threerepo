@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=Utf-8"
-         pageEncoding="Utf-8" import="com.apeny.servletjsp.domain.Customer" %>
+         pageEncoding="Utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,7 @@
     <script src="${basePathURL}/js/defjs/externalJs.js"></script>
     <script>
         function bb() {
-            console.log(xy + 1023);
+            console.log(12 + 1023);
         }
         bb();
         function cc() {
@@ -31,8 +31,8 @@
     <script>
 
         eval("var xy=1999; function yue() {console.log(920)}");
-        console.log(xy);
-//        yue();
+//        console.log(xy);
+        //        yue();
         function addTab() {
             $.get("<%=request.getContextPath()%>/AjaxgetServlet/ajaxget.do", function (data) {
                 var p1 = document.getElementById("p1");
@@ -44,7 +44,7 @@
                 var stop = 1;
             })
         }
-        fnnt("call befor script")
+//        fnnt("call befor script")
         function fun1() {
             console.log("fun1" + 1);
             var fff = 1;
@@ -73,6 +73,7 @@
 <p>customer Name:
     <jsp:getProperty property="name" name="customer"/>
     <br/>Page Context: pageContext.getRequest() == request <%=pageContext.getRequest() == request%>
+<p>i don't know, i get request();ActionLabel Attribute: <%=request.getAttribute("ActionLabel")%></p>
 </p>
 <jsp:include page="../jspfs/IncludeAction.jsp">
     <jsp:param value="<%=request.getServletPath()%>" name="reference"/>
