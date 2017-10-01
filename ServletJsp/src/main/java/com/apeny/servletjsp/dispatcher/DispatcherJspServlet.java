@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
@@ -34,15 +33,24 @@ public class DispatcherJspServlet extends HttpServlet {
 //        pw.flush();
 //        pw.write("<br/>write again data");
 //        pw.flush();
-        //据说会报错
-
-        //forword之后就可以认为是结束了，虽然可以在forward之后继续执行代码，但不能在对Response做些操作了
-//		req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);
+//        //据说会报错，下面是抛出的异常,提交之后不能forward，提交之后可以include
+//        //Cannot forward after response has been committed
+//        /*throw new IllegalStateException
+//                (sm.getString("applicationDispatcher.forward.ise"));
+//        */
+//        //forword之后就可以认为是结束了，虽然可以在forward之后继续执行代码，但不能在对Response做些操作了
+//        req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);
 //		//forward之后执行一些语句
 //        PrintWriter pwAfter = resp.getWriter();
 //        pwAfter.write("<br/> after forward....");
 //        pwAfter.flush();
 //
+
+        //这样写会错！！！outputStream之后在include会报错
+        //java.lang.IllegalStateException: getOutputStream() has already been called for this response
+///!!!       ServletOutputStream outputStream = resp.getOutputStream();
+//        outputStream.println("i suspect output stream later.");
+//        outputStream.flush();
 
         //include之后还可以继续执行当前请求的代码，但第二的页面或servlet不能刚改Response头信息
 //        req.getRequestDispatcher("/form/formdo/get.do").include(req, resp);

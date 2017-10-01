@@ -21,7 +21,7 @@
     <script src="${basePathURL}/js/defjs/externalJs.js"></script>
     <script>
         function bb() {
-            console.log(12 + 1023);
+            console.log(xy + 1023);
         }
         bb();
         function cc() {
@@ -44,7 +44,7 @@
                 var stop = 1;
             })
         }
-//        fnnt("call befor script")
+        fnnt("call befor script")
         function fun1() {
             console.log("fun1" + 1);
             var fff = 1;
