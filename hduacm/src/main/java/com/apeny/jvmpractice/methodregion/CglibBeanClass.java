@@ -28,7 +28,7 @@ public class CglibBeanClass {
         int i = 0;
         try {
             for (; i < 900_000_000; i++) {
-                CglibBeanClass b = createBean();
+                CglibBeanClass b = new CglibBeanClass();
                 b = null;
             }
         } catch (Throwable e) {
@@ -67,5 +67,24 @@ public class CglibBeanClass {
 //            System.out.println("methodName : " + method.getName());
         }
         return reference.get();
+    }
+
+    public static CglibBeanClass createBeanNotWeak() {
+        CglibBeanClass generator = new CglibBeanClass();
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("id", Integer.class);
+        propertyMap.put("name", String.class);
+        CglibBeanClass bean = generator.generate(propertyMap);
+        bean.beanMap.put("id", 12);
+        bean.beanMap.put("name", "new name");
+        Class subclass = bean.getClass();
+//        System.out.println("class subclass>>> " + subclass);
+
+        //所有的方法
+        Method[] methods = subclass.getMethods();
+        for (Method method : methods) {
+//            System.out.println("methodName : " + method.getName());
+        }
+        return bean;
     }
 }
