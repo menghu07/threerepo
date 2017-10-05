@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * totalMemory = PSYoungGen(total) + ParOldGen ： 总内存（总可用内存） =  新生代可用内存 + 老年代内存
  * Created by ahu on 2017年10月03日.
+ * -XX:+UseConcMarkSweepGC 新生代使用ParrNew回收器，老年代使用CMS回收器
+ * -XX:+UseG1GC 并发标记周期初始化标记会伴随一次新生代GC，引起程序停顿
  */
 public class MaxMemoryEtc {
 
