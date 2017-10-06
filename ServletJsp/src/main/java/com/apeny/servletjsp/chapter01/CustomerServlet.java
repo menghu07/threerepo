@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.apeny.servletjsp.domain.Customer;
 
 /**
+ * jvm 实验
+ * 1 -Xmx32m  -Xms32m -XX:+PrintGCDetails -XX:+UseSerialGC -Xloggc:gcjvm.log -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=32m
+ * 2
  * 隐藏域，管理session
  * @author ahu
  *

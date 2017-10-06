@@ -1,5 +1,7 @@
 package com.apeny.jvmpractice.youngold;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 创建的新对象不可能直接到Survivor空间，Eden空间不够，触发GC，再不够放入老年代
  * Created by ahu on 2017年10月06日.
@@ -35,11 +37,21 @@ public class BigObject {
      *
      */
     private static void allocateUseOrNonuseTLAB() {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         int i = 0;
         long begin = System.nanoTime();
         while (i < 999999) {
             byte[] bytes = new byte[10000];
             i++;
+            try {
+                TimeUnit.MILLISECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("use time: "+ (System.nanoTime() - begin));
     }
