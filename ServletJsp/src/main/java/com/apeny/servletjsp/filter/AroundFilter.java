@@ -1,6 +1,8 @@
 package com.apeny.servletjsp.filter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -16,9 +18,9 @@ public class AroundFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("before request....");
+        System.out.println("before request...." + request.getServletContext().getContextPath() + ((HttpServletRequest) request).getServletPath());
         chain.doFilter(request, response);
-        System.out.println("after request....");
+        System.out.println("after request...." + request.getServletContext().getContextPath() + " " + ((HttpServletRequest) request).getServletPath());
         PipedInputStream pipedInputStream = new PipedInputStream(new PipedOutputStream());
     }
 

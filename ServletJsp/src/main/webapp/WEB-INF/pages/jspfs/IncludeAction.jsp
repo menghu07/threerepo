@@ -2,3 +2,4 @@
     pageEncoding="UTF-8"%>
 <p>Include Action Element!</p>
 <p>reference page: <%=request.getParameter("reference")%></p>
+<p>AttributeFromRequest<%=request.getAttribute("")%></p>

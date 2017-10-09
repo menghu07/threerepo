@@ -74,7 +74,7 @@ public class EmployeeServlet extends HttpServlet {
         session.setAttribute("book3", book2);
         System.out.println("session1 == session2 " + (session == httpsSession));
         httpsSession.setAttribute("book4", book1);
-        req.getRequestDispatcher("/WEB-INF" + servletPath).forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF" + servletPath).include(req, resp);
     }
 
     @Override

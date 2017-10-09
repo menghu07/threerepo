@@ -56,6 +56,13 @@
     <filter-mapping>
         <filter-name>AroundFilter</filter-name>
         <servlet-name>FormServlet</servlet-name>
+        <url-pattern>*.ch04do</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
 	<error-page>
 	   <error-code>404</error-code>
