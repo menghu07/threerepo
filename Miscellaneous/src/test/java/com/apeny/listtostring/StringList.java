@@ -32,30 +32,30 @@ public class StringList {
 
     public static void fuzzySearch() {
         //使用正则模糊匹配
-        String reg = ".+from\\s+(([^,]+)(,(.+))?)";
+        String reg = ".+from\\s+([^,]+)(,(.+))?";
         String regSimple = ".+from\\s+(.+)\\s+(where\\s+.+)?";
         Pattern pattern = Pattern.compile(reg, CASE_INSENSITIVE);
         String sql = "select t.* FROM mainTable t, subTable t1 where t.templateID=t1.templateID and t1.institutionID=${InstitutionID}";
         String other = "select * from tt8 t8, tt9 t9 where t8.i = t9.i";
         String nowhere = "select * from tt8";
         String nowhere8 = "select * from tt8 t8";
-        Matcher matcher = pattern.matcher(nowhere);
+        Matcher matcher = pattern.matcher(sql);
         //
         String deleteSQL = "delete from mainTable t where exists(select 1 from subTable t1 where t.templateID=t1.templateID and t1.institutionID=${InstitutionID})";
 
         System.out.println("groupCount: " + matcher.groupCount());
         if (matcher.find()) {
-            String mainTable = matcher.group(2);
+            String mainTable = matcher.group(1);
             if (mainTable == null) {
                 return;
             }
-            String subSQL = matcher.group(4);
+            String subSQL = matcher.group(3);
             System.out.println(" mainTable: " + mainTable);
             System.out.println("find### group1 : " + matcher.group(1));
-            System.out.println("find### group2 : " + matcher.group(4));
+            System.out.println("find### group2 : " + matcher.group(3));
             String correlation = "";
             if (subSQL != null) {
-                correlation = " where exists(select 1 from " + matcher.group(4) + ")";
+                correlation = " where exists(select 1 from " + matcher.group(3) + ")";
             }
 
             //有子表用子查询，没有子表不用子查询
