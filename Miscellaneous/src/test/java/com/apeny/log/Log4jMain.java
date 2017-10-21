@@ -1,6 +1,7 @@
 package com.apeny.log;
 
 import org.apache.log4j.xml.DOMConfigurator;
+
 import java.util.logging.Logger;
 
 /**
@@ -12,9 +13,9 @@ public class Log4jMain {
         Logger jdkLoggerComApeny = Logger.getLogger("com.apeny");
         Logger jdkLoggerComApenyDot = Logger.getLogger("com.apeny.dot");
         Logger jdkLoggerComApenyDotLog4j = Logger.getLogger("com.apeny.dot.log4j");
-        System.out.println("comapenylog4j.parent = " + (jdkLoggerComApenyDotLog4j.getParent() == jdkLoggerComApeny));
+        System.out.println("comapenylog4j.parent = " + (jdkLoggerComApenyDotLog4j.getParent() == jdkLoggerComApenyDot));
         jdkLoggerComApeny.info("Com.Apeny");
-        org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("com.apeny");
+        org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("com.apeny.dot.log4j");
         logger.info("xyoffff");
         org.apache.log4j.Logger loggerJoke = org.apache.log4j.Logger.getLogger("conSoleJoke");
         loggerJoke.error("fffff");
