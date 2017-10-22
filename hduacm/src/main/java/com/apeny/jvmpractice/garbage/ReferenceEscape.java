@@ -1,7 +1,5 @@
 package com.apeny.jvmpractice.garbage;
 
-import sun.util.TimeZoneNameUtility;
-
 import java.util.concurrent.TimeUnit;
 
 /**
