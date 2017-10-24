@@ -12,7 +12,7 @@ public class TwoObject {
         this.i = i;
     }
 
-    private long i;
+    private int i;
     long jlong;
 
     public static void main(String[] args) throws Exception {
@@ -40,6 +40,21 @@ public class TwoObject {
         System.out.println(f3 != f4);
         int[] arr = new int[100];
         return 1;
+    }
+
+    public void setI(int i) throws IllegalStateException {
+        try {
+            this.i = i;
+            while (i < 10) {
+                i++;
+                int local = 2;
+                local = local + 2;
+                //goto指令会往回跳转goto 5
+            }
+            int i4 = 4;
+        } catch (IllegalStateException e) {
+            System.out.println(e.toString());
+        }
     }
 }
 
