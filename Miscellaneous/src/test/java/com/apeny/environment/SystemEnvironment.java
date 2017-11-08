@@ -30,6 +30,7 @@ public class SystemEnvironment {
         formatter.format("%4$2s %3$2s %2$2s %1$2s", "a", "b", "c", "d");
         System.out.println(sb);
         System.out.println(console);
+        new Integer(102);
 //        console.format("%s", "xxx");
 
     }

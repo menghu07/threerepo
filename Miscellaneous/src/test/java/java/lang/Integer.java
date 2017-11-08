@@ -848,6 +848,7 @@ public final class Integer extends Number implements Comparable<Integer> {
      */
     public Integer(int value) {
         System.out.println("custom Integer here.......");
+        System.out.println("high: " + IntegerCache.high);
         this.value = value;
     }
 
