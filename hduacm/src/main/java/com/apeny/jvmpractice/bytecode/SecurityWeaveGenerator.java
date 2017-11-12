@@ -15,7 +15,13 @@ public class SecurityWeaveGenerator {
 
     public static void visitAccount() {
         Account account = new Account();
-        account.operation(7);
+        account.operation(70000);
+        long long7 = 7777777777788L;
+        double double7 = 888.8;
+        float float7 = 888.2F;
+        System.out.println(float7);
+        account.operation(889999999);
+        Account cc = account;
     }
 
     public static void testWeave() throws Exception {
@@ -33,6 +39,9 @@ public class SecurityWeaveGenerator {
 }
 
 class Account {
+    public Account() {
+        int xyi = 10;
+    }
     public void operation(int i) {
         if (SecurityChecker.checkSecurity()) {
             System.out.println("zziiifffaaa");
