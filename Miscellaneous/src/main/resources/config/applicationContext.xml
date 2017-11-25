@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+    <aop:aspectj-autoproxy />
+    <!-- 指定spring jdbc属性文件位置 -->
+    <context:property-placeholder location="classpath:/properties/db.properties"></context:property-placeholder>
+    <!-- 数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!--initialSize: 初始化连接-->
+        <property name="initialSize" value="5"/>
+        <!--maxIdle: 最大空闲连接-->
+        <property name="maxIdle" value="10"/>
+        <!--minIdle: 最小空闲连接-->
+        <property name="minIdle" value="5"/>
+        <!--maxTotal: 最大连接数量-->
+        <property name="maxTotal" value="15"/>
+        <!--removeAbandoned: 是否自动回收超时连接-->
+        <property name="removeAbandonedOnMaintenance" value="true"/>
+        <!--removeAbandonedTimeout: 超时时间(以秒数为单位)-->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!--maxWait: 超时等待时间以毫秒为单位 6000毫秒/1000等于60秒-->
+        <property name="maxWaitMillis" value="3000"/>
+        <!-- 用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录 -->
+        <property name="validationQuery">
+            <value>SELECT 1</value>
+        </property>
+    </bean>
+
+    <!-- spring使用的管理器 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 使用注解配置spring事务 -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+</beans>
