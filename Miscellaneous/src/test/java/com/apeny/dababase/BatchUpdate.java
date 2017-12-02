@@ -19,7 +19,7 @@ public class BatchUpdate {
     private static void testBatchUpdate() {
         System.out.println(context.getBean("jdbcTemplate"));
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        jdbcTemplate.batchUpdate(new String[] {"insert into t1 VALUES (20)", "insert into t1 values(ii)"});
+        jdbcTemplate.batchUpdate(new String[] {"insert into t1 VALUES (20)", "insert into t1 values(2)"});
 
     }
 
