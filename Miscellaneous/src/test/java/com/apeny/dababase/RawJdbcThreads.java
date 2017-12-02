@@ -64,7 +64,7 @@ public class RawJdbcThreads {
          */
         @Override
         public void run() {
-            String sql = "insert into t1 values(?)";
+            String sql = "insert into t1 values(?);";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, value);
