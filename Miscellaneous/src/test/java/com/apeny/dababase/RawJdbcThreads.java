@@ -109,7 +109,6 @@ public class RawJdbcThreads {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
