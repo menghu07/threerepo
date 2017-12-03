@@ -10,10 +10,10 @@ public class BatchUpdate {
     static ClassPathXmlApplicationContext context;
 
     public static void main(String[] args) {
-        Object object = ThrowException.class;
-        object = new ThrowException();
-        System.out.println("main end");
-//        testBatchUpdate();
+//        Object object = ThrowException.class;
+//        object = new ThrowException();
+//        System.out.println("main end");
+        testBatchUpdate();
     }
 
     /**
