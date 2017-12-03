@@ -10,7 +10,10 @@ public class BatchUpdate {
     static ClassPathXmlApplicationContext context;
 
     public static void main(String[] args) {
-        testBatchUpdate();
+        Object object = ThrowException.class;
+        object = new ThrowException();
+        System.out.println("main end");
+//        testBatchUpdate();
     }
 
     /**
@@ -19,11 +22,20 @@ public class BatchUpdate {
     private static void testBatchUpdate() {
         System.out.println(context.getBean("jdbcTemplate"));
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        jdbcTemplate.batchUpdate(new String[] {"insert into t1 VALUES (20)", "insert into t1 values(2)"});
+        jdbcTemplate.batchUpdate(new String[]{"insert into t1 VALUES (20)", "insert into t1 values(2)"});
 
     }
 
     static {
-         context = new ClassPathXmlApplicationContext("config/applicationContext.xml");
+        context = new ClassPathXmlApplicationContext("config/applicationContext.xml");
+    }
+}
+
+class ThrowException {
+    static {
+        int i = 0;
+        if (i == 0) {
+            throw new RuntimeException("yyyy");
+        }
     }
 }
