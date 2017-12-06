@@ -14,6 +14,7 @@
         <slf4j-log4j.version>1.7.6</slf4j-log4j.version>
         <spring.version>4.2.4.RELEASE</spring.version>
         <aspectj.version>1.8.10</aspectj.version>
+        <protostuff.version>1.6.0</protostuff.version>
     </properties>
 
     <dependencies>
@@ -121,7 +122,44 @@
             <artifactId>kryo</artifactId>
             <version>2.24.0</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-core -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>${protostuff.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-runtime -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-api -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-api</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-collectionschema -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-collectionschema</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-json -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-json</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-json -->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-xml</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>Miscellaneous</finalName>
