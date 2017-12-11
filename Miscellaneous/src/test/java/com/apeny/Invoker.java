@@ -33,8 +33,12 @@ public class Invoker {
         }
         try {
             Method method1 = Object.class.getMethod("toString");
+            System.out.println("Declared"+ method1.getDeclaringClass() + "Object ToString." + method1.invoke(new InvokerToString()));
+            Method method2 = InvokeOther.class.getMethod("toString");
+            System.out.println("Declared"+ method2.getDeclaringClass() +"InvokeOther.toString: " + method2.invoke(new InvokerToString()));
+            Method method3 = InvokerToString.class.getMethod("toString");
+            System.out.println("Declared"+ method3.getDeclaringClass() +"InvokeToString.toString: " + method2.invoke(new InvokerToString()));
 
-            System.out.println("Object ToString." + method1.invoke(new InvokerToString()));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
