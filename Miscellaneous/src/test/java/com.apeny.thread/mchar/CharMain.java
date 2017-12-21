@@ -15,5 +15,6 @@ public class CharMain {
         Calendar cc = Calendar.getInstance();
         cc.set(1960, 0, 1);
         System.out.println(new Date());
+        System.out.println("matches?" + "www9203WWWW".matches("\\w+"));
     }
 }
