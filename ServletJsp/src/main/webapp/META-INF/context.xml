@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context privileged="true" antiResourceLocking="false">
-    <Manager className="org.apache.catalina.session.PersistentManager" maxIdleSwap="30">
+    <Manager className="org.apache.catalina.session.PersistentManager" maxIdleSwap="1800">
         <Store className="org.apache.catalina.session.FileStore" directory="dir"/>
     </Manager>
     <!--<Valve className="org.apache.catalina.valves.RemoteAddrValve"
