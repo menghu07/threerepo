@@ -17,6 +17,7 @@ import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
  * Created by apeny on 2018/1/4.
  */
 public class SqlGenerator {
+    private static final String SERIALNO= "SERIALNO";
     private static final String VARCHAR2 = "VARCHAR2";
     private static final String NUMBER = "NUMBER";
     private static final String VARCHAR = "VARCHAR";
@@ -95,49 +96,44 @@ public class SqlGenerator {
                         cell = row.getCell(++cellIndex);
                     }
                     int columnCount = cellIndex;
+                    tableBuilder.append("INSERT ALL ");
                     //生成列名
-                    tableBuilder.append("INSERT INTO " + tableName + "(");
+                    String columnNamesInsert = "INTO " + tableName + "(";
                     for (String nameAndType : columnNameAndTypes) {
-                        tableBuilder.append(nameAndType.split("#")[0] + ",");
+                        columnNamesInsert += nameAndType.split("#")[0] + ",";
                     }
-                    tableBuilder.deleteCharAt(tableBuilder.length() - 1).append(") VALUES" + CRLF);
+                    columnNamesInsert = columnNamesInsert.substring(0, columnNamesInsert.length() - 1) + ") VALUES";
                     //分析列名称和数据类型
                     Map<Integer, String> columnTypes = columnTypeMap(columnNameAndTypes);
 
                     int lineIndex = 1;
-                    long lineEmptySet = 2 ^ columnCount - 1;
 
                     //生成每一行记录
-                    while (true) {
-                        row = sheet.getRow(lineIndex++);
+                    row = sheet.getRow(lineIndex++);
+                    while (row != null) {
                         int columnIndex = 0;
-                        int lineEmpty = 0;
-                        StringBuilder lineBuilder = new StringBuilder().append("(");
+                        StringBuilder lineBuilder = new StringBuilder().append(columnNamesInsert + "(");
                         for (; columnIndex < columnCount; columnIndex++) {
+                            System.out.println("row number: " + row);
                             Cell columnCell = row.getCell(columnIndex);
                             String columnValue = null;
                             if (columnCell != null) {
                                 if (columnCell.getCellTypeEnum() == NUMERIC) {
-                                    columnValue = Double.toString(columnCell.getNumericCellValue());
+                                    columnValue = Long.toString((long) columnCell.getNumericCellValue());
                                 } else {
                                     columnValue = columnCell.getStringCellValue();
                                 }
                             }
                             String sqlColumnValue = getSqlColumnValue(columnTypes, columnIndex, columnValue);
-                            lineBuilder.append(sqlColumnValue);
-                            if (isEmpty(sqlColumnValue)) {
-                                lineEmpty = 2 ^ columnIndex;
-                            }
-                            lineBuilder.append(columnValue + ",");
-                        }
-                        if (lineEmptySet == lineEmpty) {
-                            break;
+                            lineBuilder.append(sqlColumnValue + ",");
                         }
                         lineBuilder.deleteCharAt(lineBuilder.length() - 1);
                         lineBuilder.append(")" + CRLF);
                         tableBuilder.append(lineBuilder);
+                        row = sheet.getRow(lineIndex++);
                     }
-                    tableBuilder.append(";" + CRLF);
+                    tableBuilder.delete(tableBuilder.length() - 2, tableBuilder.length());
+                    tableBuilder.append(" SELECT * FROM DUAL;" + CRLF);
                     //表示有数据
                     if (lineIndex > 2) {
                         sqlBuilder.append(tableBuilder);
@@ -214,6 +210,8 @@ public class SqlGenerator {
                 columnTypes.put(index++, VARCHAR2);
             } else if (NUMBER.equalsIgnoreCase(type)) {
                 columnTypes.put(index++, NUMBER);
+            } else if (SERIALNO.equalsIgnoreCase(type)) {
+                columnTypes.put(index++, SERIALNO);
             } else {
                 throw new IllegalArgumentException("列的数据类型错误" + nameAndType);
             }
@@ -241,10 +239,16 @@ public class SqlGenerator {
             throw new IllegalArgumentException("列索引ColumnIndex=[" + columnTypes + "]大于列个数Map.size()=" + columnTypes.size());
         }
         if (VARCHAR2.equals(columnTypes.get(columnIndex))) {
+            if (excelColumnValue == null) {
+                return null;
+            }
             return "'" + excelColumnValue + "'";
         }
         if (NUMBER.equals(columnTypes.get(columnIndex))) {
             return excelColumnValue;
+        }
+        if (SERIALNO.equals(columnTypes.get(columnIndex))) {
+            return "'" + SerialNumberGenerator.genTxNo(SerialNumberGenerator.LEN_27) + "'";
         }
         throw new IllegalArgumentException("没有支持的列类型");
     }
