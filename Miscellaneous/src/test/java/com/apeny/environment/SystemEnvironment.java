@@ -32,6 +32,28 @@ public class SystemEnvironment {
         System.out.println(console);
         new Integer(102);
 //        console.format("%s", "xxx");
+        response();
+    }
+
+    private static void response() {
+
+        String rs = ".*" + escapeRegexSpecialWords("shibai????").replace("XXX", ".+") + ".*";
+        System.out.println("is matching: " + "shibai????".matches(rs));
 
     }
+
+    private static String escapeRegexSpecialWords(String str) {
+        String localStr = str;
+        if (str != null) {
+            for (String specialWord : REGEX_SPECIAL_WORDS) {
+                if (str.contains(specialWord)) {
+                    localStr = localStr.replace(specialWord, "\\" + specialWord);
+                }
+            }
+        }
+        return localStr;
+    }
+    // 正则表达式需要转移的特殊字符
+    private static final String[] REGEX_SPECIAL_WORDS = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
+
 }
