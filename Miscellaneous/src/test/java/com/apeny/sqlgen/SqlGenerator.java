@@ -6,15 +6,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 
 /**
  * Created by apeny on 2018/1/4.
+ * 表头的列格式Coode#VARCHAR2#Default=''
  */
 public class SqlGenerator {
     private static final String SERIALNO= "SERIALNO";
@@ -26,6 +24,7 @@ public class SqlGenerator {
     private static final String NVARCHAR = "NVARCHAR";
     private static final String NCHAR = "NCHAR";
     private static final String CRLF = "\r\n";
+    private static final String DEFAULT_EQUAL = "Default=";
     private static final char FILE_SEPARATOR = File.separatorChar;
 
     public static void main(String[] args) {
@@ -104,7 +103,7 @@ public class SqlGenerator {
                     }
                     columnNamesInsert = columnNamesInsert.substring(0, columnNamesInsert.length() - 1) + ") VALUES";
                     //分析列名称和数据类型
-                    Map<Integer, String> columnTypes = columnTypeMap(columnNameAndTypes);
+                    Map<Integer, ColumnProperty> columnTypes = columnTypeMap(columnNameAndTypes);
 
                     int lineIndex = 1;
 
@@ -197,23 +196,32 @@ public class SqlGenerator {
      * @author apy
      * @date 2018年01月05日 14:42:57
      */
-    private static Map<Integer, String> columnTypeMap(List<String> headColumnValues) {
+    private static Map<Integer, ColumnProperty> columnTypeMap(List<String> headColumnValues) {
         if (headColumnValues == null) {
             return new HashMap<>();
         }
-        Map<Integer, String> columnTypes = new HashMap<>();
+        Map<Integer, ColumnProperty> columnTypes = new HashMap<>();
         int index = 0;
-        for (String nameAndType : headColumnValues) {
-            String type = nameAndType.split("#")[1];
+        for (String columnProperty : headColumnValues) {
+            String[] properties = columnProperty.split("#");
+            String type = properties[1];
+            ColumnProperty property = new ColumnProperty();
             if (VARCHAR2.equalsIgnoreCase(type) || VARCHAR.equalsIgnoreCase(type) || CHAR.equalsIgnoreCase(type)
                     || NVARCHAR2.equalsIgnoreCase(type) || NVARCHAR.equalsIgnoreCase(type) || NCHAR.equalsIgnoreCase(type)) {
-                columnTypes.put(index++, VARCHAR2);
+                property.setType(VARCHAR2);
+                columnTypes.put(index++, property);
             } else if (NUMBER.equalsIgnoreCase(type)) {
-                columnTypes.put(index++, NUMBER);
+                property.setType(NUMBER);
+                columnTypes.put(index++, property);
             } else if (SERIALNO.equalsIgnoreCase(type)) {
-                columnTypes.put(index++, SERIALNO);
+                property.setType(SERIALNO);
+                columnTypes.put(index++, property);
             } else {
-                throw new IllegalArgumentException("列的数据类型错误" + nameAndType);
+                throw new IllegalArgumentException("ColumnIndex=" + index + ",列" + property + "的数据类型错误" + type);
+            }
+            if (properties.length > 2 && properties[2].startsWith(DEFAULT_EQUAL)) {
+                String defaultValue = properties[2].substring(8);
+                property.setDefaultValue(defaultValue);
             }
         }
         return columnTypes;
@@ -231,25 +239,79 @@ public class SqlGenerator {
      * @author apy
      * @date 2018年01月05日 14:43:12
      */
-    private static String getSqlColumnValue(Map<Integer, String> columnTypes, int columnIndex, String excelColumnValue) {
+    private static String getSqlColumnValue(Map<Integer, ColumnProperty> columnTypes, int columnIndex, String excelColumnValue) {
         if (columnTypes == null || columnTypes.isEmpty()) {
             throw new IllegalArgumentException("列类型Map为空");
         }
         if (columnTypes.size() <= columnIndex) {
             throw new IllegalArgumentException("列索引ColumnIndex=[" + columnTypes + "]大于列个数Map.size()=" + columnTypes.size());
         }
-        if (VARCHAR2.equals(columnTypes.get(columnIndex))) {
+        ColumnProperty property = columnTypes.get(columnIndex);
+        if (VARCHAR2.equals(property.getType())) {
+            if (excelColumnValue == null && property.getDefaultValue() != null) {
+                return property.getDefaultValue();
+            }
             if (excelColumnValue == null) {
                 return null;
             }
-            return "'" + excelColumnValue + "'";
+            return "'" + excelColumnValue.replace("'", "''") + "'";
         }
-        if (NUMBER.equals(columnTypes.get(columnIndex))) {
+        if (NUMBER.equals(property.getType())) {
+            if (excelColumnValue == null && property.getDefaultValue() != null) {
+                return property.getDefaultValue();
+            }
+            if (excelColumnValue == null) {
+                return null;
+            }
             return excelColumnValue;
         }
-        if (SERIALNO.equals(columnTypes.get(columnIndex))) {
+        if (SERIALNO.equals(property.getType())) {
             return "'" + SerialNumberGenerator.genTxNo(SerialNumberGenerator.LEN_27) + "'";
         }
         throw new IllegalArgumentException("没有支持的列类型");
+    }
+
+    /**
+     * 列描述
+     */
+    private static class ColumnProperty {
+        private String type;
+        //保留
+        private Set<Integer> uniqueKeySet = new HashSet<>();
+        private String defaultValue;
+
+        String getType() {
+            return type;
+        }
+
+        void setType(String type) {
+            this.type = type;
+        }
+
+        Set<Integer> getUniqueKeySet() {
+            return uniqueKeySet;
+        }
+
+        void setUniqueKeySet(Set<Integer> uniqueKeySet) {
+            this.uniqueKeySet = uniqueKeySet;
+        }
+
+        String getDefaultValue() {
+            return defaultValue;
+        }
+
+        void setDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("ColumnProperty{");
+            sb.append("type='").append(type).append('\'');
+            sb.append(", uniqueKeySet=").append(uniqueKeySet);
+            sb.append(", defaultValue='").append(defaultValue).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
     }
 }
