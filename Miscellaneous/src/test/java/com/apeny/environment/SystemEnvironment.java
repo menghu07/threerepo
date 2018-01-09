@@ -58,8 +58,14 @@ public class SystemEnvironment {
     private static final String[] REGEX_SPECIAL_WORDS = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
 
     private static void char0() {
-        char char0 = '\0';
-        char charInt0 = 0;
-        System.out.println("char0 " + (char0 == char0));
+        //其实时八进制字符表示法或转义形式\0 \10
+        //字符的八进制表示法\0 \1 \01 \001 \377 \7 \000 \00
+        char char0 = '\60';
+        //Unicode表示法
+        char charu0 = '\u0000';
+        //字符表示法
+        char charchar = 'f';
+        char charInt0 = 48;
+        System.out.println("char\0\1\fxfff " + (char0 == charInt0));
     }
 }
