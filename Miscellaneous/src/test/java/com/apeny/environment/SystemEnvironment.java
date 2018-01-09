@@ -33,6 +33,7 @@ public class SystemEnvironment {
         new Integer(102);
 //        console.format("%s", "xxx");
         response();
+        char0();
     }
 
     private static void response() {
@@ -56,4 +57,9 @@ public class SystemEnvironment {
     // 正则表达式需要转移的特殊字符
     private static final String[] REGEX_SPECIAL_WORDS = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
 
+    private static void char0() {
+        char char0 = '\0';
+        char charInt0 = 0;
+        System.out.println("char0 " + (char0 == char0));
+    }
 }
