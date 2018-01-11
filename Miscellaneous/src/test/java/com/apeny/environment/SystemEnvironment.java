@@ -34,6 +34,7 @@ public class SystemEnvironment {
 //        console.format("%s", "xxx");
         response();
         char0();
+        System.out.println("toString" + new SystemEnvironment());
     }
 
     private static void response() {
@@ -67,5 +68,10 @@ public class SystemEnvironment {
         char charchar = 'f';
         char charInt0 = 48;
         System.out.println("char\0\1\fxfff " + (char0 == charInt0));
+    }
+
+    @Override
+    public int hashCode() {
+        return 80;
     }
 }
