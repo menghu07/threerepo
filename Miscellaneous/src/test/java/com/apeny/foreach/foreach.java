@@ -22,9 +22,9 @@ public class foreach {
         }
 
         //这个for会总执行size方法
-        for (int i = 0; i < getList().size(); i++) {
-            System.out.println("numm: " + getList().get(i));
-        }
+//        for (int i = 0; i < getList().size(); i++) {
+//            System.out.println("numm: " + getList().get(i));
+//        }
     }
 
     private static List<Integer> getList() {
@@ -34,6 +34,15 @@ public class foreach {
         for (int i = 0; i < num; i++) {
             list.add(i);
         }
+        arrInteger(new Object[9]);
         return list;
+    }
+
+    /**
+     * 如果传入的参数是数组，就用数组去使用
+     * @param i
+     */
+    private static void arrInteger(Object... i) {
+        System.out.println(i[1]);
     }
 }
