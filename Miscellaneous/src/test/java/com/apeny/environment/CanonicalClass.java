@@ -30,5 +30,4 @@ public class CanonicalClass {
     class CanonicalNormalInnerClass {
 
     }
-
 }
