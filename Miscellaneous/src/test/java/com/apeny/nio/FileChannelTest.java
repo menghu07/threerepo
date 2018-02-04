@@ -38,9 +38,9 @@ public class FileChannelTest {
                 bytesCount = fileChannel.read(byteBuffer);
             }
             byte[] bytes = new byte[byteBuffer.position()];
-            byteBuffer.flip();
+            byteBuffer.clear();
             int i = 0;
-            while (byteBuffer.hasRemaining()) {
+            while (byteBuffer.hasRemaining() && i < bytes.length) {
                 byte currentByte = byteBuffer.get();
                 bytes[i++] = currentByte;
             }
