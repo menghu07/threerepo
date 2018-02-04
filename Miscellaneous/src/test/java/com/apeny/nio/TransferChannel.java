@@ -43,6 +43,7 @@ public class TransferChannel {
             RandomAccessFile file = new RandomAccessFile("src/main/resources/docs/ConcurrentFile.html", "rw");
             RandomAccessFile toWriteFile = new RandomAccessFile("src/main/resources/docs/ConcurrentFile.html.backup", "rw");
             FileChannel fileChannel = file.getChannel();
+
             FileChannel toTransferChannel = toWriteFile.getChannel();
             long size = fileChannel.size();
             long position = 0;

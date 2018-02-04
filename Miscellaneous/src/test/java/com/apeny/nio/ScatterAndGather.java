@@ -59,6 +59,12 @@ public class ScatterAndGather {
             FileChannel fileChannel = file.getChannel();
             ByteBuffer byteBuffer = ByteBuffer.allocate(256);
             ByteBuffer bodyBuffer = ByteBuffer.allocate(512);
+            //预读测试
+            while (bodyBuffer.hasRemaining()) {
+                System.out.print(bodyBuffer.get());
+            }
+            System.out.println("---------------------预读结束-----------------------");
+            bodyBuffer.clear();
             fileChannel.read(new ByteBuffer[]{byteBuffer, bodyBuffer});
             byteBuffer.flip();
             bodyBuffer.flip();
