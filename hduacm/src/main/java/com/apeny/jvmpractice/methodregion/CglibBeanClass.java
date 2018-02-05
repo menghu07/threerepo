@@ -24,7 +24,7 @@ public class CglibBeanClass {
     public static void main(String[] args) {
         CglibBeanClass bean1 = createBean();
         CglibBeanClass bean2 = createBean();
-        System.out.println("equals: " + (bean1.getClass() == bean2.getClass()));
+        System.out.println("equals: " + (bean1.getClass() == bean2.getClass()) + ", class1=" + bean1.getClass() + ", class2=" + bean2.getClass());
         int i = 0;
         try {
             for (; i < 900_000_000; i++) {

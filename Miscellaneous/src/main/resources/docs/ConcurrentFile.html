@@ -1,0 +1,1028 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+    <base target="_blank">
+    <meta name="baidu_union_verify" content="d30f7acd6a9a378cc0aeb0bd0ddfe30d">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-9394337417063147",
+            enable_page_level_ads: true
+        });
+    </script>
+    <title>Java NIO系列教程（四） Scatter/Gather | 并发编程网 &#8211; ifeve.com</title>
+    <meta name="description" content="让天下没有难学的技术" />
+
+    <link rel="alternate" type="application/rss+xml" title="并发编程网 &#8211; ifeve.com RSS Feed" href="http://ifeve.com/feed/" />
+    <link rel="alternate" type="application/atom+xml" title="并发编程网 &#8211; ifeve.com Atom Feed" href="http://ifeve.com/feed/atom/" />
+    <link rel="pingback" href="http://ifeve.com/xmlrpc.php" />
+
+    <link rel="stylesheet" href="http://ifeve.com/wp-content/themes/flat/style.css" type="text/css" />
+    <link rel="stylesheet" href="http://ifeve.com/wp-content/themes/flat/comment-style.css" type="text/css" />
+
+
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="并发编程网 - ifeve.com &raquo; Java NIO系列教程（四） Scatter/Gather Comments Feed" href="http://ifeve.com/java-nio-scattergather/feed/" />
+    <script type="text/javascript">
+        window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/ifeve.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.2"}};
+        !function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56794,8205,9794,65039],[55358,56794,8203,9794,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+    </script>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' id='wpfp-css' href='http://ifeve.com/wp-content/plugins/wp-favorite-posts/wpfp.css' type='text/css' />
+    <link rel='stylesheet' id='yarppWidgetCss-css'  href='http://ifeve.com/wp-content/plugins/yet-another-related-posts-plugin/style/widget.css?ver=4.9.2' type='text/css' media='all' />
+    <link rel='stylesheet' id='dwqa-style-css'  href='http://ifeve.com/wp-content/plugins/dw-question-answer/templates/assets/css/style.css?ver=180720161352' type='text/css' media='all' />
+    <link rel='stylesheet' id='dwqa-rtl-css'  href='http://ifeve.com/wp-content/plugins/dw-question-answer/templates/assets/css/rtl.css?ver=180720161352' type='text/css' media='all' />
+    <link rel='stylesheet' id='wp-postratings-css'  href='http://ifeve.com/wp-content/plugins/wp-postratings/css/postratings-css.css?ver=1.85' type='text/css' media='all' />
+    <script type='text/javascript' src='http://ifeve.com/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+    <script type='text/javascript' src='http://ifeve.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+    <script type='text/javascript' src='http://ifeve.com/wp-content/plugins/wp-favorite-posts/wpfp.js?ver=4.9.2'></script>
+    <link rel='https://api.w.org/' href='http://ifeve.com/wp-json/' />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://ifeve.com/xmlrpc.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://ifeve.com/wp-includes/wlwmanifest.xml" />
+    <link rel='prev' title='Java NIO 系列教程' href='http://ifeve.com/java-nio-all/' />
+    <link rel='next' title='Java NIO系列教程（五） 通道之间的数据传输' href='http://ifeve.com/java-nio-channel-to-channel/' />
+    <meta name="generator" content="WordPress 4.9.2" />
+    <link rel="canonical" href="http://ifeve.com/java-nio-scattergather/" />
+    <link rel='shortlink' href='http://ifeve.com/?p=5251' />
+    <link rel="alternate" type="application/json+oembed" href="http://ifeve.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F" />
+    <link rel="alternate" type="text/xml+oembed" href="http://ifeve.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F&#038;format=xml" />
+
+    <!-- StarBox - the Author Box for Humans 3.0.6, visit: http://wordpress.org/plugins/starbox/ -->
+    <!-- /StarBox - the Author Box for Humans -->
+
+    <link rel='stylesheet' id='frontend.css-css'  href='http://ifeve.com/wp-content/plugins/starbox//themes/fancy/css/frontend.css?ver=3.0.6' type='text/css' media='all' />
+    <script type='text/javascript' src='http://ifeve.com/wp-content/plugins/starbox//themes/fancy/js/frontend.js?ver=3.0.6'></script>
+    <link rel='stylesheet' id='hidedefault.css-css'  href='http://ifeve.com/wp-content/plugins/starbox//themes/admin/css/hidedefault.css?ver=3.0.6' type='text/css' media='all' />
+    <style type="text/css" id="syntaxhighlighteranchor"></style>
+
+    <script type="text/javascript" src="http://ifeve.com/wp-content/themes/flat/js/jscript.js"></script>
+    <script type="text/javascript" src="http://ifeve.com/wp-content/themes/flat/js/comment.js"></script>
+    <script type="text/javascript" src="http://ifeve.com/wp-content/themes/flat/js/rollover.js"></script>
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="http://ifeve.com/wp-content/themes/flat/ie7.css" type="text/css" />
+    <![endif]-->
+    <!--[if IE 8]>
+    <link rel="stylesheet" href="http://ifeve.com/wp-content/themes/flat/ie8.css" type="text/css" />
+    <![endif]-->
+
+
+    <style type="text/css">
+        a, .post .title a:hover, .post_meta a:hover, #bread_crumb ul li a:hover, #previous_post a:hover, #next_post a:hover, .post a.more-link:hover, #right_col li a:hover, #copyright li a:hover, #archive_headline #keyword,
+        #comments_wrapper a:hover, #comment_header_right .comment_switch_active a, #comment_header_right .comment_switch_active a:hover, #comment_pager .current
+        { color:#00A19E; }
+
+        #no_post a.back:hover, #wp-calendar td a:hover, #wp-calendar #prev a:hover, #wp-calendar #next a:hover, .page_navi a:hover, #submit_comment:hover
+        { background-color:#00A19E; }
+
+        #guest_info input:focus, #comment_textarea textarea:focus
+        { border:1px solid #00A19E; }
+
+        a:hover
+        { color:#BDC900; }
+
+        body { font-size:14px; }
+
+        #header { background:url(http://ifeve.com/wp-content/uploads/flat/bg.png) left top; }
+        .logo_text a { color:#F5F5F5; }
+        #site_description {  border-top:1px solid #BBBBBB; color:#D2D9CC; }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="header">
+    <div class="header_menu">
+        <ul id="menu-%e4%b8%bb%e8%8f%9c%e5%8d%95" class="menu"><li id="menu-item-16594" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-16594"><a href="http://ifeve.com">首页</a></li>
+            <li id="menu-item-3432" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3432"><a href="http://ifeve.com/wp-login.php">登录</a></li>
+            <li id="menu-item-9219" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-9219"><a href="http://ifeve.com/category/java/">JAVA</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-16108" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16108"><a href="http://ifeve.com/java-io/">Java IO 教程</a></li>
+                    <li id="menu-item-5283" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5283"><a href="http://ifeve.com/java-nio-all/">Java NIO 教程</a></li>
+                    <li id="menu-item-17514" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17514"><a href="http://ifeve.com/java-reflection/">JAVA Reflection教程</a></li>
+                    <li id="menu-item-16239" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16239"><a href="http://ifeve.com/java-network">Java 网络教程</a></li>
+                    <li id="menu-item-4416" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4416"><a href="http://ifeve.com/java-concurrency-thread-directory/">Java并发和多线程</a></li>
+                    <li id="menu-item-2767" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2767"><a href="http://ifeve.com/jmm-cookbook/">Java内存模型指南</a></li>
+                    <li id="menu-item-2747" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2747"><a href="http://ifeve.com/jmm-faq/">Java内存模型FAQ</a></li>
+                    <li id="menu-item-2765" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2765"><a href="http://ifeve.com/syn-jmm/">同步与Java内存模型</a></li>
+                    <li id="menu-item-5789" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5789"><a href="http://ifeve.com/oracle-java-concurrency-tutorial/">Oracle官方并发教程</a></li>
+                    <li id="menu-item-15316" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15316"><a href="http://ifeve.com/jvm-optimize/">JVM性能优化系列</a></li>
+                    <li id="menu-item-15313" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15313"><a href="http://ifeve.com/useful-jvm-flags/">JVM实用参数系列</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-7938" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7938"><a href="http://ifeve.com/category/c/">C++</a></li>
+            <li id="menu-item-9220" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-9220"><a href="http://ifeve.com/category/framework/">Framework</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-12798" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12798"><a href="http://ifeve.com/disruptor/">Disruptor 框架指南</a></li>
+                    <li id="menu-item-12783" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12783"><a title="Netty" href="http://ifeve.com/category/netty/">Netty</a></li>
+                    <li id="menu-item-12791" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12791"><a href="http://ifeve.com/category/scala/">Scala</a></li>
+                    <li id="menu-item-12312" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12312"><a href="http://ifeve.com/getting-started-with-stom-index/">Storm 入门</a></li>
+                    <li id="menu-item-9218" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9218"><a href="http://ifeve.com/google-guava/">Guava 官方指南</a></li>
+                    <li id="menu-item-20471" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20471"><a href="http://ifeve.com/velocity-guide/">Apache Velocity 官方指南</a></li>
+                    <li id="menu-item-21439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21439"><a href="http://ifeve.com/storm-translation/">Apache Storm 官方文档</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-555" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-555"><a href="http://ifeve.com/category/concurrency-translation/">其他译文</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-2777" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2777"><a href="http://ifeve.com/java-concurrent/">并发基础</a></li>
+                    <li id="menu-item-3340" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3340"><a href="http://ifeve.com/aqs/">j.u.c同步框架</a></li>
+                    <li id="menu-item-2769" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2769"><a href="http://ifeve.com/fj/">Fork Join框架</a></li>
+                    <li id="menu-item-9221" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9221"><a href="http://ifeve.com/doug-lea/">Doug Lea 论文</a></li>
+                    <li id="menu-item-4643" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4643"><a href="http://ifeve.com/mechanical-sympathy/">Mechanical Sympathy</a></li>
+                    <li id="menu-item-6397" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6397"><a href="http://ifeve.com/stm/">软件事务内存导论</a></li>
+                    <li id="menu-item-10845" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10845"><a href="http://ifeve.com/jsr133-cn/">JSR133中文版</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-103" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-103"><a href="http://ifeve.com/category/talk-concurrent/">本站原创</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-2763" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2763"><a href="http://ifeve.com/talk-concurrency/">聊聊并发</a></li>
+                    <li id="menu-item-2753" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2753"><a href="http://ifeve.com/java-memory-model-0/">深入理解Java内存模型</a></li>
+                    <li id="menu-item-4862" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4862"><a href="http://ifeve.com/from-javaeye-sys-struct/">从Java视角理解系统结构</a></li>
+                    <li id="menu-item-4627" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4627"><a href="http://ifeve.com/ali-itu-agile/">阿里内贸团队敏捷实践</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-7119" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7119"><a href="http://ifeve.com/category/%e5%b9%b6%e5%8f%91%e4%b9%a6%e7%b1%8d/">并发书籍</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-10846" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10846"><a href="http://ifeve.com/art-of-java-concurrent-program/">《Java 并发编程的艺术》迷你书</a></li>
+                    <li id="menu-item-6042" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6042"><a href="http://ifeve.com/perfbook/">《深入理解并行编程》</a></li>
+                    <li id="menu-item-9172" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9172"><a href="http://ifeve.com/c-plus-plus-concurrency-in-action/">《C++ 并发编程》</a></li>
+                    <li id="menu-item-7785" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7785"><a href="http://ifeve.com/java-7-concurrency-cookbook/">《Java 7 并发编程指南》</a></li>
+                    <li id="menu-item-7120" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7120"><a href="http://ifeve.com/jvm-concurrency">《Java 虚拟机并发编程》</a></li>
+                    <li id="menu-item-12360" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12360"><a href="http://ifeve.com/getting-started-with-stom-index/">《Storm入门》中文版</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-17079" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17079"><a href="http://ifeve.com/questions/">面试题</a></li>
+            <li id="menu-item-22180" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22180"><a href="http://ifeve.com/my-favorite/">我的收藏</a></li>
+            <li id="menu-item-9171" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-9171"><a href="http://ifeve.com/need-you/">加入我们</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-3246" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3246"><a href="http://ifeve.com/contribute/">我要投稿</a></li>
+                    <li id="menu-item-6854" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6854"><a href="http://ifeve.com/neitui/">内推阿里</a></li>
+                </ul>
+            </li>
+            <li id="menu-item-105" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-105"><a href="http://ifeve.com/about-site/">关于本站</a>
+                <ul class="sub-menu">
+                    <li id="menu-item-11306" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11306"><a href="http://ifeve.com/category/%e6%b4%bb%e5%8a%a8/">活动</a></li>
+                    <li id="menu-item-1487" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1487"><a href="http://ifeve.com/sitemap.html">文章归档</a></li>
+                    <li id="menu-item-29361" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-29361"><a href="http://ifeve.com/author/">本站作者</a></li>
+                    <li id="menu-item-131" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-131"><a href="http://ifeve.com/about-site/about-me/">关于清英</a></li>
+                    <li id="menu-item-7600" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7600"><a href="http://ifeve.com/ads/">广告合作</a></li>
+                </ul>
+            </li>
+        </ul>    </div>
+    <!-- logo -->
+    <h1 class="logo_text"><a href="http://ifeve.com/">并发编程网 - ifeve.com</a></h1>
+    <h2 id='site_description'>让天下没有难学的技术</h2>
+</div>
+
+<div id="main_content" class="clearfix">
+
+    <div id="left_col">
+        <div id="bread_crumb">
+            <ul class="clearfix">
+                <li id="bc_home"><a href="http://ifeve.com/" title="HOME">HOME</a></li>
+                <li id="bc_cat"><a href="http://ifeve.com/category/concurrency-translation/">并发译文</a></li>     <li class="last">Java NIO系列教程（四） Scatter/Gather</li>
+            </ul>
+        </div>
+
+
+        <div class="post_wrap clearfix" id="single">
+            <div class="post">
+                <h3 class="title"><span>Java NIO系列教程（四） Scatter/Gather</span></h3>
+                <div class="post_content">
+                    <p>原文地址：<a href="http://tutorials.jenkov.com/java-nio/scatter-gather.html">http://tutorials.jenkov.com/java-nio/scatter-gather.html</a></p>
+                    <p><strong>作者</strong>：Jakob Jenkov   <strong>译者</strong>：郭蕾   <strong><br />
+                    </strong></p>
+                    <p>Java NIO开始支持scatter/gather，scatter/gather用于描述从Channel（译者注：Channel在中文经常翻译为通道）中读取或者写入到Channel的操作。<br />
+                        分散（scatter）从Channel中读取是指在读操作时将读取的数据写入多个buffer中。因此，Channel将从Channel中读取的数据“分散（scatter）”到多个Buffer中。<br />
+                        聚集（gather）写入Channel是指在写操作时将多个buffer的数据写入同一个Channel，因此，Channel 将多个Buffer中的数据“聚集（gather）”后发送到Channel。</p>
+                    <p>scatter / gather经常用于需要将传输的数据分开处理的场合，例如传输一个由消息头和消息体组成的消息，你可能会将消息体和消息头分散到不同的buffer中，这样你可以方便的处理消息头和消息体。<br />
+                        <span id="more-5251"></span></p>
+                    <p><strong>Scattering Reads</strong><br />
+                        Scattering Reads是指数据从一个channel读取到多个buffer中。如下图描述：</p>
+                    <div id="attachment_5252" style="max-width: 367px" class="wp-caption aligncenter"><a href="http://ifeve.com/java-nio-scattergather/scatter/" rel="attachment wp-att-5252"><img class="size-full wp-image-5252" alt="Java NIO: Scattering Read" src="http://ifeve.com/wp-content/uploads/2013/06/scatter.png" width="357" height="311" srcset="http://ifeve.com/wp-content/uploads/2013/06/scatter.png 357w, http://ifeve.com/wp-content/uploads/2013/06/scatter-150x130.png 150w, http://ifeve.com/wp-content/uploads/2013/06/scatter-300x261.png 300w" sizes="(max-width: 357px) 100vw, 357px" /></a><p class="wp-caption-text">Java NIO: Scattering Read</p></div>
+                    <p>代码示例如下：</p>
+                    <pre class="brush: java; title: ; notranslate" title="">
+ByteBuffer header = ByteBuffer.allocate(128);
+ByteBuffer body   = ByteBuffer.allocate(1024);
+
+ByteBuffer[] bufferArray = { header, body };
+
+channel.read(bufferArray);
+</pre>
+                    <p>注意buffer首先被插入到数组，然后再将数组作为channel.read() 的输入参数。read()方法按照buffer在数组中的顺序将从channel中读取的数据写入到buffer，当一个buffer被写满后，channel紧接着向另一个buffer中写。</p>
+                    <p>Scattering Reads在移动下一个buffer前，必须填满当前的buffer，这也意味着它不适用于动态消息(译者注：消息大小不固定)。换句话说，如果存在消息头和消息体，消息头必须完成填充（例如 128byte），Scattering Reads才能正常工作。</p>
+                    <p><strong>Gathering Writes</strong></p>
+                    <p>Gathering Writes是指数据从多个buffer写入到同一个channel。如下图描述：</p>
+                    <div id="attachment_5253" style="max-width: 361px" class="wp-caption aligncenter"><a href="http://ifeve.com/java-nio-scattergather/gather/" rel="attachment wp-att-5253"><img class="size-full wp-image-5253" alt="Java NIO: Gathering Write" src="http://ifeve.com/wp-content/uploads/2013/06/gather.png" width="351" height="301" srcset="http://ifeve.com/wp-content/uploads/2013/06/gather.png 351w, http://ifeve.com/wp-content/uploads/2013/06/gather-150x128.png 150w, http://ifeve.com/wp-content/uploads/2013/06/gather-300x257.png 300w" sizes="(max-width: 351px) 100vw, 351px" /></a><p class="wp-caption-text">Java NIO: Gathering Write</p></div>
+                    <p>代码示例如下：</p>
+                    <pre class="brush: java; title: ; notranslate" title="">
+ByteBuffer header = ByteBuffer.allocate(128);
+ByteBuffer body   = ByteBuffer.allocate(1024);
+
+//write data into buffers
+
+ByteBuffer[] bufferArray = { header, body };
+
+channel.write(bufferArray);
+</pre>
+                    <p>buffers数组是write()方法的入参，write()方法会按照buffer在数组中的顺序，将数据写入到channel，注意只有position和limit之间的数据才会被写入。因此，如果一个buffer的容量为128byte，但是仅仅包含58byte的数据，那么这58byte的数据将被写入到channel中。因此与Scattering Reads相反，Gathering Writes能较好的处理动态消息。</p>
+                    <div style="margin-top: 15px; font-style: italic">
+                        <p><strong>原创文章，转载请注明：</strong> 转载自<a href="http://ifeve.com/">并发编程网 &#8211; ifeve.com</a><strong>本文链接地址:</strong> <a href="http://ifeve.com/java-nio-scattergather/">Java NIO系列教程（四） Scatter/Gather</a></p>
+                    </div>
+                    <p>
+                        <a target="_blank" href="http://www.muxiulin.cn"><br />
+                            <img src="http://ifeve.com/wp-content/uploads/2017/11/WechatIMG1714.jpeg"><br />
+                        </a></p>
+                    <div style="clear:both; margin-top:5px; margin-bottom:5px;"></div><div style="float:left"><!-- JiaThis Button BEGIN -->
+                    <div id="jiathis_style_32x32">
+                        <a class="jiathis_button_qzone"></a>
+                        <a class="jiathis_button_tsina"></a>
+                        <a class="jiathis_button_tqq"></a>
+                        <a class="jiathis_button_renren"></a>
+                        <a class="jiathis_button_kaixin001"></a>
+                        <a href="http://www.jiathis.com/share/" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+                        <a class="jiathis_counter_style"></a>
+                    </div>
+                    <script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+                    <!-- JiaThis Button END --></div><div style="clear:both; margin-top:5px; margin-bottom:5px;"></div>
+                    <div class="abh_box abh_box_down abh_box_"><ul class="abh_tabs"> <li class="abh_about abh_active"><a href="#abh_about">About</a></li> <li class="abh_posts"><a href="#abh_posts">Latest Posts</a></li></ul><div class="abh_tab_content"><section class="vcard abh_about_tab abh_tab" style="display:block"><div class="abh_image"><a href="http://ifeve.com/author/26793713/" class="url" title="郭蕾"><img alt='' src='http://0.gravatar.com/avatar/c873fc042672ae67aaf67e91afa9fe38?s=80&#038;d=mm&#038;r=g' srcset='http://0.gravatar.com/avatar/c873fc042672ae67aaf67e91afa9fe38?s=160&#038;d=mm&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></a></div><div class="abh_social"> </div><div class="abh_text"><h3 class="fn name" ><a href="http://ifeve.com/author/26793713/" class="url">郭蕾</a></h3><div class="abh_job" ></div><div class="description note abh_description" >并发编程网站长，InfoQ技术编辑。个人博客：http://guolei.us</div></div> </section><section class="abh_posts_tab abh_tab" ><div class="abh_image"><a href="http://ifeve.com/author/26793713/" class="url" title="郭蕾"><img alt='' src='http://0.gravatar.com/avatar/c873fc042672ae67aaf67e91afa9fe38?s=80&#038;d=mm&#038;r=g' srcset='http://0.gravatar.com/avatar/c873fc042672ae67aaf67e91afa9fe38?s=160&#038;d=mm&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></a></div><div class="abh_social"> </div><div class="abh_text"><h4 >Latest posts by 郭蕾 <span class="abh_allposts">(<a href="http://ifeve.com/author/26793713/">see all</a>)</span></h4><div class="abh_description note" ><ul>				<li>					<a href="http://ifeve.com/forkjoin-framework-vs-parallel-streams-vs-executorservice-the-ultimate-benchmark/">Java中不同的并发实现的性能比较</a><span> - 2015年4月1日</span>				</li>				<li>					<a href="http://ifeve.com/timeout/">《C#并发编程经典实例》—— 超时</a><span> - 2014年12月13日</span>				</li>				<li>					<a href="http://ifeve.com/c-event-stream/">《C#并发编程经典实例》——用限流和抽样抑制事件流</a><span> - 2014年12月12日</span>				</li></ul></div></div> </section></div> </div><span class='wpfp-span'><img src='http://ifeve.com/wp-content/plugins/wp-favorite-posts/img/star.png' alt='Favorite' title='Favorite' class='wpfp-img' /><img src='http://ifeve.com/wp-content/plugins/wp-favorite-posts/img/loading.gif' alt='Loading' title='Loading' class='wpfp-hide wpfp-img' /><a class='wpfp-link' href='?wpfpaction=add&amp;postid=5251' title='添加本文到我的收藏' rel='nofollow'>添加本文到我的收藏</a></span><div class='yarpp-related'>
+                    <h3>Related posts:</h3><ol>
+                    <li><a href="http://ifeve.com/socket-channel/" rel="bookmark" title="Java NIO系列教程（八） SocketChannel">Java NIO系列教程（八） SocketChannel </a></li>
+                    <li><a href="http://ifeve.com/file-channel/" rel="bookmark" title="Java NIO系列教程（七） FileChannel">Java NIO系列教程（七） FileChannel </a></li>
+                    <li><a href="http://ifeve.com/datagram-channel/" rel="bookmark" title="Java NIO系列教程（十） Java NIO DatagramChannel">Java NIO系列教程（十） Java NIO DatagramChannel </a></li>
+                    <li><a href="http://ifeve.com/pipe/" rel="bookmark" title="Java NIO系列教程（十一） Pipe">Java NIO系列教程（十一） Pipe </a></li>
+                    <li><a href="http://ifeve.com/channels/" rel="bookmark" title="Java NIO系列教程（二） Channel">Java NIO系列教程（二） Channel </a></li>
+                    <li><a href="http://ifeve.com/java-nio-channel-to-channel/" rel="bookmark" title="Java NIO系列教程（五） 通道之间的数据传输">Java NIO系列教程（五） 通道之间的数据传输 </a></li>
+                    <li><a href="http://ifeve.com/buffers/" rel="bookmark" title="Java NIO系列教程（三） Buffer">Java NIO系列教程（三） Buffer </a></li>
+                    <li><a href="http://ifeve.com/java-nio-vs-io/" rel="bookmark" title="Java NIO系列教程（十二） Java NIO与IO">Java NIO系列教程（十二） Java NIO与IO </a></li>
+                    <li><a href="http://ifeve.com/selectors/" rel="bookmark" title="Java NIO系列教程（六） Selector">Java NIO系列教程（六） Selector </a></li>
+                    <li><a href="http://ifeve.com/overview/" rel="bookmark" title="Java NIO系列教程（一） Java NIO 概述">Java NIO系列教程（一） Java NIO 概述 </a></li>
+                    <li><a href="http://ifeve.com/server-socket-channel/" rel="bookmark" title="Java NIO系列教程（九） ServerSocketChannel">Java NIO系列教程（九） ServerSocketChannel </a></li>
+                    <li><a href="http://ifeve.com/java-nio-all/" rel="bookmark" title="Java NIO 系列教程">Java NIO 系列教程 </a></li>
+                    <li><a href="http://ifeve.com/java-7-a-comprehensive-tutorial/" rel="bookmark" title="Java 7: 全面教程-目录">Java 7: 全面教程-目录 </a></li>
+                    <li><a href="http://ifeve.com/java-io-%e5%ad%97%e8%8a%82%e5%92%8c%e5%ad%97%e7%ac%a6%e6%95%b0%e7%bb%84/" rel="bookmark" title="Java IO: 字节和字符数组">Java IO: 字节和字符数组 </a></li>
+                    <li><a href="http://ifeve.com/netty-2-3-2/" rel="bookmark" title="《Netty 权威指南》—— 服务端序列图">《Netty 权威指南》—— 服务端序列图 </a></li>
+                </ol>
+                </div>
+                </div><!-- END .post_content -->
+            </div>
+            <div class="meta">
+                <ul>
+                    <li class="post_date clearfix">
+                        <span class="date">04</span>
+                        <span class="month">Jun</span>
+                        <span class="year">2013</span>
+                    </li>
+
+                    <li class="post_comment">
+                        84,801 人阅读</li>
+
+                    <li class="post_author"><a href="http://ifeve.com/author/26793713/" title="Posts by 郭蕾" rel="author">郭蕾</a></li>      <li class="post_category"><a href="http://ifeve.com/category/concurrency-translation/" rel="category tag">并发译文</a></li>       <li class="post_category"><div id="post-ratings-5251" class="post-ratings" itemscope itemtype="http://schema.org/Article" data-nonce="942f07cc2f"><img id="rating_5251_1" src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="好烂啊" title="好烂啊" onmouseover="current_rating(5251, 1, '好烂啊');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_5251_2" src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="没价值" title="没价值" onmouseover="current_rating(5251, 2, '没价值');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_5251_3" src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="凑合看看" title="凑合看看" onmouseover="current_rating(5251, 3, '凑合看看');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_5251_4" src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="还不错" title="还不错" onmouseover="current_rating(5251, 4, '还不错');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_5251_5" src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="超赞" title="超赞" onmouseover="current_rating(5251, 5, '超赞');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>58</strong> votes, average: <strong>4.76</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_5251_text"></span><meta itemprop="headline" content="Java NIO系列教程（四） Scatter/Gather" /><meta itemprop="description" content="原文地址：http://tutorials.jenkov.com/java-nio/scatter-gather.html
+
+作者：Jakob Jenkov &nbsp;&nbsp;译者：郭蕾 &nbsp;&nbsp;
+
+
+Java NIO开始支持scatter/gather，scatter/gather用于描述从Channel（译者注：Channel在中文经常翻译为通道）中读取或者写入到Channel的操作。
+分散（sca..." /><meta itemprop="datePublished" content="2013-06-04T16:59:32+00:00" /><meta itemprop="dateModified" content="2013-06-07T16:29:05+00:00" /><meta itemprop="url" content="http://ifeve.com/java-nio-scattergather/" /><meta itemprop="author" content="郭蕾" /><meta itemprop="mainEntityOfPage" content="http://ifeve.com/java-nio-scattergather/" /><div style="display: none;" itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="并发编程网 - ifeve.com" /><div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="" /></div></div><div style="display: none;" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"><meta itemprop="bestRating" content="5" /><meta itemprop="worstRating" content="1" /><meta itemprop="ratingValue" content="4.76" /><meta itemprop="ratingCount" content="58" /></div></div><div id="post-ratings-5251-loading" class="post-ratings-loading">
+                    <img src="http://ifeve.com/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" class="post-ratings-image" />Loading...</div></li>       <li class="post_comment"><a href="http://ifeve.com/java-nio-scattergather/#comments">6 comments</a></li>           </ul>
+            </div>
+        </div><!-- END .post_wrap -->
+
+
+        <div id="comments_wrapper">
+
+
+
+
+
+            <div id="comment_header" class="clearfix">
+
+                <ul id="comment_header_left">
+                    <li id="add_comment"><a href="#respond">Write comment</a></li>
+                    <li id="comment_feed"><a href="http://ifeve.com/comments/feed/" title="Comments RSS">Comments RSS</a></li>
+                </ul>
+
+                <ul id="comment_header_right">
+                    <li id="trackback_closed">Trackback are closed</li>
+                    <li id="comment_closed">Comments (6)</li>
+                </ul>
+
+
+            </div><!-- END #comment_header -->
+
+            <div id="comments">
+
+                <div id="comment_area">
+                    <!-- start commnet -->
+                    <ol class="commentlist">
+
+                        <li class="comment guest-comment" id="comment-19495">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://2.gravatar.com/avatar/2c39ded55519e500657fc02232cb2776?s=35&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/2c39ded55519e500657fc02232cb2776?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-19495">
+
+andy
+</span>
+                                        </li>
+                                        <li class="comment-date">05/26. 2014 9:39pm</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-19495', 'comment-19495', 'comment-content-19495', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-19495">
+                                <p>good job! thanks.</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+
+                        <li class="comment guest-comment" id="comment-25641">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://0.gravatar.com/avatar/?s=35&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo avatar-default' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-25641">
+
+Anonymous
+</span>
+                                        </li>
+                                        <li class="comment-date">10/13. 2014 5:33pm</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-25641', 'comment-25641', 'comment-content-25641', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-25641">
+                                <p>初步看懂了 感谢！</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+
+                        <li class="comment guest-comment" id="comment-25930">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://1.gravatar.com/avatar/7653bb4b5b3c3b3e1378fb320ca73139?s=35&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/7653bb4b5b3c3b3e1378fb320ca73139?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-25930">
+
+miniWolfer
+</span>
+                                        </li>
+                                        <li class="comment-date">11/05. 2014 4:21pm</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-25930', 'comment-25930', 'comment-content-25930', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-25930">
+                                <p>初学，体会不到有啥用。呵呵</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+
+                        <li class="comment guest-comment" id="comment-26119">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://1.gravatar.com/avatar/abc47e649762f82b264bcd9f957b0cda?s=35&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/abc47e649762f82b264bcd9f957b0cda?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-26119">
+
+wussrc
+</span>
+                                        </li>
+                                        <li class="comment-date">03/30. 2015 10:56am</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-26119', 'comment-26119', 'comment-content-26119', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-26119">
+                                <p>基本算是看懂了，但是还不知道什么地方会用到，应该怎么用。感谢</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+
+                        <li class="comment guest-comment" id="comment-26196">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://2.gravatar.com/avatar/e23af64c187f7693c0dea96ff1e99c1f?s=35&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/e23af64c187f7693c0dea96ff1e99c1f?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-26196">
+
+liuc
+</span>
+                                        </li>
+                                        <li class="comment-date">05/15. 2015 9:25pm</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-26196', 'comment-26196', 'comment-content-26196', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-26196">
+                                <p>mark ,感谢</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+
+                        <li class="comment guest-comment" id="comment-26860">
+                            <div class="comment-meta">
+                                <div class="comment-meta-left">
+                                    <img alt='' src='http://1.gravatar.com/avatar/402549e64e90b64504a66965db9fe308?s=35&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/402549e64e90b64504a66965db9fe308?s=70&#038;d=mm&#038;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' />
+                                    <ul class="comment-name-date">
+                                        <li class="comment-name">
+<span id="commentauthor-26860">
+
+lee_mingzhu
+</span>
+                                        </li>
+                                        <li class="comment-date">04/22. 2016 7:01pm</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="comment-act">
+                                    <li class="comment-reply"><a rel="nofollow" class="comment-reply-login" href="http://ifeve.com/wp-login.php?redirect_to=http%3A%2F%2Fifeve.com%2Fjava-nio-scattergather%2F">Log in to Reply</a></li>
+                                    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote('commentauthor-26860', 'comment-26860', 'comment-content-26860', 'comment');">QUOTE</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="comment-content" id="comment-content-26860">
+                                <p>一样，看懂了文章，却没有看到使用场景，感觉在封装底层协议时也许用的上，自己的应用中不知道什么时候会用到这样的操作。</p>
+                            </div>
+
+
+
+                        </li><!-- #comment-## -->
+                    </ol>
+                    <!-- comments END -->
+
+
+                </div><!-- #comment-list END -->
+
+
+                <div id="trackback_area">
+                    <!-- start trackback -->
+                    <!-- trackback end -->
+                </div><!-- #trackbacklist END -->
+
+
+
+
+
+                <div class="comment_form_wrapper" id="respond">
+                    You must be <a href="http://ifeve.com/wp-login.php">logged in</a> to post a comment. </div>
+
+            </div><!-- #comment end -->   </div>
+
+        <div id="previous_next_post_single">
+            <div class="clearfix">
+                <p id="previous_post"><a href="http://ifeve.com/java-nio-all/" rel="prev">Java NIO 系列教程</a></p>     <p id="next_post"><a href="http://ifeve.com/java-nio-channel-to-channel/" rel="next">Java NIO系列教程（五） 通道之间的数据传输</a></p>    </div>
+        </div>
+
+
+    </div><!-- END #left_col -->
+
+    <div id="container"></div>
+
+    <div id="right_col">
+
+
+        <div class="side_box clearfix" id="side_meta_content">
+
+            <ul id="social_link" class="clearfix">
+                <li class="rss_button"><a class="target_blank" href="http://ifeve.com/feed/">rss</a></li>
+            </ul>
+
+            <div id="search_area">
+                <form method="get" id="searchform" action="http://ifeve.com/">
+                    <div><input id="search_button" class="rollover" type="image" src="http://ifeve.com/wp-content/themes/flat/img/search_button.gif" alt="SEARCH" title="SEARCH" /></div>
+                    <div><input id="search_input" type="text" value="SEARCH" name="s" onfocus="if (this.value == 'SEARCH') this.value = '';" onblur="if (this.value == '') this.value = 'SEARCH';" /></div>
+                </form>
+            </div>
+
+        </div>
+
+
+        <div id="side_top">
+
+            <div class="widget_text side_box widget_custom_html" id="custom_html-3">
+                <div class="textwidget custom-html-widget"><!--
+<a href="https://cn.100offer.com/?utm_source=ifeve&utm_medium=display&utm_campaign=ifeve&campaign_code=ifeve" target="_blank"><img src="http://ifeve.com/wp-content/uploads/2017/09/WechatIMG70.jpeg" />
+-->
+
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 首页－右上－2 -->
+                    <ins class="adsbygoogle" style="display: inline-block; width: 336px; height: 280px;" data-ad-client="ca-pub-9394337417063147" data-ad-slot="8872369516"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script></div></div>
+            <div class="side_box widget_recent_entries" id="recent-posts-2">
+                <h3 class="side_title">Recent Posts</h3>
+                <ul>
+                    <li>
+                        <a href="http://ifeve.com/springboot-spring-boot/">Springboot之spring-boot模块</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/istio-kubernetes-quick-start/">《Istio官方文档》Kubernetes快速开始</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e6%b3%a5%e7%93%a6%e5%8c%a0%e8%81%8a%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b%ef%bc%9a%e7%ba%bf%e7%a8%8b%e4%b8%8e%e5%a4%9a%e7%ba%bf%e7%a8%8b%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a%ef%bc%88%e5%9f%ba%e7%a1%80/">泥瓦匠聊并发编程：线程与多线程必知必会（基础篇）</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/spring-boot-autoconfigure/">Springboot之spring-boot-autoconfigure模块</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e4%bd%bf%e7%94%a8java%e5%87%bd%e6%95%b0%e6%8e%a5%e5%8f%a3%e5%8f%8alambda%e8%a1%a8%e8%be%be%e5%bc%8f%e9%9a%94%e7%a6%bb%e5%92%8c%e6%a8%a1%e6%8b%9f%e5%a4%96%e9%83%a8%e4%be%9d%e8%b5%96%e6%9b%b4%e5%ae%b9/">使用Java函数接口及lambda表达式隔离和模拟外部依赖更容易滴单测</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e3%80%8a%e8%bd%af%e4%bb%b6%e6%9e%b6%e6%9e%84%e6%a8%a1%e5%bc%8f%e3%80%8b-%e7%ac%ac%e4%b8%89%e7%ab%a0-%e5%be%ae%e5%86%85%e6%a0%b8%e7%b3%bb%e7%bb%9f%e7%bb%93%e6%9e%84/">《软件架构模式》-第三章 微内核系统结构</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/spring-boot-loader/">SpringBoot之spring-boot-load模块</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/springboot-module/">Springboot模块组成</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/fault-injection/">《Istio官方文档》—— 错误注入</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/handling-failures/">《Istio官方文档》—— 故障处理</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/load-balancing/">《Istio官方文档》—— 服务发现与负载均衡</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e4%bd%bf%e7%94%a8threadlocal%e4%b8%8d%e5%bd%93%e5%8f%af%e8%83%bd%e4%bc%9a%e5%af%bc%e8%87%b4%e5%86%85%e5%ad%98%e6%b3%84%e9%9c%b2/">使用ThreadLocal不当可能会导致内存泄露</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/istio-request-routing/">《Istio官方文档》—— 请求路由</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/traffic-management-overview/">《Istio官方文档》流量管理&#8211;综述</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/36583-2/">SpringBoot之logback-spring.xml不生效</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/pilot/">《Istio官方文档》Pilot</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/istio-goals/">《Istio官方文档》什么是Istio——设计理念</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/springboot%e4%b9%8bclass-is-not-visible-from-class-loader/">SpringBoot之class is not visible from class loader</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/istio-overview/">《Istio官方文档》什么是Istio——综述</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/service-mesh/">《Istio官方文档》翻译邀请</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e3%80%8aspring-cloud-config%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3%e3%80%8b%e4%b9%8b%e5%b5%8c%e5%85%a5%e9%85%8d%e7%bd%ae%e6%9c%8d%e5%8a%a1%e5%99%a8/">《Spring Cloud Config官方文档》之嵌入配置服务器</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e5%b9%b6%e5%8f%91%e5%8c%85%e4%b8%adthreadlocalrandom%e7%b1%bb%e5%8e%9f%e7%90%86%e5%89%96%e6%9e%90/">并发包中ThreadLocalRandom类原理剖析</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/service-mesh-introduction/">什么是服务网格？为什么你需要它？</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e3%80%8aspring-cloud-config%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3%e3%80%8b%e4%b9%8b%e6%8e%a8%e9%80%81%e9%80%9a%e7%9f%a5%e5%92%8cspring-cloud%e6%80%bb%e7%ba%bf/">《Spring Cloud Config官方文档》之推送通知和Spring Cloud总线</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/guide-maven-development/">《Maven官方文档》Maven 开发</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e4%bc%aa%e5%85%b1%e4%ba%ab/">伪共享</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e3%80%8aspring-cloud-config%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3%e3%80%8b%e4%b9%8bspring-cloud-config%e5%ae%a2%e6%88%b7%e7%ab%af/">《Spring Cloud Config官方文档》之Spring Cloud Config客户端</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e7%ba%bf%e7%a8%8b%e6%b1%a0%e4%bd%bf%e7%94%a8futuretask%e6%97%b6%e5%80%99%e9%9c%80%e8%a6%81%e6%b3%a8%e6%84%8f%e7%9a%84%e4%b8%80%e7%82%b9%e4%ba%8b/">线程池使用FutureTask时候需要注意的一点事</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/%e3%80%8aspring-cloud-config%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3%e3%80%8b%e5%bf%ab%e9%80%9f%e5%90%af%e5%8a%a8/">《Spring Cloud Config官方文档》快速启动</a>
+                    </li>
+                    <li>
+                        <a href="http://ifeve.com/notsafesimpledateformat/">线程不安全的SimpleDateFormat</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="widget_text side_box widget_custom_html" id="custom_html-4">
+                <div class="textwidget custom-html-widget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 首页－右上－2 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:336px;height:280px"
+                         data-ad-client="ca-pub-9394337417063147"
+                         data-ad-slot="8872369516"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script></div></div>
+            <div class="side_box widget_views" id="views-10">
+                <h3 class="side_title">Views</h3>
+                <ul>
+                    <li><a href="http://ifeve.com/java-nio-scattergather/"  title="Google Guava官方教程（中文版）">Google Guava官方教程（中文版）</a> 564,094 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（一） Java NIO 概述">Java NIO系列教程（一） Java NIO 概述</a> 369,321 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java并发性和多线程介绍目录">Java并发性和多线程介绍目录</a> 252,651 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO 系列教程">Java NIO 系列教程</a> 243,403 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（十二） Java NIO与IO">Java NIO系列教程（十二） Java NIO与IO</a> 209,243 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java8初体验（二）Stream语法详解">Java8初体验（二）Stream语法详解</a> 196,266 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（六） Selector">Java NIO系列教程（六） Selector</a> 186,970 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（三） Buffer">Java NIO系列教程（三） Buffer</a> 182,026 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（二） Channel">Java NIO系列教程（二） Channel</a> 181,347 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="《Storm入门》中文版">《Storm入门》中文版</a> 174,212 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="69道Spring面试题和答案">69道Spring面试题和答案</a> 159,337 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Netty 5用户指南">Netty 5用户指南</a> 152,160 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="并发框架Disruptor译文">并发框架Disruptor译文</a> 135,006 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java 7 并发编程指南中文版">Java 7 并发编程指南中文版</a> 134,528 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（八） SocketChannel">Java NIO系列教程（八） SocketChannel</a> 120,944 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="[Google Guava] 3-缓存">[Google Guava] 3-缓存</a> 116,178 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="[Google Guava] 2.3-强大的集合工具类：java.util.Collections中未包含的集合工具">[Google Guava] 2.3-强大的集合工具类：java.util.Collections中未包含的集合工具</a> 114,787 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="[Google Guava] 1.1-使用和避免null">[Google Guava] 1.1-使用和避免null</a> 108,235 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Java NIO系列教程（七） FileChannel">Java NIO系列教程（七） FileChannel</a> 105,919 人阅读 </li><li><a href="http://ifeve.com/java-nio-scattergather/"  title="Storm入门之第一章">Storm入门之第一章</a> 102,888 人阅读 </li></ul>
+            </div>
+            <div class="widget_text side_box widget_custom_html" id="custom_html-5">
+                <div class="textwidget custom-html-widget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:336px;height:280px"
+                         data-ad-client="ca-pub-9394337417063147"
+                         data-ad-slot="4721371513"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div></div>
+            <div class="side_box widget_tag_cloud" id="tag_cloud-4">
+                <h3 class="side_title">Tags</h3>
+                <div class="tagcloud"><a href="http://ifeve.com/tag/actor/" class="tag-cloud-link tag-link-226 tag-link-position-1" style="font-size: 12.666666666667pt;" aria-label="actor (17 items)">actor</a>
+                    <a href="http://ifeve.com/tag/basic/" class="tag-cloud-link tag-link-213 tag-link-position-2" style="font-size: 11.62962962963pt;" aria-label="Basic (14 items)">Basic</a>
+                    <a href="http://ifeve.com/tag/classes/" class="tag-cloud-link tag-link-251 tag-link-position-3" style="font-size: 8.6481481481481pt;" aria-label="classes (8 items)">classes</a>
+                    <a href="http://ifeve.com/tag/collections/" class="tag-cloud-link tag-link-260 tag-link-position-4" style="font-size: 10.333333333333pt;" aria-label="collections (11 items)">collections</a>
+                    <a href="http://ifeve.com/tag/concurrency/" class="tag-cloud-link tag-link-111 tag-link-position-5" style="font-size: 20.574074074074pt;" aria-label="concurrency (73 items)">concurrency</a>
+                    <a href="http://ifeve.com/tag/concurrent/" class="tag-cloud-link tag-link-214 tag-link-position-6" style="font-size: 10.722222222222pt;" aria-label="Concurrent (12 items)">Concurrent</a>
+                    <a href="http://ifeve.com/tag/concurrent-data-structure/" class="tag-cloud-link tag-link-322 tag-link-position-7" style="font-size: 11.240740740741pt;" aria-label="concurrent data structure (13 items)">concurrent data structure</a>
+                    <a href="http://ifeve.com/tag/customizing/" class="tag-cloud-link tag-link-250 tag-link-position-8" style="font-size: 8.6481481481481pt;" aria-label="Customizing (8 items)">Customizing</a>
+                    <a href="http://ifeve.com/tag/executor/" class="tag-cloud-link tag-link-177 tag-link-position-9" style="font-size: 13.444444444444pt;" aria-label="Executor (20 items)">Executor</a>
+                    <a href="http://ifeve.com/tag/executor-framework/" class="tag-cloud-link tag-link-231 tag-link-position-10" style="font-size: 12.925925925926pt;" aria-label="Executor framework (18 items)">Executor framework</a>
+                    <a href="http://ifeve.com/tag/false-sharing/" class="tag-cloud-link tag-link-119 tag-link-position-11" style="font-size: 8pt;" aria-label="False Sharing (7 items)">False Sharing</a>
+                    <a href="http://ifeve.com/tag/faq/" class="tag-cloud-link tag-link-39 tag-link-position-12" style="font-size: 11.240740740741pt;" aria-label="faq (13 items)">faq</a>
+                    <a href="http://ifeve.com/tag/fork/" class="tag-cloud-link tag-link-232 tag-link-position-13" style="font-size: 10.722222222222pt;" aria-label="fork (12 items)">fork</a>
+                    <a href="http://ifeve.com/tag/forkjoin/" class="tag-cloud-link tag-link-224 tag-link-position-14" style="font-size: 9.2962962962963pt;" aria-label="Fork/Join (9 items)">Fork/Join</a>
+                    <a href="http://ifeve.com/tag/fork-join/" class="tag-cloud-link tag-link-53 tag-link-position-15" style="font-size: 8.6481481481481pt;" aria-label="fork join (8 items)">fork join</a>
+                    <a href="http://ifeve.com/tag/framework/" class="tag-cloud-link tag-link-1018 tag-link-position-16" style="font-size: 14.222222222222pt;" aria-label="Framework (23 items)">Framework</a>
+                    <a href="http://ifeve.com/tag/functional-programming/" class="tag-cloud-link tag-link-460 tag-link-position-17" style="font-size: 9.8148148148148pt;" aria-label="Functional Programming (10 items)">Functional Programming</a>
+                    <a href="http://ifeve.com/tag/guava/" class="tag-cloud-link tag-link-309 tag-link-position-18" style="font-size: 11.888888888889pt;" aria-label="Guava (15 items)">Guava</a>
+                    <a href="http://ifeve.com/tag/io/" class="tag-cloud-link tag-link-129 tag-link-position-19" style="font-size: 14.87037037037pt;" aria-label="IO (26 items)">IO</a>
+                    <a href="http://ifeve.com/tag/java/" class="tag-cloud-link tag-link-1016 tag-link-position-20" style="font-size: 22pt;" aria-label="JAVA (95 items)">JAVA</a>
+                    <a href="http://ifeve.com/tag/java8/" class="tag-cloud-link tag-link-342 tag-link-position-21" style="font-size: 11.240740740741pt;" aria-label="java8 (13 items)">java8</a>
+                    <a href="http://ifeve.com/tag/jmm/" class="tag-cloud-link tag-link-31 tag-link-position-22" style="font-size: 15.907407407407pt;" aria-label="jmm (31 items)">jmm</a>
+                    <a href="http://ifeve.com/tag/join/" class="tag-cloud-link tag-link-233 tag-link-position-23" style="font-size: 10.722222222222pt;" aria-label="join (12 items)">join</a>
+                    <a href="http://ifeve.com/tag/jvm/" class="tag-cloud-link tag-link-1019 tag-link-position-24" style="font-size: 12.925925925926pt;" aria-label="JVM (18 items)">JVM</a>
+                    <a href="http://ifeve.com/tag/lock/" class="tag-cloud-link tag-link-17 tag-link-position-25" style="font-size: 14.222222222222pt;" aria-label="lock (23 items)">lock</a>
+                    <a href="http://ifeve.com/tag/memory-barriers/" class="tag-cloud-link tag-link-75 tag-link-position-26" style="font-size: 9.8148148148148pt;" aria-label="Memory Barriers (10 items)">Memory Barriers</a>
+                    <a href="http://ifeve.com/tag/netty/" class="tag-cloud-link tag-link-1027 tag-link-position-27" style="font-size: 13.185185185185pt;" aria-label="Netty (19 items)">Netty</a>
+                    <a href="http://ifeve.com/tag/nio/" class="tag-cloud-link tag-link-1021 tag-link-position-28" style="font-size: 12.277777777778pt;" aria-label="NIO (16 items)">NIO</a>
+                    <a href="http://ifeve.com/tag/oauth-2-0/" class="tag-cloud-link tag-link-380 tag-link-position-29" style="font-size: 8.6481481481481pt;" aria-label="OAuth 2.0 (8 items)">OAuth 2.0</a>
+                    <a href="http://ifeve.com/tag/pattern-matching/" class="tag-cloud-link tag-link-167 tag-link-position-30" style="font-size: 8.6481481481481pt;" aria-label="pattern-matching (8 items)">pattern-matching</a>
+                    <a href="http://ifeve.com/tag/ringbuffer/" class="tag-cloud-link tag-link-91 tag-link-position-31" style="font-size: 8pt;" aria-label="RingBuffer (7 items)">RingBuffer</a>
+                    <a href="http://ifeve.com/tag/scala/" class="tag-cloud-link tag-link-1023 tag-link-position-32" style="font-size: 13.962962962963pt;" aria-label="Scala (22 items)">Scala</a>
+                    <a href="http://ifeve.com/tag/service-mesh/" class="tag-cloud-link tag-link-1063 tag-link-position-33" style="font-size: 8.6481481481481pt;" aria-label="service mesh (8 items)">service mesh</a>
+                    <a href="http://ifeve.com/tag/slf4j/" class="tag-cloud-link tag-link-813 tag-link-position-34" style="font-size: 8.6481481481481pt;" aria-label="slf4j (8 items)">slf4j</a>
+                    <a href="http://ifeve.com/tag/spark/" class="tag-cloud-link tag-link-634 tag-link-position-35" style="font-size: 12.666666666667pt;" aria-label="spark (17 items)">spark</a>
+                    <a href="http://ifeve.com/tag/spark%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3/" class="tag-cloud-link tag-link-635 tag-link-position-36" style="font-size: 12.666666666667pt;" aria-label="spark官方文档 (17 items)">spark官方文档</a>
+                    <a href="http://ifeve.com/tag/stm/" class="tag-cloud-link tag-link-199 tag-link-position-37" style="font-size: 10.722222222222pt;" aria-label="stm (12 items)">stm</a>
+                    <a href="http://ifeve.com/tag/storm/" class="tag-cloud-link tag-link-351 tag-link-position-38" style="font-size: 17.074074074074pt;" aria-label="Storm (39 items)">Storm</a>
+                    <a href="http://ifeve.com/tag/synchronization/" class="tag-cloud-link tag-link-216 tag-link-position-39" style="font-size: 11.888888888889pt;" aria-label="synchronization (15 items)">synchronization</a>
+                    <a href="http://ifeve.com/tag/synchronized/" class="tag-cloud-link tag-link-15 tag-link-position-40" style="font-size: 9.8148148148148pt;" aria-label="Synchronized (10 items)">Synchronized</a>
+                    <a href="http://ifeve.com/tag/thread/" class="tag-cloud-link tag-link-11 tag-link-position-41" style="font-size: 17.592592592593pt;" aria-label="thread (43 items)">thread</a>
+                    <a href="http://ifeve.com/tag/tomcat/" class="tag-cloud-link tag-link-347 tag-link-position-42" style="font-size: 9.2962962962963pt;" aria-label="tomcat (9 items)">tomcat</a>
+                    <a href="http://ifeve.com/tag/volatile/" class="tag-cloud-link tag-link-25 tag-link-position-43" style="font-size: 11.240740740741pt;" aria-label="volatile (13 items)">volatile</a>
+                    <a href="http://ifeve.com/tag/%e5%a4%9a%e7%ba%bf%e7%a8%8b/" class="tag-cloud-link tag-link-197 tag-link-position-44" style="font-size: 9.2962962962963pt;" aria-label="多线程 (9 items)">多线程</a>
+                    <a href="http://ifeve.com/tag/%e5%b9%b6%e5%8f%91%e8%af%91%e6%96%87%ef%bc%8cjava-%ef%bc%8cmaven/" class="tag-cloud-link tag-link-1034 tag-link-position-45" style="font-size: 16.685185185185pt;" aria-label="并发译文，Java ，Maven (36 items)">并发译文，Java ，Maven</a></div>
+            </div>
+            <div class="widget_text side_box widget_custom_html" id="custom_html-6">
+                <div class="textwidget custom-html-widget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:336px;height:280px"
+                         data-ad-client="ca-pub-9394337417063147"
+                         data-ad-slot="6198104715"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script></div></div>
+        </div>
+        <div id="side_middle" class="clearfix">
+            <div id="side_left">
+                <div class="side_box_short widget_archive" id="archives-2">
+                    <h3 class="side_title">Archives</h3>
+                    <ul>
+                        <li><a href='http://ifeve.com/2018/02/'>February 2018</a>&nbsp;(2)</li>
+                        <li><a href='http://ifeve.com/2018/01/'>January 2018</a>&nbsp;(19)</li>
+                        <li><a href='http://ifeve.com/2017/12/'>December 2017</a>&nbsp;(24)</li>
+                        <li><a href='http://ifeve.com/2017/11/'>November 2017</a>&nbsp;(10)</li>
+                        <li><a href='http://ifeve.com/2017/10/'>October 2017</a>&nbsp;(16)</li>
+                        <li><a href='http://ifeve.com/2017/09/'>September 2017</a>&nbsp;(10)</li>
+                        <li><a href='http://ifeve.com/2017/08/'>August 2017</a>&nbsp;(25)</li>
+                        <li><a href='http://ifeve.com/2017/07/'>July 2017</a>&nbsp;(20)</li>
+                        <li><a href='http://ifeve.com/2017/06/'>June 2017</a>&nbsp;(38)</li>
+                        <li><a href='http://ifeve.com/2017/05/'>May 2017</a>&nbsp;(59)</li>
+                        <li><a href='http://ifeve.com/2017/04/'>April 2017</a>&nbsp;(17)</li>
+                        <li><a href='http://ifeve.com/2017/03/'>March 2017</a>&nbsp;(30)</li>
+                        <li><a href='http://ifeve.com/2017/02/'>February 2017</a>&nbsp;(9)</li>
+                        <li><a href='http://ifeve.com/2017/01/'>January 2017</a>&nbsp;(7)</li>
+                        <li><a href='http://ifeve.com/2016/12/'>December 2016</a>&nbsp;(12)</li>
+                        <li><a href='http://ifeve.com/2016/11/'>November 2016</a>&nbsp;(27)</li>
+                        <li><a href='http://ifeve.com/2016/10/'>October 2016</a>&nbsp;(16)</li>
+                        <li><a href='http://ifeve.com/2016/09/'>September 2016</a>&nbsp;(11)</li>
+                        <li><a href='http://ifeve.com/2016/08/'>August 2016</a>&nbsp;(6)</li>
+                        <li><a href='http://ifeve.com/2016/07/'>July 2016</a>&nbsp;(9)</li>
+                        <li><a href='http://ifeve.com/2016/06/'>June 2016</a>&nbsp;(7)</li>
+                        <li><a href='http://ifeve.com/2016/05/'>May 2016</a>&nbsp;(20)</li>
+                        <li><a href='http://ifeve.com/2016/04/'>April 2016</a>&nbsp;(28)</li>
+                        <li><a href='http://ifeve.com/2016/03/'>March 2016</a>&nbsp;(8)</li>
+                        <li><a href='http://ifeve.com/2016/02/'>February 2016</a>&nbsp;(7)</li>
+                        <li><a href='http://ifeve.com/2016/01/'>January 2016</a>&nbsp;(10)</li>
+                        <li><a href='http://ifeve.com/2015/12/'>December 2015</a>&nbsp;(15)</li>
+                        <li><a href='http://ifeve.com/2015/11/'>November 2015</a>&nbsp;(24)</li>
+                        <li><a href='http://ifeve.com/2015/10/'>October 2015</a>&nbsp;(17)</li>
+                        <li><a href='http://ifeve.com/2015/09/'>September 2015</a>&nbsp;(29)</li>
+                        <li><a href='http://ifeve.com/2015/08/'>August 2015</a>&nbsp;(44)</li>
+                        <li><a href='http://ifeve.com/2015/07/'>July 2015</a>&nbsp;(20)</li>
+                        <li><a href='http://ifeve.com/2015/06/'>June 2015</a>&nbsp;(21)</li>
+                        <li><a href='http://ifeve.com/2015/05/'>May 2015</a>&nbsp;(15)</li>
+                        <li><a href='http://ifeve.com/2015/04/'>April 2015</a>&nbsp;(27)</li>
+                        <li><a href='http://ifeve.com/2015/03/'>March 2015</a>&nbsp;(13)</li>
+                        <li><a href='http://ifeve.com/2015/02/'>February 2015</a>&nbsp;(11)</li>
+                        <li><a href='http://ifeve.com/2015/01/'>January 2015</a>&nbsp;(13)</li>
+                        <li><a href='http://ifeve.com/2014/12/'>December 2014</a>&nbsp;(26)</li>
+                        <li><a href='http://ifeve.com/2014/11/'>November 2014</a>&nbsp;(61)</li>
+                        <li><a href='http://ifeve.com/2014/10/'>October 2014</a>&nbsp;(33)</li>
+                        <li><a href='http://ifeve.com/2014/09/'>September 2014</a>&nbsp;(47)</li>
+                        <li><a href='http://ifeve.com/2014/08/'>August 2014</a>&nbsp;(27)</li>
+                        <li><a href='http://ifeve.com/2014/07/'>July 2014</a>&nbsp;(13)</li>
+                        <li><a href='http://ifeve.com/2014/06/'>June 2014</a>&nbsp;(32)</li>
+                        <li><a href='http://ifeve.com/2014/05/'>May 2014</a>&nbsp;(45)</li>
+                        <li><a href='http://ifeve.com/2014/04/'>April 2014</a>&nbsp;(41)</li>
+                        <li><a href='http://ifeve.com/2014/03/'>March 2014</a>&nbsp;(34)</li>
+                        <li><a href='http://ifeve.com/2014/02/'>February 2014</a>&nbsp;(38)</li>
+                        <li><a href='http://ifeve.com/2014/01/'>January 2014</a>&nbsp;(19)</li>
+                        <li><a href='http://ifeve.com/2013/12/'>December 2013</a>&nbsp;(10)</li>
+                        <li><a href='http://ifeve.com/2013/11/'>November 2013</a>&nbsp;(4)</li>
+                        <li><a href='http://ifeve.com/2013/10/'>October 2013</a>&nbsp;(20)</li>
+                        <li><a href='http://ifeve.com/2013/09/'>September 2013</a>&nbsp;(38)</li>
+                        <li><a href='http://ifeve.com/2013/08/'>August 2013</a>&nbsp;(48)</li>
+                        <li><a href='http://ifeve.com/2013/07/'>July 2013</a>&nbsp;(26)</li>
+                        <li><a href='http://ifeve.com/2013/06/'>June 2013</a>&nbsp;(16)</li>
+                        <li><a href='http://ifeve.com/2013/05/'>May 2013</a>&nbsp;(9)</li>
+                        <li><a href='http://ifeve.com/2013/04/'>April 2013</a>&nbsp;(17)</li>
+                        <li><a href='http://ifeve.com/2013/03/'>March 2013</a>&nbsp;(41)</li>
+                        <li><a href='http://ifeve.com/2013/02/'>February 2013</a>&nbsp;(25)</li>
+                        <li><a href='http://ifeve.com/2013/01/'>January 2013</a>&nbsp;(57)</li>
+                        <li><a href='http://ifeve.com/2012/12/'>December 2012</a>&nbsp;(9)</li>
+                        <li><a href='http://ifeve.com/2012/10/'>October 2012</a>&nbsp;(1)</li>
+                        <li><a href='http://ifeve.com/2012/08/'>August 2012</a>&nbsp;(1)</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="side_right">
+                <div class="side_box_short widget_links" id="linkcat-2">
+                    <h3 class="side_title">友情链接</h3>
+
+                    <ul class='xoxo blogroll'>
+                        <li><a href="http://coolshell.cn" rel="co-worker" target="_blank">coolshell</a></li>
+                        <li><a href="http://blog.91gaoqing.com" target="_blank">Programer. 大猫</a></li>
+                        <li><a href="http://hugozhu.myalert.info" rel="co-worker" target="_blank">一粟的博客</a></li>
+                        <li><a href="http://blog.csdn.net/cutesource/" rel="acquaintance co-worker" target="_blank">志俊的博客</a></li>
+                        <li><a href="http://www.zuidaima.com">最代码</a></li>
+                        <li><a href="http://diandianzhe.com">点点折</a></li>
+                        <li><a href="http://www.656463.com">领悟书生</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="side_box_short widget_categories" id="categories-2">
+                    <h3 class="side_title">Categories</h3>
+                    <ul>
+                        <li class="cat-item cat-item-387"><a href="http://ifeve.com/category/framework/akka/" >akka</a> (20)
+                        </li>
+                        <li class="cat-item cat-item-415"><a href="http://ifeve.com/category/android/" >Android</a> (3)
+                        </li>
+                        <li class="cat-item cat-item-289"><a href="http://ifeve.com/category/c/" >C++</a> (12)
+                        </li>
+                        <li class="cat-item cat-item-366"><a href="http://ifeve.com/category/cpu-2/" >CPU</a> (2)
+                        </li>
+                        <li class="cat-item cat-item-73"><a href="http://ifeve.com/category/framework/" >Framework</a> (55)
+                        </li>
+                        <li class="cat-item cat-item-458"><a href="http://ifeve.com/category/go/" >GO</a> (6)
+                        </li>
+                        <li class="cat-item cat-item-617"><a href="http://ifeve.com/category/groovy/" >groovy</a> (6)
+                        </li>
+                        <li class="cat-item cat-item-310"><a href="http://ifeve.com/category/guava-2/" >guava</a> (23)
+                        </li>
+                        <li class="cat-item cat-item-69"><a href="http://ifeve.com/category/java/" >JAVA</a> (762)
+                        </li>
+                        <li class="cat-item cat-item-127"><a href="http://ifeve.com/category/jvm/" >JVM</a> (39)
+                        </li>
+                        <li class="cat-item cat-item-300"><a href="http://ifeve.com/category/linux/" >linux</a> (9)
+                        </li>
+                        <li class="cat-item cat-item-1061"><a href="http://ifeve.com/category/microservices/" >microservices</a> (1)
+                        </li>
+                        <li class="cat-item cat-item-280"><a href="http://ifeve.com/category/netty/" >Netty</a> (31)
+                        </li>
+                        <li class="cat-item cat-item-632"><a href="http://ifeve.com/category/react/" >react</a> (6)
+                        </li>
+                        <li class="cat-item cat-item-623"><a href="http://ifeve.com/category/redis/" >redis</a> (23)
+                        </li>
+                        <li class="cat-item cat-item-166"><a href="http://ifeve.com/category/scala/" >Scala</a> (11)
+                        </li>
+                        <li class="cat-item cat-item-672"><a href="http://ifeve.com/category/spark/" >spark</a> (19)
+                        </li>
+                        <li class="cat-item cat-item-1011"><a href="http://ifeve.com/category/spring/" >Spring</a> (23)
+                        </li>
+                        <li class="cat-item cat-item-388"><a href="http://ifeve.com/category/storm/" >storm</a> (44)
+                        </li>
+                        <li class="cat-item cat-item-620"><a href="http://ifeve.com/category/thinking/" >thinking</a> (3)
+                        </li>
+                        <li class="cat-item cat-item-485"><a href="http://ifeve.com/category/velocity/" >Velocity</a> (10)
+                        </li>
+                        <li class="cat-item cat-item-279"><a href="http://ifeve.com/category/web/" >Web</a> (18)
+                        </li>
+                        <li class="cat-item cat-item-980"><a href="http://ifeve.com/category/zookeeper/" >zookeeper</a> (1)
+                        </li>
+                        <li class="cat-item cat-item-148"><a href="http://ifeve.com/category/notice/" >公告</a> (5)
+                        </li>
+                        <li class="cat-item cat-item-378"><a href="http://ifeve.com/category/bigdata/" >大数据</a> (33)
+                        </li>
+                        <li class="cat-item cat-item-138"><a href="http://ifeve.com/category/%e5%a5%bd%e6%96%87%e6%8e%a8%e8%8d%90/" >好文推荐</a> (31)
+                        </li>
+                        <li class="cat-item cat-item-244"><a href="http://ifeve.com/category/%e5%b9%b6%e5%8f%91%e4%b9%a6%e7%b1%8d/" >并发书籍</a> (97)
+                        </li>
+                        <li class="cat-item cat-item-29"><a href="http://ifeve.com/category/concurrency-translation/" title="发布国外并发编程相关文献译文。">并发译文</a> (409)
+                        </li>
+                        <li class="cat-item cat-item-979"><a href="http://ifeve.com/category/%e6%84%9f%e6%82%9f/" >感悟</a> (3)
+                        </li>
+                        <li class="cat-item cat-item-7"><a href="http://ifeve.com/category/ask/" title="可以在这里发表并发编程的问题。如何发表？用QQ登陆，然后点击“新建文章”，管理员审核后就可以发表。">技术问答</a> (12)
+                        </li>
+                        <li class="cat-item cat-item-147"><a href="http://ifeve.com/category/%e6%95%8f%e6%8d%b7%e7%ae%a1%e7%90%86/" >敏捷管理</a> (6)
+                        </li>
+                        <li class="cat-item cat-item-1"><a href="http://ifeve.com/category/talk-concurrent/" >本站原创</a> (87)
+                        </li>
+                        <li class="cat-item cat-item-367"><a href="http://ifeve.com/category/%e6%9e%b6%e6%9e%84/" >架构</a> (31)
+                        </li>
+                        <li class="cat-item cat-item-305"><a href="http://ifeve.com/category/%e6%b4%bb%e5%8a%a8/" >活动</a> (6)
+                        </li>
+                        <li class="cat-item cat-item-414"><a href="http://ifeve.com/category/%e7%bd%91%e7%bb%9c/" >网络</a> (7)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="side_bottom">
+            <div class="widget_text side_box widget_custom_html" id="custom_html-2">
+                <div class="textwidget custom-html-widget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 摩天大楼 -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:300px;height:600px"
+                         data-ad-client="ca-pub-9394337417063147"
+                         data-ad-slot="6358703113"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+
+                    <!--
+                    <script type="text/javascript">
+                        /*自适应 创建于 June 30, 2016*/
+                        var cpro_id = "u2690738";
+
+                    <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/i.js"></script>
+                     -->
+
+                    <!-- CNZZ -->
+                    <script src="http://s22.cnzz.com/stat.php?id=5003572&web_id=5003572&show=pic" language="JavaScript"></script></div></div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+
+        <ul id="copyright">
+            <li>Copyright &copy;&nbsp; <a href="http://ifeve.com/">并发编程网 &#8211; ifeve.com</a></li>
+            <li>ICP号: <a href="http://www.miibeian.gov.cn" target="_blank">浙ICP备12046809号</a></li>
+            <li>
+                <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602005873" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/>浙公网安备 33010602005873号</a></li>
+        </ul>
+
+
+
+    </div>
+
+
+</div><!-- END #main_content -->
+
+<p id="return_top"><a href="#header">return top</a></p>
+
+<script type='text/javascript' src='http://ifeve.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/shCore.js?ver=2.1.364'></script>
+<script type='text/javascript' src='http://ifeve.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/shBrushJava.js?ver=2.1.364'></script>
+<script type='text/javascript'>
+    (function(){
+        var corecss = document.createElement('link');
+        var themecss = document.createElement('link');
+        var corecssurl = "http://ifeve.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/styles/shCore.css?ver=2.1.364";
+        if ( corecss.setAttribute ) {
+            corecss.setAttribute( "rel", "stylesheet" );
+            corecss.setAttribute( "type", "text/css" );
+            corecss.setAttribute( "href", corecssurl );
+        } else {
+            corecss.rel = "stylesheet";
+            corecss.href = corecssurl;
+        }
+        document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+        var themecssurl = "http://ifeve.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/styles/shThemeEclipse.css?ver=2.1.364";
+        if ( themecss.setAttribute ) {
+            themecss.setAttribute( "rel", "stylesheet" );
+            themecss.setAttribute( "type", "text/css" );
+            themecss.setAttribute( "href", themecssurl );
+        } else {
+            themecss.rel = "stylesheet";
+            themecss.href = themecssurl;
+        }
+        //document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+        document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+    })();
+    SyntaxHighlighter.config.clipboardSwf = 'http://ifeve.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf';
+    SyntaxHighlighter.config.strings.expandSource = 'show source';
+    SyntaxHighlighter.config.strings.viewSource = 'view source';
+    SyntaxHighlighter.config.strings.copyToClipboard = 'copy to clipboard';
+    SyntaxHighlighter.config.strings.copyToClipboardConfirmation = 'The code is in your clipboard now';
+    SyntaxHighlighter.config.strings.print = 'print';
+    SyntaxHighlighter.config.strings.help = '?';
+    SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+    SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+    SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+    SyntaxHighlighter.defaults['pad-line-numbers'] = true;
+    SyntaxHighlighter.all();
+</script>
+<link rel='stylesheet' id='yarppRelatedCss-css'  href='http://ifeve.com/wp-content/plugins/yet-another-related-posts-plugin/style/related.css?ver=4.9.2' type='text/css' media='all' />
+<script type='text/javascript' src='http://ifeve.com/wp-includes/js/comment-reply.min.js?ver=4.9.2'></script>
+<script type='text/javascript'>
+    /* <![CDATA[ */
+    var ratingsL10n = {"plugin_url":"http:\/\/ifeve.com\/wp-content\/plugins\/wp-postratings","ajax_url":"http:\/\/ifeve.com\/wp-admin\/admin-ajax.php","text_wait":"Please rate only 1 item at a time.","image":"stars_crystal","image_ext":"gif","max":"5","show_loading":"1","show_fading":"1","custom":"0"};
+    var ratings_mouseover_image=new Image();ratings_mouseover_image.src="http://ifeve.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_over.gif";;
+    /* ]]> */
+</script>
+<script type='text/javascript' src='http://ifeve.com/wp-content/plugins/wp-postratings/js/postratings-js.js?ver=1.85'></script>
+<script type='text/javascript'>
+    /* <![CDATA[ */
+    var viewsCacheL10n = {"admin_ajax_url":"http:\/\/ifeve.com\/wp-admin\/admin-ajax.php","post_id":"5251"};
+    /* ]]> */
+</script>
+<script type='text/javascript' src='http://ifeve.com/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68'></script>
+<script type='text/javascript' src='http://ifeve.com/wp-includes/js/wp-embed.min.js?ver=4.9.2'></script>
+</body>
+</html>
+
+<script src="http://ajax.useso.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+<script src="http://coolshell.cn//wp-content/themes/inove/js/jquery.bpopup-0.8.0.min.js"></script>
+
+<!-- Dynamic page generated in 0.918 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2018-02-03 22:02:39 -->
+
+<!-- Compression = gzip -->
+<!-- super cache -->
