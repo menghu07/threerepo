@@ -9,4 +9,22 @@
    <aop:aspectj-autoproxy />
    <context:component-scan base-package="com.apeny.servletjsp" />
    <!-- <bean class = "com.apeny.servletjsp.spring.bean.ArithmeticCalculatorImpl"></bean> -->
+   <bean id="redisHttpSessionConfiguration"
+         class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+      <property name="maxInactiveIntervalInSeconds" value="60000"/>
+   </bean>
+
+   <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+      <property name="maxTotal" value="100" />
+      <property name="maxIdle" value="10" />
+   </bean>
+
+   <bean id="jedisConnectionFactory"
+         class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">
+      <property name="hostName" value="192.168.140.123"/>
+      <property name="port" value="6379"/>
+      <property name="timeout" value="3000"/>
+      <property name="usePool" value="true"/>
+      <property name="poolConfig" ref="jedisPoolConfig"/>
+   </bean>
 </beans>

@@ -84,15 +84,16 @@ public class ShoppingCartServlet extends HttpServlet {
 			List<ShoppingItem> cart = (List<ShoppingItem>) session.getAttribute(CART_ATTRIBUTE);
 			if (cart == null) {
 				cart = new ArrayList<>();
-				session.setAttribute(CART_ATTRIBUTE, cart);
 			}
 			if (cart.contains(item)) {
 				//如果已经有产品记录，就把数量添加到当前的数量中
 				ShoppingItem existedItem = cart.get(cart.indexOf(item));
 				existedItem.setQuantity(existedItem.getQuantity() + quantity);
-			} else {				
+			} else {
 				cart.add(item);
 			}
+			//必须要重新赋值，到Session中对于redis缓存
+			session.setAttribute(CART_ATTRIBUTE, cart);
 			sendProductList(req, resp);
 		}
 	}

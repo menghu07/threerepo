@@ -1,6 +1,10 @@
 package com.apeny.servletjsp.domain;
 
-public class ShoppingItem {
+import java.io.Serializable;
+
+public class ShoppingItem implements Serializable {
+	private static final long serialVersionUID = 12L;
+
 	private Product product;
 	private Integer quantity;
 	

@@ -1,12 +1,15 @@
 package com.apeny.servletjsp.domain;
 
+import java.io.Serializable;
+
 /**
  * http session中用产品类
  * @author ahu
  *
  */
-public class Product {
-	
+public class Product implements Serializable {
+	private static final long serialVersionUID = 12L;
+
 	private Integer id;
 	private String name;
 	private String description;
