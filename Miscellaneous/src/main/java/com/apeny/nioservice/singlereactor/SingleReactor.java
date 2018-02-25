@@ -8,8 +8,10 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * Created by apeny on 2018/2/25.
@@ -25,10 +27,13 @@ public class SingleReactor implements Runnable {
 
     private static void startServer() {
         try {
-            Thread thread = new Thread(new SingleReactor(9092));
+            SingleReactor singleReactor = new SingleReactor(9092);
+            Thread thread = new Thread(singleReactor);
             thread.start();
             TimeUnit.SECONDS.sleep(2);
-            thread.interrupt();
+            singleReactor.selector.close();
+//            thread.interrupt();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -44,10 +49,6 @@ public class SingleReactor implements Runnable {
         }
     }
 
-    private static void startReactorClient() {
-        ReactorClient.connectServer();
-    }
-
     SingleReactor(int port) throws IOException {
         selector = Selector.open();
         serverSocketChannel = ServerSocketChannel.open();
@@ -59,21 +60,35 @@ public class SingleReactor implements Runnable {
 
     /**
      * 其他线程设置这个线程的中断标志后这个线程就会终止循环
+     * ServerSocketChannel的选择键SelectionKey 一次只能有一个且仅有一个accept操作
+     * SocketChannel的选择键SelectionKey一次只能有read和write任意组合操作
+     * 注册一个accept SelectionKey 两个read write SelectionKey
      */
     @Override
     public void run() {
         try {
+            int i = 0;
             //检测是否有其他线程设置了中断标志位
             while (!Thread.interrupted()) {
+                //如果立即返回(被wakeup唤醒,close掉,interrupte等)，返回值为0,选择集为原来的选择集
                 int count = selector.select();
+
+                //此处count值最大是n，因为只有n个注册的SelectionKey
                 System.out.println("selector select something......" + count);
                 Set<SelectionKey> selectionKeySet = selector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeySet.iterator();
+                System.out.println("set size : " + selectionKeySet.size());
                 while (iterator.hasNext()) {
                     SelectionKey selectionKey = iterator.next();
-                    System.out.println("selection key readable:  " + selectionKey.isReadable() + ", acceptable: " + selectionKey.isAcceptable() + ", writable: " + selectionKey.isWritable());
+                    System.out.println("selection key readable:  " + selectionKey.isReadable() + ", acceptable: " + selectionKey.isAcceptable()
+                            + ", writable: " + selectionKey.isWritable() + ", SelectionKey: " + selectionKey);
                     dispatch(selectionKey);
                     iterator.remove();
+                }
+                TimeUnit.SECONDS.sleep(5);
+                if (i == 0) {
+                    selector.wakeup();
+                    i++;
                 }
                 //设置中断标志，线程中断自己或其他线程中断自己
 //                Thread.currentThread().interrupt();
@@ -130,7 +145,7 @@ final class ReactorHandler implements Runnable {
         selectionKey = socketChannel.register(selector, 0);
         selectionKey.attach(this);
         selectionKey.interestOps(SelectionKey.OP_READ);
-        selector.wakeup();
+//        selector.wakeup();
     }
 
 
