@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SelectorTest {
     public static void main(String[] args) {
-        serverSocketChannel();
-//        testSelector();
+//        serverSocketChannel();
+        testSelector();
     }
 
     private static void testSelector() {
@@ -29,8 +29,9 @@ public class SelectorTest {
             serverSocketChannel.configureBlocking(false);
             ServerSocket serverSocket = serverSocketChannel.socket();
             serverSocket.bind(new InetSocketAddress(9892));
+//!            serverSocket.accept();
             SocketChannel server = serverSocketChannel.accept();
-
+            System.out.println("server value is : " + server);
             int i = SelectionKey.OP_ACCEPT;
             server = serverSocketChannel.accept();
             boolean xi = (i & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT;
