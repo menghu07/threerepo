@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SelectorTest {
     public static void main(String[] args) {
-//        serverSocketChannel();
-        testSelector();
+        serverSocketChannel();
+//        testSelector();
     }
 
     private static void testSelector() {
@@ -93,4 +93,6 @@ public class SelectorTest {
             e.printStackTrace();
         }
     }
+
+
 }
