@@ -16,7 +16,7 @@ public class SocketClient {
             System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
             client.setSoTimeout(60 * 1000 * 1000);
             OutputStream outputStream = client.getOutputStream();
-            outputStream.write( (System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
+           // outputStream.write( (System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
             InputStream inputStream = client.getInputStream();
             byte[] bytes = new byte[1024];
             inputStream.read(bytes);

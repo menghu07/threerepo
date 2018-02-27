@@ -8,7 +8,9 @@ import java.net.Socket;
 
 /**
  * ServerSocket在accept之前就已经有client连接到server，并且可以发送数据给server
- * close client 可以server继续执行写但不能执行读(会报错)
+ * close client 可以server继续执行写/读
+ * ServerSocket close 在获取socket之前， client write 抛异常 connection reset by peer; 抛异常connection reset
+ * ServerSocket close 在获取socket之后 write/read 没有影响，正常运行
  * Created by apeny on 2018/2/27.
  */
 public class SocketServer {
@@ -26,7 +28,7 @@ public class SocketServer {
                 OutputStream outputStream = server.getOutputStream();
                 byte[] bytes = new byte[1024];
 //                inputStream.read(bytes);
-                String toClient = new String(bytes) + ", hello i send to you my socket is 9020";
+                String toClient = ", hello i send to you my socket is 9020";
                 outputStream.write(toClient.getBytes());
                 System.out.println("i have receive some message from client");
             } catch (Exception ex) {
