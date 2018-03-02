@@ -8,12 +8,11 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 /**
+ * SocketChannel 阻塞与否相对SocketChannel.read(),SocketChannel.write()不阻塞
  * Created by apeny on 2018/2/25.
  */
 public class SingleReactor implements Runnable {

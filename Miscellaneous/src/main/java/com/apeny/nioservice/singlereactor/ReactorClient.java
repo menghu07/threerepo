@@ -34,6 +34,7 @@ public class ReactorClient {
     public static void connectServer() {
         try {
             SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(9892));
+            socketChannel.configureBlocking(false);
             System.out.println("connect success: " + "ha ha ha" + socketChannel + "sockect channel blocking: " + socketChannel.isBlocking());
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             byteBuffer.put("yyyyyy".getBytes());
