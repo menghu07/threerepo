@@ -8,9 +8,10 @@ import java.net.Socket;
 
 /**
  * ServerSocket在accept之前就已经有client连接到server，并且可以发送数据给server
- * close client 可以server继续执行写/读
+ * close client 可以server继续执行写/读, Software caused connection abort: socket write error
  * ServerSocket close 在获取socket之前， client write 抛异常 connection reset by peer; 抛异常connection reset
  * ServerSocket close 在获取socket之后 write/read 没有影响，正常运行
+ *
  * Created by apeny on 2018/2/27.
  */
 public class SocketServer {
