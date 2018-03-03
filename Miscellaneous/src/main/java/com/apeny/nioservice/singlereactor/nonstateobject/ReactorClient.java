@@ -1,4 +1,4 @@
-package com.apeny.nioservice.singlereactor;
+package com.apeny.nioservice.singlereactor.nonstateobject;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  * Created by apeny on 2018/2/25.
  */
 public class ReactorClient {
+
     public static void main(String[] args) {
         connectServer();
 //        multiClients();

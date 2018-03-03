@@ -1,4 +1,4 @@
-package com.apeny.nioservice.singlereactor;
+package com.apeny.nioservice.singlereactor.nonstateobject;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
