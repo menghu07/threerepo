@@ -25,7 +25,7 @@ public class SubReactorHandler implements Runnable {
     public void run() {
         try {
             state.handle(this, selectionKey, socketChannel);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println("client exception and exit");
             closeChannel();
         }

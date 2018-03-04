@@ -18,9 +18,10 @@ public class MultiReactorsClient {
     }
 
     public static void connectServer() {
+        SocketChannel socketChannel = null;
         try {
             byte[] dataFromConsole = new byte[1024];
-            SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(9892));
+            socketChannel = SocketChannel.open(new InetSocketAddress(9892));
             System.out.println("connect success: " + "ha ha ha" + socketChannel + "sockect channel blocking: " + socketChannel.isBlocking());
             System.out.print("hello apy:>");
             int count;
@@ -35,9 +36,16 @@ public class MultiReactorsClient {
                 System.out.println(new String(readBuffer.array()));
                 System.out.print("hello apy:>");
             }
-            socketChannel.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (socketChannel != null) {
+                try {
+                    socketChannel.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
