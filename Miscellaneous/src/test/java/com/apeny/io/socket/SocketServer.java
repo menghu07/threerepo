@@ -11,7 +11,7 @@ import java.net.Socket;
  * close client 可以server继续执行写/读; client 关闭一段时间后 先write后 read或write Software caused connection abort: socket write error
  * ServerSocket close 在获取socket之前， client write 抛异常 connection reset by peer; 抛异常connection reset
  * ServerSocket close 在获取socket之后 write/read 没有影响，正常运行
- *
+ * System.exit(1) 客户端报Connect reset异常
  * Created by apeny on 2018/2/27.
  */
 public class SocketServer {

@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SelectorTest {
     public static void main(String[] args) {
-        serverSocketChannel();
-//        testSelector();
+//        serverSocketChannel();
+        testSelector();
     }
 
     private static void testSelector() {
@@ -26,20 +26,15 @@ public class SelectorTest {
 
             Selector selector = Selector.open();
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
             ServerSocket serverSocket = serverSocketChannel.socket();
             serverSocket.bind(new InetSocketAddress(9892));
-//!            serverSocket.accept();
             SocketChannel server = serverSocketChannel.accept();
+            server.configureBlocking(false);
             System.out.println("server value is : " + server);
-            int i = SelectionKey.OP_ACCEPT;
-            server = serverSocketChannel.accept();
-            boolean xi = (i & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT;
-            int y = SelectionKey.OP_READ;
-            int z = SelectionKey.OP_WRITE;
-            int x = SelectionKey.OP_CONNECT;
+            SelectionKey selectionKey = server.register(selector, SelectionKey.OP_WRITE);
             while (true) {
                 int selectedCount = selector.select();
+                System.out.println("select continued.....");
                 if (selectedCount == 0) {
                     continue;
                 }
@@ -51,13 +46,23 @@ public class SelectorTest {
                         // a connection is accepted by a ServerSocketChannel
                     } else if (key.isConnectable()) {
                         // a connection is established with a remote Server
-
                     } else if (key.isReadable()) {
+                        System.out.println("read operation ready....");
+                        //一次读取两个字节，只要没有读完，就会有read事件触发
+                        int length = server.read(ByteBuffer.allocate(2));
+                        System.out.println("read data length: " + length);
                         // a channel is ready for reading
                     } else if (key.isWritable()) {
+                        server.write(ByteBuffer.wrap("getyouname".getBytes()));
+                        selectionKey.interestOps(SelectionKey.OP_READ);
                         // a channel is ready for writing
                     }
                     iterator.remove();
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {

@@ -21,7 +21,6 @@ public class SocketChannelWrite {
         try {
             SocketChannel socketChannel = SocketChannel.open();
             socketChannel.connect(new InetSocketAddress(9892));
-            socketChannel.close();
             ByteBuffer byteBuffer = ByteBuffer.wrap("send to Server hello".getBytes());
             socketChannel.write(byteBuffer);
             System.out.println(new String(byteBuffer.array()) + " || end" + byteBuffer.array().length);

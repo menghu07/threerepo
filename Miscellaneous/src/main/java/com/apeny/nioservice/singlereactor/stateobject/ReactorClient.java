@@ -38,10 +38,22 @@ public class ReactorClient {
             System.out.println("connect success: " + "ha ha ha" + socketChannel + "socket channel blocking: " + socketChannel.isBlocking());
             selectionKey.interestOps(SelectionKey.OP_WRITE);
             selector.select();
-            socketChannel.finishConnect();
             new Sender(socketChannel).run();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void multiClients() {
+        int count = 100;
+        int i = 0;
+        while (i < count) {
+            connectServer();
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
