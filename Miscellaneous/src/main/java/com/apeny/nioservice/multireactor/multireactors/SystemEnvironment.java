@@ -15,10 +15,12 @@ public class SystemEnvironment {
     /**
      * subreactor 线程池
      */
-    public static final ExecutorService SUBREACTOR_POOL = new ThreadPoolExecutor(3, 3, 120, TimeUnit.SECONDS, new LinkedBlockingDeque<>(10));
+    public static final ExecutorService SUBREACTOR_POOL = new ThreadPoolExecutor(3, 3,
+            120, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(10));
 
     /**
      * worker 线程池
      */
-    public static final ExecutorService WORKER_POOL = new ThreadPoolExecutor(CORES, 8, 120, TimeUnit.SECONDS, new LinkedBlockingDeque<>(10000));
+    public static final ExecutorService WORKER_POOL = new ThreadPoolExecutor(CORES, 8, 120,
+            TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(10000));
 }
