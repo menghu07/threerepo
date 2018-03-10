@@ -10,7 +10,7 @@ public class RedisStandaloneTest {
 
     @Test
     public void testAccess140() {
-        Jedis jedis = new Jedis("192.168.140.123", 6379);
+        Jedis jedis = new Jedis("192.168.0.128", 6379);
         System.out.println("ping result: " + jedis.ping());
     }
 }
