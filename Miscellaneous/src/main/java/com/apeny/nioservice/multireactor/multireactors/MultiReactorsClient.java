@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 使用Selector必须是非阻塞模式, SocketChannel OP_READ OP_WRITE OP_CONNECT这三个操作
- * 只有SocketChannel 注册到Selector 的read write 和对应的Selector非阻塞
+ * 只有SocketChannel 注册到Selector 的read write
  * Created by apeny on 2018/2/25.
  */
 public class MultiReactorsClient {
