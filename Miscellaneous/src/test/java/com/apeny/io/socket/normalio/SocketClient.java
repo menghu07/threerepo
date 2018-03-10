@@ -1,4 +1,4 @@
-package com.apeny.io.socket;
+package com.apeny.io.socket.normalio;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +15,8 @@ public class SocketClient {
             client.connect(new InetSocketAddress("127.0.0.1", 9020));
             System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
             client.setSoTimeout(60 * 1000 * 1000);
+            System.out.println(client.getSoLinger());
+            client.setSoLinger(true, 3600);
             OutputStream outputStream = client.getOutputStream();
            // outputStream.write( (System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
             InputStream inputStream = client.getInputStream();

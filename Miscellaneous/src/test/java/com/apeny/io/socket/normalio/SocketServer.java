@@ -1,4 +1,4 @@
-package com.apeny.io.socket;
+package com.apeny.io.socket.normalio;
 
 import java.io.IOException;
 import java.io.InputStream;
