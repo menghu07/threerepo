@@ -16,7 +16,7 @@ public class SocketClient {
         Socket client = new Socket();
         try {
             client.connect(new InetSocketAddress("127.0.0.1", 9021), 30000);
-            System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
+            System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort() + "receive buffer size: " + client.getReceiveBufferSize());
             client.setSoTimeout(60 * 1000 * 1000);
             System.out.println(client.getSoLinger());
             client.setSoLinger(true, 3600);
