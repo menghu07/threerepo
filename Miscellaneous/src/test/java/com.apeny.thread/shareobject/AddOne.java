@@ -1,8 +1,9 @@
 package com.apeny.thread.shareobject;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import com.apeny.thread.shareobject.executeservice.ThreadPoolExecutor;
+
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,11 +37,17 @@ public class AddOne {
     private static void startThreadPool() {
         AddOneThread one = new AddOneThread("thread one");
         AddOneThread two = new AddOneThread("thread two");
-        ThreadPoolExecutor service = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+        AddOneThread three = new AddOneThread("thread three");
+        AddOneThread four = new AddOneThread("thread four");
+        ThreadPoolExecutor service = new ThreadPoolExecutor(0, 3,
+                30L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(1));
         service.execute(one);
-        service.execute(two);
+//        service.execute(two);
+//        service.execute(three);
+//        service.execute(four);
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(60);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,6 +67,11 @@ public class AddOne {
             for (int j = 0; j < times; j++) {
                 System.out.println("before add " + Thread.currentThread() + ", i = " + i++);
                 System.out.println("after add " + Thread.currentThread() + ", i = " + i);
+            }
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
