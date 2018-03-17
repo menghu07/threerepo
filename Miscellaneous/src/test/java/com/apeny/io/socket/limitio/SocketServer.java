@@ -1,8 +1,11 @@
-package com.apeny.io.socket.normalio;
+package com.apeny.io.socket.limitio;
+
+import com.apeny.environment.SystemEnvironment;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,11 +20,17 @@ import java.net.Socket;
 public class SocketServer {
     public static void main(String[] args) throws IOException {
         System.out.println("i have established 9020");
-        ServerSocket serverSocket = new ServerSocket(9020);
+        ServerSocket serverSocket = new ServerSocket();
+        ServerSocket backupSocket = new ServerSocket();
         while (true) {
             try {
                 System.out.println(serverSocket + "my socket reuse address: " + serverSocket.getReuseAddress() + " get localPort" + serverSocket.getLocalPort());
+                //先设置可重新绑定
+                serverSocket.bind(new InetSocketAddress(9020));
                 Socket server = serverSocket.accept();
+                serverSocket.close();
+                backupSocket.bind(new InetSocketAddress(9020));
+                backupSocket.accept();
                 System.out.println(server + "my socket reuse address: " + server.getReuseAddress() + " get localPort" + server.getLocalPort());
                 server.setKeepAlive(true);
                 server.setSoTimeout(60 * 1000 * 1000);
@@ -35,6 +44,7 @@ public class SocketServer {
                 System.out.println("i read data from client: " + new String(bytes));
             } catch (Exception ex) {
                 ex.printStackTrace();
+                System.exit(1);
             }
         }
     }
