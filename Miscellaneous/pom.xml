@@ -16,6 +16,7 @@
         <aspectj.version>1.8.10</aspectj.version>
         <protostuff.version>1.6.0</protostuff.version>
         <poi.version>3.16</poi.version>
+        <druid.version>1.1.8</druid.version>
     </properties>
 
     <dependencies>
@@ -179,8 +180,17 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>${poi.version}</version>
         </dependency>
-
-
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.apy</groupId>
+            <artifactId>oracle6</artifactId>
+            <version>11.2.0.4</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>Miscellaneous</finalName>
