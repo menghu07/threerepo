@@ -4,8 +4,14 @@ package com.apeny.environment;
  * Created by apeny on 2018/1/27.
  */
 public class CanonicalClass {
+
+    public static void insertedValue() {
+        System.out.println("hill");
+    }
+
     public static void main(String[] args) {
         innerClass();
+        insertedValue();
     }
 
     /**

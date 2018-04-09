@@ -35,6 +35,7 @@ public class SystemEnvironment {
         response();
         char0();
         System.out.println("toString" + new SystemEnvironment());
+        CanonicalClass.main(null);
     }
 
     private static void response() {
