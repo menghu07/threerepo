@@ -8,6 +8,9 @@ import java.util.Date;
  */
 public class CharMain {
     public static void main(String[] args) {
+        String java = new StringBuilder("ja").append("va").toString();
+        String java2 = new StringBuilder("j").append("ava").toString();
+        System.out.println(java.intern() == java2.intern());
         char c = '值';
         System.out.println("sm c: 中文" + c);
 

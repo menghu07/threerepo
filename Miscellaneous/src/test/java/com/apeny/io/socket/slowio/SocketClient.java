@@ -15,7 +15,7 @@ public class SocketClient {
     public static void main(String[] args) {
         Socket client = new Socket();
         try {
-            client.connect(new InetSocketAddress("127.0.0.1", 9021), 30000);
+            client.connect(new InetSocketAddress("192.168.0.128", 34565), 30000);
             System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort() + "receive buffer size: " + client.getReceiveBufferSize());
             client.setSoTimeout(60 * 1000 * 1000);
             System.out.println(client.getSoLinger());
@@ -23,7 +23,7 @@ public class SocketClient {
             OutputStream outputStream = client.getOutputStream();
             // outputStream.write( (System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
             InputStream inputStream = client.getInputStream();
-            byte[] bytes = new byte[10];
+            byte[] bytes = new byte[1024];
             int count;
             while ((count = inputStream.read(bytes)) != -1) {
                 System.out.println("i have receive some message from server" + new String(bytes, 0, count));
