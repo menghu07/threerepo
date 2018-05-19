@@ -54,6 +54,7 @@
             <version>${dubbo.version}</version>
         </dependency>
 
+
     </dependencies>
     <build>
         <finalName>Redis-MQ</finalName>
