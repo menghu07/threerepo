@@ -1,5 +1,7 @@
 package com.apeny.servletjsp.dispatcher;
 
+import com.apeny.servletjsp.defobj.ExpressionLanguageOutput;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +29,7 @@ public class DispatcherJspServlet extends HttpServlet {
         String servletPath = req.getServletPath();
         servletPath = servletPath.replace(".do", ".jsp");
         req.setAttribute("ActionLabel", "new Action");
+        req.setAttribute("els", new ExpressionLanguageOutput());
         //forward验证原理
 //        PrintWriter pw = resp.getWriter();
 //        pw.write("the response from resp: " + " " + req.getServletPath());

@@ -22,5 +22,7 @@ true ${applicationScope==applicationScope}:${applicationScope==applicationScope[
     session.removeAttribute("book3");
 %>
 </ul>
+<p>实现无java代码</p>
+<p>call els${requestScope.els}  outNoReturn=${requestScope.els.outNoReturn()} withReturn=${requestScope.els.outWithReturn()}</p>
 </body>
 </html>
