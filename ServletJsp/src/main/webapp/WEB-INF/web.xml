@@ -78,6 +78,12 @@
 	   <error-code>404</error-code>
 	   <location>/WEB-INF/pages/errors/error404.jsp</location>
 	</error-page>
+    <resource-ref>
+        <description>JNDI DataSource</description>
+        <res-ref-name>dbcplink</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>
@@ -85,6 +91,7 @@
 			<scripting-invalid>false</scripting-invalid>
 		</jsp-property-group>
 	</jsp-config>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>jsp constraint</web-resource-name>

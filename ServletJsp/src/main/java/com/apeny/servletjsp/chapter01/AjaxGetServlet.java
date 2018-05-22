@@ -1,5 +1,7 @@
 package com.apeny.servletjsp.chapter01;
 
+import com.apeny.servletjsp.util.JdbcUtil;
+
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +21,9 @@ import java.util.concurrent.TimeUnit;
  */
 @WebServlet(name = "AjaxgetServlet", value = "/AjaxgetServlet/ajaxget.do", asyncSupported = true)
 public class AjaxGetServlet extends HttpServlet {
+    static {
+        System.out.println("from ServletJsp.... Ajax.");
+    }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final PrintWriter writer = resp.getWriter();

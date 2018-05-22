@@ -118,6 +118,11 @@
 			<artifactId>spring-session-data-redis</artifactId>
 			<version>${redis-session.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.40</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<!--<repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
