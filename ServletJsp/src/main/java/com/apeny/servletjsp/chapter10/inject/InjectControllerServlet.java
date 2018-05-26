@@ -1,4 +1,9 @@
-package com.apeny.servletjsp.chapter10;
+package com.apeny.servletjsp.chapter10.inject;
+
+import com.apeny.servletjsp.chapter10.Product;
+import com.apeny.servletjsp.chapter10.ProductForm;
+import com.apeny.servletjsp.chapter10.SaveProductAction;
+import com.apeny.servletjsp.chapter10.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +16,16 @@ import java.util.List;
 /**
  * Created by apeny on 2018/5/22.
  */
-@WebServlet(name = "controllerservlet", urlPatterns = {"/chapter10/product_input.do", "/chapter10/product_save.do", "/chapter10/product_search.do"})
-public class ControllerServlet extends HttpServlet {
+@WebServlet(name = "injectcontrollerservlet", urlPatterns = {"/chapter10/injectproduct_input.do", "/chapter10/injectproduct_save.do", "/chapter10/injectproduct_search.do"})
+public class InjectControllerServlet extends HttpServlet {
+    private DependencyInjector injector;
+    @Override
+    public void init() throws ServletException {
+        injector = new DependencyInjector();
+        injector.start();
+        System.out.println("servlet inject controller init...");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         process(req, resp);
@@ -26,24 +39,24 @@ public class ControllerServlet extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         //URI
         String uri = req.getRequestURI();
-        int lastSplash = uri.lastIndexOf('/');
+        System.out.println("uri: injectControllerServlet: " + uri);
         String dispatchUrl = null;
-        if (uri.endsWith("product_input.do")) {
+        if (uri.endsWith("injectproduct_input.do")) {
             String action = req.getParameter("doaction");
             dispatchUrl = "/WEB-INF/pages/chapter10/ProductForm.jsp";
             if ("save".equals(action)) {
                 //do nothing.....
-                req.setAttribute("action", "chapter10/product_save.do");
+                req.setAttribute("action", "chapter10/injectproduct_save.do");
             } else {
-                req.setAttribute("action", "chapter10/product_search.do");
+                req.setAttribute("action", "chapter10/injectproduct_search.do");
             }
-        } else if (uri.endsWith("product_search.do")) {
+        } else if (uri.endsWith("injectproduct_search.do")) {
             dispatchUrl = "/WEB-INF/pages/chapter10/ProductDetail.jsp";
             //组装ProductForm
             ProductForm productForm = new ProductForm();
             productForm.setName(req.getParameter("name"));
-            SaveProductAction saveProductAction = new SaveProductAction();
-            Product product = saveProductAction.queryOne(productForm.getName());
+            InjectSaveProductAction productAction = (InjectSaveProductAction) injector.getObject(InjectSaveProductAction.class);
+            Product product = productAction.queryOne(productForm.getName());
             req.setAttribute("product", product);
         } else {
             //组装ProductForm
@@ -61,10 +74,10 @@ public class ControllerServlet extends HttpServlet {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                SaveProductAction saveProductAction = new SaveProductAction();
-                saveProductAction.save(product);
+                InjectSaveProductAction productAction = (InjectSaveProductAction) injector.getObject(InjectSaveProductAction.class);
+                productAction.save(product);
                 //从数据库中查询出来后再显示
-                product = saveProductAction.queryOne(product.getName());
+                product = productAction.queryOne(product.getName());
                 //product 可序列化
                 req.setAttribute("product", product);
                 dispatchUrl = "/WEB-INF/pages/chapter10/ProductDetail.jsp";
@@ -75,5 +88,10 @@ public class ControllerServlet extends HttpServlet {
             }
         }
         req.getRequestDispatcher(dispatchUrl).forward(req, resp);
+    }
+
+    @Override
+    public void destroy() {
+        injector.shutdown();
     }
 }

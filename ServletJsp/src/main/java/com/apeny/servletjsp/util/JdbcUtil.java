@@ -16,7 +16,7 @@ public class JdbcUtil {
     static {
         try {
             Context initContext = new InitialContext();
-            dataSource = (DataSource) initContext.lookup("java:comp/env/dbcplink");
+            dataSource = (DataSource) initContext.lookup("java:comp/env/oracledbcplink");
             System.out.println("dataSource Found: " + dataSource);
         } catch (Exception e) {
             e.printStackTrace();

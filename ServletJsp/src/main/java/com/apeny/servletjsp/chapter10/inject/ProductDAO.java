@@ -1,22 +1,24 @@
-package com.apeny.servletjsp.chapter10;
+package com.apeny.servletjsp.chapter10.inject;
 
+import com.apeny.servletjsp.chapter10.Product;
 import com.apeny.servletjsp.util.JdbcUtil;
 
-import java.sql.*;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Created by apeny on 2018/5/23.
+ * Created by apeny on 2018/5/26.
  */
-public class SaveProductAction {
+public class ProductDAO {
 
-    /**
-     * 保存Product
-     *
-     * @param product
-     */
-    public void save(Product product) {
+    private DataSource dataSource;
+
+    public void saveProduct(Product product) {
         try {
-            Connection connection = JdbcUtil.getConnection();
+            Connection connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             String sql = "insert into product(name, description, price) values(?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -55,5 +57,13 @@ public class SaveProductAction {
             e.printStackTrace();
         }
         return product;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
