@@ -19,6 +19,7 @@ ${pageContext.request.setAttribute("fg", "new")}
 <a href="/ServletJsp/cookiesession2/youlike/preferenceget.do">preferenceget</a>
 <a href="/ServletJsp">indexNo jsp</a>
 <a href="/ServletJsp/index.jsp">index with jsp</a>
+<a href="/ServletJsp/WEB-INF/pages/chapter01/ActionLabel.jsp">ActionLabel-</a>
 <%pageContext.getOut().write(id);%>
 <script src="<%=contextPath%>/js/jquery/jquery-3.2.1.js"></script>
 </body>
