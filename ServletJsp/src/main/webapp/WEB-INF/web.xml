@@ -22,6 +22,7 @@
         <display-name>simple servlet</display-name>
         <servlet-name>simpleservlet</servlet-name>
         <servlet-class>com.apeny.servletjsp.chapter01.SimpleServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>simpleservlet</servlet-name>
@@ -96,6 +97,14 @@
         <web-resource-collection>
             <web-resource-name>jsp constraint</web-resource-name>
             <url-pattern>/pages/*</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>GET</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>CONNECT</http-method>
+            <http-method>OPTIONS</http-method>
         </web-resource-collection>
         <auth-constraint>
             <role-name>manager</role-name>

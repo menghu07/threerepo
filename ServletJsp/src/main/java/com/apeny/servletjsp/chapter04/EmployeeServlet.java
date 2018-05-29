@@ -79,6 +79,7 @@ public class EmployeeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("hi POST method is called, employee servlet");
         doGet(req, resp);
     }
 }
