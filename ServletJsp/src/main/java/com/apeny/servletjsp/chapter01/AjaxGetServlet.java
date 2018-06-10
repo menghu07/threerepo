@@ -74,7 +74,6 @@ public class AjaxGetServlet extends HttpServlet {
                         try {
                             TimeUnit.SECONDS.sleep(1);
                             pw.write(job + "job");
-                            pw.flush();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
