@@ -16,7 +16,7 @@ import javax.servlet.ServletResponse;
 public class CharacterEncodingFilter implements Filter {
 
 	/**
-	 * 是否或略请求中字符集设置
+	 * 是否忽略请求中字符集设置
 	 */
 	private boolean ignore;
 	
