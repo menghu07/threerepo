@@ -67,7 +67,7 @@ public class PreferenceServlet extends HttpServlet {
                 .append("</body>")
                 .append("</html>");
         //设置响应头，允许跨域
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:9802");
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Credentials", "true");
         PrintWriter pw = resp.getWriter();
         pw.print(builder);
