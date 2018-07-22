@@ -67,8 +67,10 @@ public class PreferenceServlet extends HttpServlet {
                 .append("</body>")
                 .append("</html>");
         //设置响应头，允许跨域
+        resp.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, TRACE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Credentials", "true");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
         PrintWriter pw = resp.getWriter();
         pw.print(builder);
     }
@@ -140,5 +142,22 @@ public class PreferenceServlet extends HttpServlet {
                 .append("</html>");
         PrintWriter pw = resp.getWriter();
         pw.println(builder);
+    }
+
+    /**
+     * 对跨域请求OPTIONS请求响应
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //处理Options请求
+        //设置响应头，允许跨域
+        resp.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, TRACE, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }
