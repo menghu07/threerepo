@@ -138,7 +138,8 @@
 	<repositories>
 		<!--<repository>
 		     <id>nexus</id>
-		     <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
+		     <name>nexus repository</name>
+		     <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
 			</repository>-->
 	</repositories>
 
