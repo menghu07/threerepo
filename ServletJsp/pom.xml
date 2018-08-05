@@ -136,8 +136,10 @@
 		<!--</dependency>-->
 	</dependencies>
 	<repositories>
-		<!--<repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
-			</repository>-->
+		<!--<repository> 
+		     <id>nexus</id>
+		     <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
+		</repository>-->
 	</repositories>
 
 	<build>
