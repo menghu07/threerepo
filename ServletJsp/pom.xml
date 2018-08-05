@@ -140,7 +140,7 @@
 		     <id>nexus</id>
 		     <name>nexus repository</name>
 		     <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
-			</repository>-->
+		</repository>-->
 	</repositories>
 
 	<build>
