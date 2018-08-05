@@ -136,10 +136,14 @@
 		<!--</dependency>-->
 	</dependencies>
 	<repositories>
+<<<<<<< HEAD
 		<!--<repository>
 		     <id>nexus</id>
 		     <name>nexus repository</name>
 		     <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
+=======
+		<!--<repository> <id>nexus</id> <name>nexus repository</name> <url>http://nexus.sonatype.org/nexus/content/groups/public/</url>
+>>>>>>> parent of de987d1... first commit pom
 			</repository>-->
 	</repositories>
 
