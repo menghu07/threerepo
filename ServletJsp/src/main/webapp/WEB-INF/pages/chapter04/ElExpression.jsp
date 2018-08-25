@@ -13,7 +13,7 @@
 <p>Expression Rule: ${pageContext[null] } + ${null["request"] }</p>
 <p>initParam:${initParam.contextConfigLocation }</p>
 <p>param: ${param.userName } paramValues: ${paramValues.userName }</p>
-<p>Cookie sessionid: requestSessionId ${pageContext.request.requestedSessionId } + cookie sessionId : ${cookie["JSESSIONID"].value}</p>
+<p>Cookie sessionid: requestSessionId ${pageContext.request.requestedSessionId } + cookie sessionId : ${cookie["JSESSIONID"].value} + ${cookie.size()}</p>
 <p>requestScope userName: ${requestScope.userName} + servletPath : ${requestScope.servletPath }</p>
 <p>Arithmetic Calculation: ${3 + 3} ${9 / 8 }</p>
 <p>Relation Calculation: ${3 == 9} </p>

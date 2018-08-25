@@ -28,7 +28,7 @@
         <servlet-name>simpleservlet</servlet-name>
         <url-pattern>/simpleservlet</url-pattern>
     </servlet-mapping>
-    <filter>
+    <!--<filter>
         <filter-name>springSessionRepositoryFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <async-supported>true</async-supported>
@@ -38,7 +38,7 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
+    </filter-mapping>-->
     <filter>
         <filter-name>setencoding</filter-name>
         <filter-class>com.apeny.servletjsp.filter.CharacterEncodingFilter</filter-class>
@@ -96,7 +96,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>jsp constraint</web-resource-name>
-            <url-pattern>/pages/*</url-pattern>
+            <url-pattern>/pages_nonexistent/*</url-pattern>
             <http-method>POST</http-method>
             <http-method>GET</http-method>
             <http-method>HEAD</http-method>

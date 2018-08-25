@@ -1,0 +1,4 @@
+jsonpCallBack2({
+  "compilerOptions": "ff",
+  "exclude": "node_modules"
+})

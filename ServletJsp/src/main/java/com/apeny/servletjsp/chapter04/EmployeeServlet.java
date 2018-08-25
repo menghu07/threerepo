@@ -5,10 +5,7 @@ import com.apeny.servletjsp.domain.Book;
 import com.apeny.servletjsp.domain.Employee;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -19,6 +16,8 @@ public class EmployeeServlet extends HttpServlet {
      *
      */
     private static final long serialVersionUID = 7105201612251707912L;
+
+    private static int count = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,6 +73,20 @@ public class EmployeeServlet extends HttpServlet {
         session.setAttribute("book3", book2);
         System.out.println("session1 == session2 " + (session == httpsSession));
         httpsSession.setAttribute("book4", book1);
+
+        //设置响应头，允许跨域
+        String ip = req.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || ip.equals("unknown")) {
+            ip = req.getRemoteHost();
+            if ("127.0.0.1".equals(ip)) {
+                ip = "localhost";
+            }
+        }
+        resp.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, TRACE, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.addCookie(new Cookie("size", "count" + count++));
         req.getRequestDispatcher("/WEB-INF" + servletPath).include(req, resp);
     }
 
@@ -81,5 +94,26 @@ public class EmployeeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("hi POST method is called, employee servlet");
         doGet(req, resp);
+    }
+
+
+    /**
+     * 对跨域请求OPTIONS请求响应
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //处理Options请求
+        //设置响应头，允许跨域
+        resp.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, TRACE, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Origin", "http://localhost");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type,Origin,No-Cache,X-Requested-With,If-Modified-Since,"
+                + "Pragma,LastModified,Cache-Control,Expires,X-E4M-With,userId,token");
+        //预检之后的3600不需要再预检
+        resp.setHeader("Access-Control-Max-Age", "3600");
     }
 }

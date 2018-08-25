@@ -9,7 +9,7 @@
    <aop:aspectj-autoproxy />
    <context:component-scan base-package="com.apeny.servletjsp" />
    <!-- <bean class = "com.apeny.servletjsp.spring.bean.ArithmeticCalculatorImpl"></bean> -->
-   <bean id="redisHttpSessionConfiguration"
+   <!--<bean id="redisHttpSessionConfiguration"
          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
       <property name="maxInactiveIntervalInSeconds" value="60000"/>
    </bean>
@@ -26,5 +26,5 @@
       <property name="timeout" value="3000"/>
       <property name="usePool" value="true"/>
       <property name="poolConfig" ref="jedisPoolConfig"/>
-   </bean>
+   </bean>-->
 </beans>

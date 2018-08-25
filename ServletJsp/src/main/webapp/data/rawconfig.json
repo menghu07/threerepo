@@ -1,0 +1,4 @@
+jsonpCallBack2({
+  "compilerOptions": "rawjsonone",
+  "exclude": "node_modules"
+})
