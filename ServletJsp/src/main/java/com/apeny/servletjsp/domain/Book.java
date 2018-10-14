@@ -59,7 +59,8 @@ public class Book implements HttpSessionBindingListener, HttpSessionActivationLi
     public void sessionWillPassivate(HttpSessionEvent se) {
         System.out.println("before session serialized: " + se.getSession());
         try {
-            throw new RuntimeException("will passivate.");
+//            throw new RuntimeException("will passivate.");
+            System.out.println("这会影响保存session :(");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
