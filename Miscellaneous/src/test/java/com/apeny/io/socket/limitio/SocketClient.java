@@ -19,19 +19,17 @@ public class SocketClient {
         byte[] bigBytes = new byte[Integer.MAX_VALUE - 2];
         int port = 9082;
         int serverPort = 9020;
+        int newServerPort = 9021;
         try {
             client.setReuseAddress(true);
             client.bind(new InetSocketAddress(port));
             client.connect(new InetSocketAddress("192.168.0.100", serverPort));
-            client.close();
-//            new Thread(new CloseClient(client)).start();
-            newClient.setReuseAddress(true);
-            newClient.bind(new InetSocketAddress(port));
-            newClient.connect(new InetSocketAddress("192.168.0.100", serverPort));
+            //注释部分表示重用连接地址在上个相同端口在占用的超时状态时
+//            client.close();
+//            newClient.setReuseAddress(true);
+//            newClient.bind(new InetSocketAddress(port));
+//            newClient.connect(new InetSocketAddress("192.168.0.100", newServerPort));
             OutputStream outputStream = client.getOutputStream();
-            outputStream.write(bigBytes);
-            outputStream.write((System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
-            client.close();
             System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
             client.setSoTimeout(60 * 1000 * 1000);
             System.out.println(client.getSoLinger());
@@ -40,6 +38,13 @@ public class SocketClient {
             byte[] bytes = new byte[1024];
             inputStream.read(bytes);
             System.out.println("i have receive some message from server" + new String(bytes));
+            outputStream.write(bigBytes);
+            System.out.println("i write large bytes to server");
+//            outputStream.write(bigBytes);
+//            outputStream.write(bigBytes);
+//            outputStream.write((System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
+            System.out.println("i write large bytes to server");
+            TimeUnit.SECONDS.sleep(1000);
         } catch (Exception e) {
             e.printStackTrace();
         }

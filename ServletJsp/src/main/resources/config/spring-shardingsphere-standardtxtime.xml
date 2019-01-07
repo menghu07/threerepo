@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sharding="http://shardingsphere.io/schema/shardingsphere/sharding"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://shardingsphere.io/schema/shardingsphere/sharding
+                        http://shardingsphere.io/schema/shardingsphere/sharding/sharding.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <bean id="ds1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${ds1.driverClassName}" />
+        <property name="url" value="${ds1.url}" />
+        <property name="username" value="${ds1.username}" />
+        <property name="password" value="${ds1.password}" />
+    </bean>
+    <sharding:standard-strategy id="standardStrategy" sharding-column="order_id" precise-algorithm-ref="txTimePreciseShardingAlgorithm"/>
+    <sharding:data-source id="shardingDataSource">
+        <sharding:props>
+            <prop key="sql.show">true</prop>
+        </sharding:props>
+        <sharding:sharding-rule data-source-names="ds1">
+            <sharding:table-rules>
+                <sharding:table-rule logic-table="t_order" actual-data-nodes="ds1.t_order180$->{1..9}0$->{0..1},ds1.t_order18$->{10..12}0$->{0..1}" table-strategy-ref="standardStrategy" />
+            </sharding:table-rules>
+        </sharding:sharding-rule>
+    </sharding:data-source>
+    <!-- spring使用的管理器 -->
+    <bean id="shardingTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="shardingDataSource"/>
+    </bean>
+    <!-- 使用注解配置spring事务 -->
+    <tx:annotation-driven transaction-manager="shardingTxManager"/>
+    <bean id="shardingSpringTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="shardingDataSource"></property>
+    </bean>
+</beans>

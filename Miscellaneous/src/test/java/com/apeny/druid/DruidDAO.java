@@ -7,8 +7,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by apeny on 2018/4/3.
@@ -21,7 +24,7 @@ public class DruidDAO {
     }
 
     public static void selectResponseCategory(JdbcTemplate jdbcTemplate) {
-        String sql = "SELECT code, DESCRIPTION, RESPONSECODE, TYPE, PARENTCODE, CREATOR, CREATETIME FROM ResponseCategory";
+        String sql = "SELECT code code2, DESCRIPTION, RESPONSECODE, TYPE, PARENTCODE, CREATOR, CREATETIME FROM ResponseCategory";
 //        List<ResponseCategory> responseCategoryList = jdbcTemplate.queryForList(sql, ResponseCategory.class);
         List<ResponseCategory> responseCategoryList = jdbcTemplate.query(sql, new RowMapper<ResponseCategory>() {
             @Override
@@ -34,6 +37,21 @@ public class DruidDAO {
                 r.setParentCode(rs.getString(5));
                 r.setCreator(rs.getString(6));
                 r.setCreateTime(rs.getString(7));
+                try {
+                    int i = 0;//rs.findColumn("ff");
+                    ResultSetMetaData resultSetMetaData = rs.getMetaData();
+                    int count = resultSetMetaData.getColumnCount();
+                    Set<String> columnNames = new HashSet<>();
+                    for (int j = 0; j < count; j++) {
+                        columnNames.add(resultSetMetaData.getColumnLabel(j+1));
+                    }
+                    System.out.println(columnNames);
+
+                    String columnLabel = resultSetMetaData.getColumnLabel(1);
+                    System.out.println("iii " + i + "" + columnLabel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return r;
             }
         });

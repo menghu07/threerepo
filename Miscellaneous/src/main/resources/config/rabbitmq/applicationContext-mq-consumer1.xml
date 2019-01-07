@@ -1,0 +1,10 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+    <import resource="../applicationContext-mq1.xml"/>
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="spittleListener" method="onMessage" queues="spittle.queue.1,spittle.queue.2,spittle.queue.3"></rabbit:listener>
+    </rabbit:listener-container>
+    <bean id="spittleListener" class="com.apeny.rabbitmq.spring.spittle.SpittleConsumer"></bean>
+</beans>

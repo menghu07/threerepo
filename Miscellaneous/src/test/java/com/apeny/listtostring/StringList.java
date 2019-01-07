@@ -1,6 +1,7 @@
 package com.apeny.listtostring;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,10 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
  */
 public class StringList {
     public static void main(String[] args) {
+        List<String> strings = new LinkedList<>();
+        strings.add("1");
+        strings.add("22");
+        System.out.println("sss" + strings);
         fuzzySearch();
         List<String> list = new ArrayList<String>();
         list.add("item1");

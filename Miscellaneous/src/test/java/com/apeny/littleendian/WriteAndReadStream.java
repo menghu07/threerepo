@@ -1,6 +1,7 @@
 package com.apeny.littleendian;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -21,6 +22,8 @@ public class WriteAndReadStream {
         inputStream.close();
         System.out.println("Little Endian: " + Arrays.toString(bytes));
         byte[] bytes1 = {-128, 0, 0, 0};
+        //<< 算数左移或按位与会先转换为 int 再操作
+        System.out.println((((Object)(((byte)(-1)) << 0)) ) + " & " + ((Object)(((byte)(-2)) + 0xFF) instanceof Integer));
         int ii128 = getInt(bytes1, 0);
         System.out.println("is i128? " + ii128);
     }

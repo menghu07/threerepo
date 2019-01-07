@@ -31,7 +31,6 @@
     <logger name="com.apeny.dot.log4j">
         <level value="INFO"/>
         <appender-ref ref="com.apeny.dot.log4j"/>
-
     </logger>
     <!--是com.apeny.dot.log4j的父日志-->
     <logger name="com.apeny">

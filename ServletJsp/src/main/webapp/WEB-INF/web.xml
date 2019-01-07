@@ -46,6 +46,7 @@
     <servlet-mapping>
         <servlet-name>springServletDispatcher</servlet-name>
         <url-pattern>*.dox</url-pattern>
+        <url-pattern>*.doy</url-pattern>
     </servlet-mapping>
     <!--<filter>
         <filter-name>springSessionRepositoryFilter</filter-name>

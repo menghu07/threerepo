@@ -59,6 +59,7 @@
                                 <classpathPrefix>lib/</classpathPrefix>
                                 <mainClass>com.app.SendMail</mainClass>
                             </manifest>
+                            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                         </archive>
                     </configuration>
                 </plugin>

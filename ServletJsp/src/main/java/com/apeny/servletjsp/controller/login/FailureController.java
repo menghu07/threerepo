@@ -2,6 +2,7 @@ package com.apeny.servletjsp.controller.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 失败处理
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FailureController {
 
     @RequestMapping("/failure.dox")
+    @ResponseBody
     public String failure() {
         return "shiro failure";
     }

@@ -76,15 +76,14 @@ public class LogAspect {
      */
     @Around(value = "execution(* *.*(int, int))")
     public Object around(ProceedingJoinPoint joinPoint) {
-    	Object result = null;
-    	System.out.println("[before around] join point like this: " + joinPoint);
-    	try {
-    		result = joinPoint.proceed();
-    	} catch (Throwable ex) {
-    		ex.printStackTrace();
-    	}
-    	System.out.println("[after around] join point like this: " + joinPoint + " return value = " + result);
-    	return result;
+        Object result = null;
+        System.out.println("[before around] join point like this: " + joinPoint);
+        try {
+            result = joinPoint.proceed();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        System.out.println("[after around] join point like this: " + joinPoint + " return value = " + result);
+        return result;
     }
-    
 }

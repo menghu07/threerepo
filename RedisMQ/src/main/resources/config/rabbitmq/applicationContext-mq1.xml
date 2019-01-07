@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:/properties/mq.properties" ignore-unresolvable="true"/>
+    <rabbit:connection-factory id="connectionFactory" host="${rabbit.hosts}" port="${rabbit.port}"
+                               username="${rabbit.username}"
+                               password="${rabbit.password}" virtual-host="${rabbit.virtualhost}"
+                               channel-cache-size="50"></rabbit:connection-factory>
+    <rabbit:admin connection-factory="connectionFactory"></rabbit:admin>
+    <!--auto-delete=true作用，只要consumer连接mq服务器后又断开连接，队列就会删除-->
+    <rabbit:queue name="spittle.queue.1" durable="true" auto-delete="false"></rabbit:queue>
+    <rabbit:queue name="spittle.queue.2" durable="true" auto-delete="false"></rabbit:queue>
+    <rabbit:queue name="spittle.queue.3" durable="true" auto-delete="false"></rabbit:queue>
+    <rabbit:queue name="spittle.queue.jackson1" durable="true" auto-delete="false">
+        <rabbit:queue-arguments>
+            <entry key="x-dead-letter-exchange" value="spittle.direct.exchange.dle"/>
+            <entry key="x-dead-letter-routing-key" value="spittle.queue.jackson1.dlkey.key1"/>
+            <entry key="x-message-ttl" value="10000" value-type="java.lang.Long"/>
+        </rabbit:queue-arguments>
+    </rabbit:queue>
+    <rabbit:queue name="spittle.queue.jackson1.dlq" durable="true" auto-delete="false" exclusive="false"/>
+    <!--绑定队列-->
+    <rabbit:direct-exchange name="spittle.direct.exchange" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding key="spittle.key1" queue="spittle.queue.1"/>
+            <rabbit:binding key="spittle.key2" queue="spittle.queue.2"/>
+            <rabbit:binding key="spittle.key3" queue="spittle.queue.3"/>
+            <rabbit:binding key="spittle.queue.jackson1" queue="spittle.queue.jackson1"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!--死信交换机-->
+    <rabbit:direct-exchange name="spittle.direct.exchange.dle" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding key="spittle.queue.jackson1.dlkey.key1" queue="spittle.queue.jackson1.dlq"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <rabbit:queue name="queue.fee.feesumacount" durable="true" auto-delete="false"/>
+    <!--绑定队列异常推进-->
+    <rabbit:direct-exchange name="exchange.forward.fee" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding key="queuekey.fee.feesumacount" queue="queue.fee.feesumacount"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+</beans>

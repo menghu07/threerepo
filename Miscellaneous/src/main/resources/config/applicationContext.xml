@@ -31,7 +31,7 @@
         <property name="maxWaitMillis" value="3000"/>
         <!-- 用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录 -->
         <property name="validationQuery">
-            <value>SELECT 1</value>
+            <value>SELECT 1 from dual</value>
         </property>
     </bean>
 

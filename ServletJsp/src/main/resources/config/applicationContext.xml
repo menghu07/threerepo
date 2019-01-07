@@ -29,7 +29,7 @@
     </bean>-->
     <aop:aspectj-autoproxy/>
     <!-- 指定spring jdbc属性文件位置 -->
-    <context:property-placeholder location="classpath:/properties/db.properties"></context:property-placeholder>
+    <context:property-placeholder location="classpath:/properties/db.properties,classpath:/properties/shardingsphere.db.properties" ignore-unresolvable="true"/>
     <!-- 数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${driverClassName}"/>
@@ -67,6 +67,7 @@
     </bean>
     <!--shiro config-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="apyAccessRealm"></property>
     </bean>
     <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
     <!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->
@@ -76,7 +77,7 @@
         <!-- 要求登录时的链接(可根据项目的URL进行替换),非必须的属性,默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
         <property name="loginUrl" value="/toLogIn.dox"/>
         <!-- 登录成功后要跳转的连接(本例中此属性用不到,因为登录成功后的处理逻辑在LoginController里硬编码为main.jsp了) -->
-        <!-- <property name="successUrl" value="/system/main"/> -->
+        <property name="successUrl" value="/success.dox"/>
         <!-- 用户访问未对其授权的资源时,所显示的连接 -->
         <!-- 若想更明显的测试此属性可以修改它的值,如unauthor.jsp,然后用[玄玉]登录后访问/admin/listUser.jsp就看见浏览器会显示unauthor.jsp -->
         <property name="unauthorizedUrl" value="/"/>
@@ -92,4 +93,21 @@
             </value>
         </property>
     </bean>
+    <bean  class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!--表示捕获的异常 -->
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    <!--捕获该异常时跳转的路径 -->
+                    /pages/errors/error403.do
+                </prop>
+                <!--表示捕获的异常 -->
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    <!--捕获该异常时跳转的路径 -->
+                    /pages/errors/error403.do
+                </prop>
+            </props>
+        </property>
+    </bean>
+    <import resource="spring-shardingsphere-shardingx.xml"/>
 </beans>
