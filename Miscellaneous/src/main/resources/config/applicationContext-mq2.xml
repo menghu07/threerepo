@@ -17,7 +17,7 @@
         <rabbit:queue-arguments>
             <entry key="x-dead-letter-exchange" value="spittle.direct.exchange.dle"/>
             <entry key="x-dead-letter-routing-key" value="spittle.queue.jackson1.dlkey.key1"/>
-            <entry key="x-message-ttl" value="10000" value-type="java.lang.Long"/>
+            <!--<entry key="x-message-ttl" value="10000" value-type="java.lang.Long"/>-->
         </rabbit:queue-arguments>
     </rabbit:queue>
     <rabbit:queue name="spittle.queue.jackson1.dlq" durable="true" auto-delete="false" exclusive="false"/>

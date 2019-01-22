@@ -55,6 +55,37 @@ public class SpringShardingQuery {
         }, systemNo);
     }
 
+    public Shardingx queryOneBySystemTime(String systemTime) {
+        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE SystemTime = ?";
+        return shardingSpringTemplate.queryForObject(sql, (rs, rowNum) -> {
+            Shardingx shardingx = new Shardingx();
+            shardingx.setSystemNo(rs.getString(1));
+            shardingx.setSystemTime(rs.getString(2));
+            shardingx.setStatus(rs.getInt(3));
+            shardingx.setAccountTime(rs.getString(4));
+            return shardingx;
+        }, systemTime);
+    }
+
+    public List<Shardingx> queryLessThanSystemTime(String systemTime) {
+//        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE ACCOUNTTIME < '20180108025150'"
+//                + " AND SystemTime BETWEEN '20180101001010' AND ?";
+//        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+//                + " SystemTime < ?";
+//        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+//                + " SystemTime <= ?";
+        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+                + " SystemTime > ?";
+        return shardingSpringTemplate.query(sql, (rs, rowNum) -> {
+            Shardingx shardingx = new Shardingx();
+            shardingx.setSystemNo(rs.getString(1));
+            shardingx.setSystemTime(rs.getString(2));
+            shardingx.setStatus(rs.getInt(3));
+            shardingx.setAccountTime(rs.getString(4));
+            return shardingx;
+        }, systemTime);
+    }
+
     public int queryCount() {
         String sql = "select count(*) from t_Shardingx where AccountTime >= '20180225015255' AND AccountTime <= '20181025041516'";
         return shardingSpringTemplate.queryForObject(sql, Integer.class);

@@ -78,7 +78,6 @@ public class ShardingxController {
         StringBuilder builder = new StringBuilder();
         builder.append("<table style='border:1px black solid;'>");
         for (Shardingx shardingx : shardingxList) {
-
             builder.append("<tr style='border:1px black solid;'>");
             builder.append("<td>").append(shardingx.getSystemNo()).append("</td>");
             builder.append("<td>").append(shardingx.getSystemTime()).append("</td>");
@@ -102,6 +101,43 @@ public class ShardingxController {
             builder.append("<td>").append(one.getSystemTime()).append("</td>");
             builder.append("<td>").append(one.getStatus()).append("</td>");
             builder.append("<td>").append(one.getSystemTime()).append("</td>");
+            builder.append("</tr>");
+        }
+        builder.append("</table>");
+        return builder.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "/shardingx/queryonebysystemtime.doy")
+    public String queryOneBySystemTime(String systemTime) {
+        Shardingx one = springShardingQuery.queryOneBySystemTime(systemTime);
+        StringBuilder builder = new StringBuilder();
+        builder.append("<table style='border:1px black solid;'>");
+        if (one != null) {
+            builder.append("<tr style='border:1px black solid;'>");
+            builder.append("<td>").append(one.getSystemNo()).append("</td>");
+            builder.append("<td>").append(one.getSystemTime()).append("</td>");
+            builder.append("<td>").append(one.getStatus()).append("</td>");
+            builder.append("<td>").append(one.getSystemTime()).append("</td>");
+            builder.append("</tr>");
+        }
+        builder.append("</table>");
+        return builder.toString();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(path = "/shardingx/queryrangeltsystemtime.doy")
+    public String queryRangeLessSystemTime(String systemTime) {
+        List<Shardingx> shardingxList = springShardingQuery.queryLessThanSystemTime(systemTime);
+        StringBuilder builder = new StringBuilder();
+        builder.append("<table style='border:1px black solid;'>");
+        for (Shardingx shardingx : shardingxList) {
+            builder.append("<tr style='border:1px black solid;'>");
+            builder.append("<td>").append(shardingx.getSystemNo()).append("</td>");
+            builder.append("<td>").append(shardingx.getSystemTime()).append("</td>");
+            builder.append("<td>").append(shardingx.getStatus()).append("</td>");
+            builder.append("<td>").append(shardingx.getSystemTime()).append("</td>");
             builder.append("</tr>");
         }
         builder.append("</table>");

@@ -76,7 +76,6 @@
                         <phase>install</phase>
                         <goals>
                             <goal>copy</goal>
-
                         </goals>
                         <configuration>
                             <artifactItems>

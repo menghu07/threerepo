@@ -34,7 +34,7 @@
         <property name="rabbitTemplate" ref="rabbitTemplate"></property>
         <property name="msgConverter" ref="jsonMessageConverter"></property>
     </bean>
-
+    
     <bean id="container" class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
         <property name="queueNames" value="spittle.queue.1,spittle.queue.2"></property>
         <property name="connectionFactory" ref="connectionFactory"></property>

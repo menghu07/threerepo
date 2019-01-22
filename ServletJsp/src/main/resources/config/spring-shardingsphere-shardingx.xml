@@ -13,15 +13,14 @@
         <property name="username" value="${ds1.username}" />
         <property name="password" value="${ds1.password}" />
     </bean>
-    <sharding:standard-strategy id="standardStrategy" sharding-column="SystemTime" precise-algorithm-ref="txTimePreciseShardingAlgorithm"/>
-
+    <sharding:standard-strategy id="standardStrategy" sharding-column="SystemTime" precise-algorithm-ref="txTimePreciseShardingAlgorithm" range-algorithm-ref="txTimeRangeShardingAlgorithm"/>
     <sharding:data-source id="shardingDataSource">
         <sharding:props>
             <prop key="sql.show">true</prop>
         </sharding:props>
         <sharding:sharding-rule data-source-names="ds1">
             <sharding:table-rules>
-                <sharding:table-rule logic-table="t_shardingx" actual-data-nodes="ds1.t_shardingx180$->{1..9}0$->{0..1},ds1.t_shardingx18$->{10..12}0$->{0..1}" table-strategy-ref="standardStrategy" />
+                <sharding:table-rule logic-table="t_shardingx" actual-data-nodes="ds1.t_shardingx,ds1.t_shardingx180$->{1..9}0$->{0..1},ds1.t_shardingx18$->{10..12}0$->{0..1},ds1.t_shardingxlast" table-strategy-ref="standardStrategy" />
             </sharding:table-rules>
         </sharding:sharding-rule>
     </sharding:data-source>
