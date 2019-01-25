@@ -53,7 +53,7 @@ public class ShardingxController {
     @RequestMapping(path = "/shardingx/batchinsert.doy")
     public String batchInsert() throws ParseException {
         List<Shardingx> shardingxList = new ArrayList<>();
-        for (int i = 0; i < 240000; i++) {
+        for (int i = 0; i < 10; i++) {
             Shardingx shardingx = new Shardingx();
             String systemNo = SqlUtil.generateOrderID();
             shardingx.setSystemNo(systemNo);
@@ -70,6 +70,47 @@ public class ShardingxController {
         springShardingDAO.batchInsert(shardingxList);
         return "batchinserted";
     }
+
+    /**
+     * 更新一个
+     */
+    public String update() throws ParseException {
+        Shardingx shardingx = new Shardingx();
+        String systemNo = SqlUtil.generateOrderID();
+        shardingx.setSystemTime("20081122022811");
+        shardingx.setStatus(new Random().nextInt(10));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+        Date date = simpleDateFormat.parse("20" + systemNo.substring(0, 12));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, new Random().nextInt(1000000));
+        shardingx.setAccountTime(simpleDateFormat.format(calendar.getTime()));
+        springShardingDAO.update(shardingx);
+        return "update" + JSON.toJSONString(shardingx);
+    }
+
+
+    @ResponseBody
+    public String batchUpdate() throws ParseException {
+        List<Shardingx> shardingxList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Shardingx shardingx = new Shardingx();
+            String systemNo = SqlUtil.generateOrderID();
+            shardingx.setSystemNo(systemNo);
+            shardingx.setSystemTime("20" + systemNo.substring(0, 12));
+            shardingx.setStatus(new Random().nextInt(10));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+            Date date = simpleDateFormat.parse("20" + systemNo.substring(0, 12));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.SECOND, new Random().nextInt(1000000));
+            shardingx.setAccountTime(simpleDateFormat.format(calendar.getTime()));
+            shardingxList.add(shardingx);
+        }
+        springShardingDAO.batchUpdate(shardingxList);
+        return "batchinserted";
+    }
+
 
     @ResponseBody
     @RequestMapping(path = "/shardingx/querypage.doy")
@@ -125,7 +166,6 @@ public class ShardingxController {
         return builder.toString();
     }
 
-
     @ResponseBody
     @RequestMapping(path = "/shardingx/queryrangeltsystemtime.doy")
     public String queryRangeLessSystemTime(String systemTime) {
@@ -145,8 +185,38 @@ public class ShardingxController {
     }
 
     @ResponseBody
+    @RequestMapping(path = "/shardingx/querygtltsystemtime.doy")
+    public String queryRangeLessSystemTime(String startTime, String endTime) {
+        List<Shardingx> shardingxList = springShardingQuery.queryGreaterAndLessSystemTime(startTime, endTime);
+        StringBuilder builder = new StringBuilder();
+        builder.append("<table style='border:1px black solid;'>");
+        for (Shardingx shardingx : shardingxList) {
+            builder.append("<tr style='border:1px black solid;'>");
+            builder.append("<td>").append(shardingx.getSystemNo()).append("</td>");
+            builder.append("<td>").append(shardingx.getSystemTime()).append("</td>");
+            builder.append("<td>").append(shardingx.getStatus()).append("</td>");
+            builder.append("<td>").append(shardingx.getSystemTime()).append("</td>");
+            builder.append("</tr>");
+        }
+        builder.append("</table>");
+        return builder.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(path = "/shardingx/querycountone.doy")
     public String queryCountOne() {
         return "count = " + springShardingQuery.queryCount();
+    }
+
+    /**
+     * 查询不分表
+     * @param x
+     * @return
+     */
+    public String queryNoSplitOne(String x) {
+        return JSON.toJSONString(springShardingQuery.queryNoSplitOne(x));
+    }
+
+    public void updateNoSpliteOne(String x) {
     }
 }

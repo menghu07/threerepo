@@ -1,5 +1,6 @@
 package com.apeny.servletjsp.query;
 
+import com.apeny.servletjsp.domain.sharding.NoSplitOne;
 import com.apeny.servletjsp.domain.sharding.Shardingx;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -86,8 +87,35 @@ public class SpringShardingQuery {
         }, systemTime);
     }
 
+    public List<Shardingx> queryGreaterAndLessSystemTime(String startTime, String endTime) {
+//        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+//                + " SystemTime >= ? AND SystemTime < ?";
+//        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+//                + " SystemTime >= ? AND SystemTime < ? AND SystemTime < ?";
+        String sql = "select SystemNo, SystemTime, Status, AccountTime FROM t_Shardingx WHERE"
+                + " SystemTime >= ? AND SystemTime < ? OR (SystemTime > ? AND SystemTime <= ?)";
+        return shardingSpringTemplate.query(sql, (rs, rowNum) -> {
+            Shardingx shardingx = new Shardingx();
+            shardingx.setSystemNo(rs.getString(1));
+            shardingx.setSystemTime(rs.getString(2));
+            shardingx.setStatus(rs.getInt(3));
+            shardingx.setAccountTime(rs.getString(4));
+            return shardingx;
+        }, startTime, endTime, startTime, "20180101161950");
+    }
+
     public int queryCount() {
         String sql = "select count(*) from t_Shardingx where AccountTime >= '20180225015255' AND AccountTime <= '20181025041516'";
         return shardingSpringTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public NoSplitOne queryNoSplitOne(String x) {
+        String sql = "select x, y FROM t_nosplitoNE WHERE x = ?";
+        return shardingSpringTemplate.queryForObject(sql, (rs, rowNum) -> {
+            NoSplitOne noSplitOne = new NoSplitOne();
+            noSplitOne.setX(rs.getString(1));
+            noSplitOne.setY(rs.getString(2));
+            return noSplitOne;
+        }, x);
     }
 }

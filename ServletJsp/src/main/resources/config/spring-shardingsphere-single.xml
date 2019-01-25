@@ -23,7 +23,7 @@
         </sharding:props>
         <sharding:sharding-rule data-source-names="ds1">
             <sharding:table-rules>
-                <sharding:table-rule logic-table="t_order" actual-data-nodes="ds1.t_order$->{0..1}" database-strategy-ref="databaseStrategy" table-strategy-ref="orderTableStrategy" />
+                <sharding:table-rule logic-table="t_order" per-month-tables="2" actual-data-nodes="ds1.t_order$->{0..1}" database-strategy-ref="databaseStrategy" table-strategy-ref="orderTableStrategy" />
             </sharding:table-rules>
         </sharding:sharding-rule>
     </sharding:data-source>

@@ -11,7 +11,8 @@ import java.util.Collection;
 /**
  * Created by monis on 2019/1/20.
  */
-public class TxTimeRangeShardingAlgorithm implements RangeShardingAlgorithm<String> {
+@Component("systemTimeRangeShardingAlgorithm")
+public class SystemTimeRangeShardingAlgorithm implements RangeShardingAlgorithm<String> {
 
     @Override
     public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<String> shardingValue) {

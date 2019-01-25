@@ -19,6 +19,7 @@ public class SqlUtil {
     public static String generateOrderID() {
         Calendar calendar = Calendar.getInstance();
         Random r = new Random();
+        calendar.set(Calendar.YEAR, 2008);
         calendar.set(Calendar.MONTH, r.nextInt(12));
         calendar.set(Calendar.DATE, r.nextInt(28) + 1);
         Date date = calendar.getTime();

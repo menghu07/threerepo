@@ -42,4 +42,37 @@ public class SpringShardingDAO {
         });
         shardingSpringTemplate.batchUpdate(sql, args);
     }
+
+    /**
+     * 更新数据假设一条记录
+     * @param shardingx
+     */
+    public void update(Shardingx shardingx) {
+        String sql = "UPDATE t_Shardingx SET Status = ?, AccountTime = ? WHERE SystemTime = ?";
+        shardingSpringTemplate.update(sql, shardingx.getStatus(), shardingx.getAccountTime(), shardingx.getSystemTime());
+    }
+
+    /**
+     * 批量更新数据
+     * @param shardingxList
+     */
+    public void batchUpdate(List<Shardingx> shardingxList) {
+        String sql = "UPDATE t_Shardingx SET Status = ?, AccountTime = ? WHERE SystemTime = ?";
+        List<Object[]> args = new ArrayList<>();
+        shardingxList.forEach(shardingx -> {
+            args.add(new Object[]{shardingx.getStatus(), shardingx.getAccountTime(), shardingx.getSystemTime()});
+        });
+        shardingSpringTemplate.batchUpdate(sql, args);
+    }
+
+    /**
+     * 更新不分表数据
+     * @param x
+     * @param y
+     */
+    public void updateNoSplit(String x, String y) {
+        String sql = "UPDATE t_nosplitoNE SET y = ? WHERE x = ?";
+        List<Object[]> args = new ArrayList<>();
+        shardingSpringTemplate.update(sql, y, x);
+    }
 }

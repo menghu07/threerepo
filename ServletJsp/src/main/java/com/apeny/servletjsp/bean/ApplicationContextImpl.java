@@ -1,6 +1,9 @@
 package com.apeny.servletjsp.bean;
 
+import com.apeny.servletjsp.bean.shardingsphere.TxTimePreciseShardingAlgorithm;
+import com.apeny.servletjsp.bean.shardingsphere.TxTimeRangeShardingAlgorithm;
 import com.apeny.servletjsp.redis.ImportToRedis;
+import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -65,4 +68,14 @@ public class ApplicationContextImpl implements ApplicationContextAware {
 	public ImportToRedis importToRedis(JedisClusterSupport support) {
         return new ImportToRedis(support);
 	}
+
+	@Bean
+    public PreciseShardingAlgorithm txTimePreciseShardingAlgorithm() {
+        return new TxTimePreciseShardingAlgorithm();
+    }
+
+    @Bean
+    public TxTimeRangeShardingAlgorithm txTimeRangeShardingAlgorithm() {
+	    return new TxTimeRangeShardingAlgorithm();
+    }
 }

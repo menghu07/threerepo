@@ -8,19 +8,30 @@
                         http://shardingsphere.io/schema/shardingsphere/sharding
                         http://shardingsphere.io/schema/shardingsphere/sharding/sharding.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <bean id="ds1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${ds1.driverClassName}" />
-        <property name="url" value="${ds1.url}" />
-        <property name="username" value="${ds1.username}" />
-        <property name="password" value="${ds1.password}" />
+        <property name="driverClassName" value="${ds1.driverClassName}"/>
+        <property name="url" value="${ds1.url}"/>
+        <property name="username" value="${ds1.username}"/>
+        <property name="password" value="${ds1.password}"/>
     </bean>
-    <sharding:standard-strategy id="standardStrategy" sharding-column="SystemTime" precise-algorithm-ref="txTimePreciseShardingAlgorithm" range-algorithm-ref="txTimeRangeShardingAlgorithm"/>
+    <sharding:standard-strategy id="standardStrategy" sharding-column="SystemTime"
+                                precise-algorithm-ref="txTimePreciseShardingAlgorithm"
+                                range-algorithm-ref="txTimeRangeShardingAlgorithm"/>
     <sharding:data-source id="shardingDataSource">
         <sharding:props>
             <prop key="sql.show">true</prop>
         </sharding:props>
         <sharding:sharding-rule data-source-names="ds1">
             <sharding:table-rules>
-                <sharding:table-rule logic-table="t_shardingx" actual-data-nodes="ds1.t_shardingx,ds1.t_shardingx180$->{1..9}0$->{0..1},ds1.t_shardingx18$->{10..12}0$->{0..1},ds1.t_shardingxlast" table-strategy-ref="standardStrategy" />
+                <sharding:table-rule logic-table="t_shardingx" per-month-tables="2"
+                                     actual-data-nodes="ds1.t_shardingx,ds1.t_shardingx180$->{1..9}0$->{0..1},ds1.t_shardingx18$->{10..12}0$->{0..1},ds1.t_shardingxlast"
+                                     table-strategy-ref="standardStrategy">
+                    <sharding:standard-strategy id="systemNoStrategy" sharding-column="SystemNo"
+                                                precise-algorithm-ref="txTimePreciseShardingAlgorithm"
+                                                range-algorithm-ref="txTimeRangeShardingAlgorithm"/>
+                    <sharding:standard-strategy id="accountTimeStrategy" sharding-column="AccountTime"
+                                                precise-algorithm-ref="txTimePreciseShardingAlgorithm"
+                                                range-algorithm-ref="txTimeRangeShardingAlgorithm"/>
+                </sharding:table-rule>
             </sharding:table-rules>
         </sharding:sharding-rule>
     </sharding:data-source>

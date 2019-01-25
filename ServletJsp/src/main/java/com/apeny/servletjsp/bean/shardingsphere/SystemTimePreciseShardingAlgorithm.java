@@ -10,7 +10,8 @@ import java.util.Iterator;
 /**
  * Created by monis on 2018/11/25.
  */
-public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<String>{
+@Component("systemTimePreciseShardingAlgorithm")
+public class SystemTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<String>{
 
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
@@ -25,14 +26,12 @@ public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<
             throw new IllegalArgumentException();
         }
         String value = shardingValue.getValue();
-        if (value == null || value.length() < 8) {
+        if (value.length() < 8) {
             throw new IllegalArgumentException();
         }
         String tableName = shardingValue.getLogicTableName();
-        String columnName = shardingValue.getColumnName();
-        String dateValue = tableSuffix(columnName, value);
-        int date = Integer.parseInt(dateValue.substring(4, 6)) / 16;
-        String shouldTableName = tableName + dateValue.substring(0, 4) + (date < 10 ? "0" : "") + date;
+        int date = Integer.parseInt(value.substring(6, 8)) / 16;
+        String shouldTableName = tableName + value.substring(2, 6) + (date < 10 ? "0" : "") + date;
         String firstSplitTable = null;
         int i = 0;
         String zeroTable = null;
@@ -60,22 +59,5 @@ public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<
             return zeroTable;
         }
         return lastTable;
-    }
-
-    private String tableSuffix(String columnName, String value) {
-        String lowerColumnName = columnName.toLowerCase();
-        if (lowerColumnName.endsWith("no")) {
-            //按no类型解析
-            if (value.length() == 20 || value.length() == 25) {
-                return value.substring(0, 6);
-            } else if (value.length() == 27) {
-                return value.substring(2, 8);
-            }
-            throw new IllegalArgumentException("字段值长度必须20/25/27");
-        } else if (lowerColumnName.endsWith("time")){
-            //按time类型解析
-            return value.substring(2, 8);
-        }
-        throw new IllegalArgumentException("列名称后缀必须时no或time");
     }
 }

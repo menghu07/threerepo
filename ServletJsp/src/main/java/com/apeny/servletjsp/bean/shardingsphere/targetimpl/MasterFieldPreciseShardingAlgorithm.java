@@ -1,16 +1,17 @@
-package com.apeny.servletjsp.bean.shardingsphere;
+package com.apeny.servletjsp.bean.shardingsphere.targetimpl;
 
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Created by monis on 2018/11/25.
+ * 精确分表
+ * Created by monis on 2019/1/24.
+ * @author monis
  */
-public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<String>{
+public class MasterFieldPreciseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
 
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
