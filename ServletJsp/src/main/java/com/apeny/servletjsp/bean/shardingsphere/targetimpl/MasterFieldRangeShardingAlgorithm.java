@@ -4,10 +4,7 @@ import com.google.common.collect.Range;
 import io.shardingsphere.api.algorithm.sharding.RangeShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 精确分表
@@ -24,6 +21,9 @@ public class MasterFieldRangeShardingAlgorithm implements RangeShardingAlgorithm
         Range<String> range = shardingValue.getValueRange();
         if (range == null) {
             throw new IllegalArgumentException();
+        }
+        if (range.isEmpty()) {
+            return Collections.emptyList();
         }
         String tableName = shardingValue.getLogicTableName();
         String beginSuffix = "";
@@ -53,6 +53,9 @@ public class MasterFieldRangeShardingAlgorithm implements RangeShardingAlgorithm
             String actualTable = iterator.next();
             if (i == 0) {
                 zeroTable = actualTable;
+            }
+            if (i == 1) {
+                firstTable = actualTable;
             }
             lastSecondTable = actualTable;
             if (shouldBeginTableName.compareToIgnoreCase(actualTable) <= 0 && shouldEndTableName.compareToIgnoreCase(actualTable) >= 0) {
@@ -87,6 +90,6 @@ public class MasterFieldRangeShardingAlgorithm implements RangeShardingAlgorithm
             //按time类型解析
             return value.substring(2, 8);
         }
-        throw new IllegalArgumentException("列名称后缀必须时no或time");
+        throw new IllegalArgumentException("列名称后缀必须是no或time");
     }
 }

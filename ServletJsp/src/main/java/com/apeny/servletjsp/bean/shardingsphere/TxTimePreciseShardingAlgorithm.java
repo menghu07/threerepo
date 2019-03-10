@@ -4,6 +4,7 @@ import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -13,7 +14,7 @@ import java.util.Iterator;
 public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<String>{
 
     @Override
-    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
+    public Collection<String> doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
         //20181010121314
         //半月一表
         //t_order180100 20180101-20180115
@@ -48,7 +49,7 @@ public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<
             }
             i++;
             if (availableName.equalsIgnoreCase(shouldTableName)) {
-                return shouldTableName;
+                return Arrays.asList(shouldTableName);
             }
             if (!iterator.hasNext()) {
                 lastTable = availableName;
@@ -57,9 +58,9 @@ public class TxTimePreciseShardingAlgorithm implements PreciseShardingAlgorithm<
         }
         //最小值和最大值
         if (shouldTableName.compareToIgnoreCase(firstSplitTable) < 0) {
-            return zeroTable;
+            return Arrays.asList(zeroTable);
         }
-        return lastTable;
+        return Arrays.asList(lastTable);
     }
 
     private String tableSuffix(String columnName, String value) {

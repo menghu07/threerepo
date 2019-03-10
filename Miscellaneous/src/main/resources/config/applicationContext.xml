@@ -36,11 +36,11 @@
     </bean>
 
     <!-- spring使用的管理器 -->
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <!--<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
     <!-- 使用注解配置spring事务 -->
-    <tx:annotation-driven transaction-manager="txManager"/>
+    <!--<tx:annotation-driven transaction-manager="txManager"/>-->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"></property>
     </bean>

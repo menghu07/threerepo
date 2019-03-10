@@ -1,6 +1,7 @@
 package com.apeny.servletjsp.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class SqlUtil {
     public static String generateOrderID() {
         Calendar calendar = Calendar.getInstance();
         Random r = new Random();
-        calendar.set(Calendar.YEAR, 2008);
+        calendar.set(Calendar.YEAR, 2018);
         calendar.set(Calendar.MONTH, r.nextInt(12));
         calendar.set(Calendar.DATE, r.nextInt(28) + 1);
         Date date = calendar.getTime();
@@ -29,5 +30,39 @@ public class SqlUtil {
             text += NUBMERS[r.nextInt(10)];
         }
         return text;
+    }
+
+    /**
+     * 添加指定秒数
+     * @param source
+     * @param toAddSeconds
+     * @return
+     */
+    public static String addSeconds(String source, int toAddSeconds) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+        try {
+            Date sourceDate = simpleDateFormat.parse(source);
+            sourceDate.setTime(sourceDate.getTime() + toAddSeconds);
+            return simpleDateFormat.format(sourceDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return source;
+        }
+    }
+
+    /**
+     * 10以内随机数
+     * @return
+     */
+    public static int rand10() {
+        return new Random(17).nextInt(10);
+    }
+
+    /**
+     * 365天以内随机数
+     * @return
+     */
+    public static int rand365() {
+        return new Random(17).nextInt( 365 * 86400);
     }
 }

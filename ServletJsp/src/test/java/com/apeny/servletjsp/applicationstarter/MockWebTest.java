@@ -1,6 +1,11 @@
 package com.apeny.servletjsp.applicationstarter;
 
+import com.alibaba.fastjson.JSON;
 import com.apeny.servletjsp.controller.shardingsphere.ShardingxController;
+import com.apeny.servletjsp.dao.SpringShardingDAO;
+import com.apeny.servletjsp.domain.sharding.FeeVoucher;
+import com.apeny.servletjsp.query.SpringShardingQuery;
+import com.apeny.servletjsp.util.SqlUtil;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.web.Log4jServletContainerInitializer;
 import org.junit.Before;
@@ -96,5 +101,49 @@ public class MockWebTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void deleteFeeVoucher() {
+        SpringShardingDAO springShardingDAO = applicationContext.getBean("springShardingDAO", SpringShardingDAO.class);
+        springShardingDAO.deleteAll("20190115101205295");
+    }
+
+    @Test
+    public void testInsertFeeVoucher() {
+        SpringShardingDAO springShardingDAO = applicationContext.getBean("springShardingDAO", SpringShardingDAO.class);
+        for (int i = 0; i < 10000; i++) {
+            FeeVoucher feeVoucher = new FeeVoucher();
+            String guid = SqlUtil.generateOrderID();
+            String systemTime = "20" + guid.substring(0, 15);
+            feeVoucher.setSystemNo(guid);
+            feeVoucher.setSystemTime(systemTime);
+            feeVoucher.setSourceTxNo(guid);
+            feeVoucher.setInstitutionID("00000000");
+            feeVoucher.setTxType("123456");
+            feeVoucher.setSourceTxSN(guid);
+            feeVoucher.setSourceTxTime(SqlUtil.addSeconds(systemTime, -SqlUtil.rand10()));
+            feeVoucher.setStatus(2);
+            feeVoucher.setAccountTime(SqlUtil.addSeconds(systemTime, SqlUtil.rand365()));
+            springShardingDAO.insertFeeVoucher(feeVoucher);
+        }
+    }
+
+    @Test
+    public void testQueryOne() {
+        SpringShardingQuery springShardingQuery = applicationContext.getBean("springShardingQuery", SpringShardingQuery.class);
+        System.out.println("result: " + JSON.toJSONString(springShardingQuery.queryBySystemNo("1801161152164783870891405")));
+    }
+
+    @Test
+    public void testSourceTxNo() {
+        SpringShardingQuery springShardingQuery = applicationContext.getBean("springShardingQuery", SpringShardingQuery.class);
+        System.out.println("result: " + JSON.toJSONString(springShardingQuery.queryBySourceTxNo("1801161152164783870891405")));
+    }
+
+    @Test
+    public void testSourceTxNoNext() {
+        SpringShardingQuery springShardingQuery = applicationContext.getBean("springShardingQuery", SpringShardingQuery.class);
+        System.out.println("result: " + JSON.toJSONString(springShardingQuery.queryBySourceTxNo("1805171152394879259467267")));
     }
 }

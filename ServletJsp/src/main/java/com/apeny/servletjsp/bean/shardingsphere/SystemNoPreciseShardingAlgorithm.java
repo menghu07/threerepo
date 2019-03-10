@@ -13,7 +13,7 @@ import java.util.Collection;
 public class SystemNoPreciseShardingAlgorithm implements PreciseShardingAlgorithm {
 
     @Override
-    public String doSharding(Collection availableTargetNames, PreciseShardingValue shardingValue) {
+    public Collection<String> doSharding(Collection availableTargetNames, PreciseShardingValue shardingValue) {
         return null;
     }
 }

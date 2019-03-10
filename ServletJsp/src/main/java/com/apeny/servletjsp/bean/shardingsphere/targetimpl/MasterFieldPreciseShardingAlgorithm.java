@@ -2,8 +2,11 @@ package com.apeny.servletjsp.bean.shardingsphere.targetimpl;
 
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
+import io.shardingsphere.core.rule.TableRule;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -14,7 +17,7 @@ import java.util.Iterator;
 public class MasterFieldPreciseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
 
     @Override
-    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
+    public Collection<String> doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue, TableRule tableRule) {
         //20181010121314
         //半月一表
         //t_order180100 20180101-20180115
@@ -49,7 +52,7 @@ public class MasterFieldPreciseShardingAlgorithm implements PreciseShardingAlgor
             }
             i++;
             if (availableName.equalsIgnoreCase(shouldTableName)) {
-                return shouldTableName;
+                return Collections.singletonList(shouldTableName);
             }
             if (!iterator.hasNext()) {
                 lastTable = availableName;
@@ -58,9 +61,9 @@ public class MasterFieldPreciseShardingAlgorithm implements PreciseShardingAlgor
         }
         //最小值和最大值
         if (shouldTableName.compareToIgnoreCase(firstSplitTable) < 0) {
-            return zeroTable;
+            return Collections.singletonList(zeroTable);
         }
-        return lastTable;
+        return Collections.singletonList(lastTable);
     }
 
     private String tableSuffix(String columnName, String value) {
@@ -77,6 +80,6 @@ public class MasterFieldPreciseShardingAlgorithm implements PreciseShardingAlgor
             //按time类型解析
             return value.substring(2, 8);
         }
-        throw new IllegalArgumentException("列名称后缀必须时no或time");
+        throw new IllegalArgumentException("列名称后缀必须是no或time");
     }
 }

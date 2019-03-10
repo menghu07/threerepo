@@ -1,5 +1,6 @@
 package com.apeny.servletjsp.query;
 
+import com.apeny.servletjsp.domain.sharding.FeeVoucher;
 import com.apeny.servletjsp.domain.sharding.NoSplitOne;
 import com.apeny.servletjsp.domain.sharding.Shardingx;
 import org.apache.logging.log4j.LogManager;
@@ -117,5 +118,41 @@ public class SpringShardingQuery {
             noSplitOne.setY(rs.getString(2));
             return noSplitOne;
         }, x);
+    }
+
+    public FeeVoucher queryBySystemNo(String systemNo) {
+        String sql = "select SYSTEMNO,SystemTime, SourceTxNo, InstitutionID,"
+                + " TxType, SourceTxSN, SourceTxTime, Status, AccountTime FROM JF_FeeVoucher WHERE SystemNo = ?";
+        return shardingSpringTemplate.queryForObject(sql, (rs, rowNum) -> {
+            FeeVoucher feeVoucher = new FeeVoucher();
+            feeVoucher.setSystemNo(rs.getString(1));
+            feeVoucher.setSystemTime(rs.getString(2));
+            feeVoucher.setSourceTxNo(rs.getString(3));
+            feeVoucher.setInstitutionID(rs.getString(4));
+            feeVoucher.setTxType(rs.getString(5));
+            feeVoucher.setSourceTxNo(rs.getString(6));
+            feeVoucher.setSystemTime(rs.getString(7));
+            feeVoucher.setStatus(rs.getInt(8));
+            feeVoucher.setAccountTime(rs.getString(9));
+            return feeVoucher;
+        }, systemNo);
+    }
+
+    public FeeVoucher queryBySourceTxNo(String sourceTxNo) {
+        String sql = "select SYSTEMNO,SystemTime, SourceTxNo, InstitutionID,"
+                + " TxType, SourceTxSN, SourceTxTime, Status, AccountTime FROM JF_FeeVoucher WHERE SourceTxNo = ?";
+        return shardingSpringTemplate.queryForObject(sql, (rs, rowNum) -> {
+            FeeVoucher feeVoucher = new FeeVoucher();
+            feeVoucher.setSystemNo(rs.getString(1));
+            feeVoucher.setSystemTime(rs.getString(2));
+            feeVoucher.setSourceTxNo(rs.getString(3));
+            feeVoucher.setInstitutionID(rs.getString(4));
+            feeVoucher.setTxType(rs.getString(5));
+            feeVoucher.setSourceTxSN(rs.getString(6));
+            feeVoucher.setSourceTxTime(rs.getString(7));
+            feeVoucher.setStatus(rs.getInt(8));
+            feeVoucher.setAccountTime(rs.getString(9));
+            return feeVoucher;
+        }, sourceTxNo);
     }
 }

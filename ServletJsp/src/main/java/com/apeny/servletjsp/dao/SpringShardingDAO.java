@@ -1,5 +1,6 @@
 package com.apeny.servletjsp.dao;
 
+import com.apeny.servletjsp.domain.sharding.FeeVoucher;
 import com.apeny.servletjsp.domain.sharding.Shardingx;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,5 +75,39 @@ public class SpringShardingDAO {
         String sql = "UPDATE t_nosplitoNE SET y = ? WHERE x = ?";
         List<Object[]> args = new ArrayList<>();
         shardingSpringTemplate.update(sql, y, x);
+    }
+
+    /**
+     * 删除FeeVoucher所有数据
+     */
+    public void deleteAll(String systemTime) {
+        String sql = "DELETE FROM JF_FeeVoucher";
+        if (systemTime != null) {
+            sql += " WHERE SystemTime <= ?";
+        }
+        Object arg = systemTime;
+        shardingSpringTemplate.update(sql, arg);
+    }
+
+    /**
+     * insert one feevoucher
+     * @param feeVoucher
+     */
+    public void insertFeeVoucher(FeeVoucher feeVoucher) {
+        String sql = "INSERT INTO JF_FeeVoucher(SystemNo, SystemTime, SourceTxNo, InstitutionID, TxType, SourceTxSN,"
+                + " SourceTxTime, Status, AccountTime) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        shardingSpringTemplate.update(sql, feeVoucher.getSystemNo(), feeVoucher.getSystemTime(), feeVoucher.getSourceTxNo(), feeVoucher.getInstitutionID(),
+                feeVoucher.getTxType(), feeVoucher.getSourceTxSN(), feeVoucher.getSourceTxTime(), feeVoucher.getStatus(), feeVoucher.getAccountTime());
+    }
+
+    public void batchInsertFeeVoucher(List<FeeVoucher> feeVouchers) {
+        List<Object[]> args = new ArrayList<>();
+        for (FeeVoucher feeVoucher : feeVouchers) {
+            args.add(new Object[]{feeVoucher.getSystemNo(), feeVoucher.getSystemTime(), feeVoucher.getSourceTxNo(), feeVoucher.getInstitutionID(),
+                    feeVoucher.getTxType(), feeVoucher.getSourceTxSN(), feeVoucher.getSourceTxTime(), feeVoucher.getStatus(), feeVoucher.getAccountTime()});
+        }
+        String sql = "INSERT INTO JF_FeeVoucher(SystemNo, SystemTime, SourceTxNo, InstitutionID, TxType, SourceTxSN,"
+                + " SourceTxTime, Status, AccountTime) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        shardingSpringTemplate.batchUpdate(sql, args);
     }
 }

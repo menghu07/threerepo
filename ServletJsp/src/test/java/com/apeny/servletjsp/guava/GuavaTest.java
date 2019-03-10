@@ -30,7 +30,7 @@ public class GuavaTest {
         String ex2 = one.iterator().next();
         System.out.println("first ex: " + ex + ", ex2: " + ex2);
         for (String e : one) {
-            System.out.println("from iterator: " + e);
+            System.out.println("hi是的from iterator: " + e);
         }
     }
 }

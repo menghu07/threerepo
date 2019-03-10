@@ -14,38 +14,54 @@ import java.util.concurrent.TimeUnit;
  */
 public class SocketClient {
     public static void main(String[] args) {
-        Socket client = new Socket();
         Socket newClient = new Socket();
-        byte[] bigBytes = new byte[Integer.MAX_VALUE - 2];
+        byte[] bigBytes = new byte[1024];
         int port = 9082;
         int serverPort = 9020;
         int newServerPort = 9021;
         try {
-            client.setReuseAddress(true);
-            client.bind(new InetSocketAddress(port));
-            client.connect(new InetSocketAddress("192.168.0.100", serverPort));
-            //注释部分表示重用连接地址在上个相同端口在占用的超时状态时
-//            client.close();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Socket client = new Socket();
+                        client.bind(new InetSocketAddress(port));
+                        client.connect(new InetSocketAddress("192.168.0.128", serverPort), 25000);
+                        //注释部分表示重用连接地址在上个相同端口在占用的超时状态时
+                        System.out.println("client already close");
 //            newClient.setReuseAddress(true);
 //            newClient.bind(new InetSocketAddress(port));
 //            newClient.connect(new InetSocketAddress("192.168.0.100", newServerPort));
-            OutputStream outputStream = client.getOutputStream();
-            System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
-            client.setSoTimeout(60 * 1000 * 1000);
-            System.out.println(client.getSoLinger());
-            client.setSoLinger(true, 3600);
-            InputStream inputStream = client.getInputStream();
-            byte[] bytes = new byte[1024];
-            inputStream.read(bytes);
-            System.out.println("i have receive some message from server" + new String(bytes));
-            outputStream.write(bigBytes);
-            System.out.println("i write large bytes to server");
+                        OutputStream outputStream = client.getOutputStream();
+                        System.out.println("my socket : " + client.getPort() + " get localPort" + client.getLocalPort());
+                        System.out.println(client.getSoLinger());
+                        InputStream inputStream = client.getInputStream();
+                        byte[] bytes = new byte[500];
+                        outputStream.write(bigBytes);
+                        int length = inputStream.read(bytes);
+                        System.out.println("read length: "+ length + " i have receive some message from server" + new String(bytes));
+                        System.out.println("i one write large bytes to server");
+                        //在读入后面的内容
+                        int secondLength = inputStream.read(bytes);
+                        System.out.println("second read length: " + secondLength);
 //            outputStream.write(bigBytes);
 //            outputStream.write(bigBytes);
 //            outputStream.write((System.nanoTime() + "," + Thread.currentThread() + "my name huhu, make friends?").getBytes());
-            System.out.println("i write large bytes to server");
-            TimeUnit.SECONDS.sleep(1000);
+                        client.shutdownOutput();
+                        client = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+            System.out.println("i two write large bytes to server");
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            TimeUnit.SECONDS.sleep(1000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

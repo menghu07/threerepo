@@ -2,6 +2,7 @@ package com.apeny.servletjsp.bean;
 
 import com.apeny.servletjsp.bean.shardingsphere.TxTimePreciseShardingAlgorithm;
 import com.apeny.servletjsp.bean.shardingsphere.TxTimeRangeShardingAlgorithm;
+import com.apeny.servletjsp.bean.shardingsphere.targetimpl.*;
 import com.apeny.servletjsp.redis.ImportToRedis;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 import org.springframework.beans.BeansException;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,5 +79,45 @@ public class ApplicationContextImpl implements ApplicationContextAware {
     @Bean
     public TxTimeRangeShardingAlgorithm txTimeRangeShardingAlgorithm() {
 	    return new TxTimeRangeShardingAlgorithm();
+    }
+
+    @Bean
+    public MasterFieldPreciseShardingAlgorithm masterFieldPreciseShardingAlgorithm() {
+	    return new MasterFieldPreciseShardingAlgorithm();
+    }
+
+    @Bean
+    public MasterFieldRangeShardingAlgorithm masterFieldRangeShardingAlgorithm() {
+	    return new MasterFieldRangeShardingAlgorithm();
+    }
+
+    @Bean
+    public NeighborPreciseShardingAlgorithm neighborPreciseShardingAlgorithm() {
+	    return new NeighborPreciseShardingAlgorithm();
+    }
+
+    @Bean
+    public NeighborRangeShardingAlgorithm neighborRangeShardingAlgorithm() {
+	    return new NeighborRangeShardingAlgorithm();
+    }
+
+    @Bean
+    public BeforePeriodPreciseShardingAlgorithm beforePeriodPreciseShardingAlgorithm6() {
+	    return new BeforePeriodPreciseShardingAlgorithm(6);
+    }
+
+    @Bean
+    public BeforePeriodPreciseShardingAlgorithm beforePeriodPreciseShardingAlgorithm12() {
+	    return new BeforePeriodPreciseShardingAlgorithm();
+    }
+
+    @Bean
+    public BeforePeriodRangeShardingAlgorithm beforePeriodRangeShardingAlgorithm6() {
+	    return new BeforePeriodRangeShardingAlgorithm(6);
+    }
+
+    @Bean
+    public BeforePeriodRangeShardingAlgorithm beforePeriodRangeShardingAlgorithm12() {
+	    return new BeforePeriodRangeShardingAlgorithm();
     }
 }

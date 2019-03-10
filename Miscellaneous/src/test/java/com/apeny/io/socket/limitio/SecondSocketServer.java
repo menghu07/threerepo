@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ServerSocket在accept之前就已经有client连接到server，并且可以发送数据给server
@@ -27,10 +28,12 @@ public class SecondSocketServer {
                 serverSocket.bind(new InetSocketAddress(9021));
                 Socket server = serverSocket.accept();
                 System.out.println(server + "my socket reuse address: " + server.getReuseAddress() + " get localPort" + server.getLocalPort());
+                TimeUnit.SECONDS.sleep(10000);
                 serverSocket.close();
                 System.out.println("first server is closed");
                 backupSocket.setReuseAddress(true);
                 backupSocket.bind(new InetSocketAddress(9021));
+                System.out.println("second server want reuse port");
                 backupSocket.accept();
                 server.setKeepAlive(true);
                 server.setSoTimeout(60 * 1000 * 1000);

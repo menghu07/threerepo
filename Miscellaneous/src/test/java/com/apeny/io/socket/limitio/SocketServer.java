@@ -22,10 +22,10 @@ import java.util.concurrent.TimeUnit;
 public class SocketServer {
     public static void main(String[] args) throws IOException {
         System.out.println("i have established 9020");
-        ServerSocket serverSocket = new ServerSocket();
-        ServerSocket backupSocket = new ServerSocket();
         while (true) {
             try {
+                ServerSocket serverSocket = new ServerSocket();
+                ServerSocket backupSocket = new ServerSocket();
                 System.out.println(serverSocket + "my socket reuse address: " + serverSocket.getReuseAddress() + " get localPort" + serverSocket.getLocalPort());
                 //先设置可重新绑定
                 serverSocket.bind(new InetSocketAddress(9020));
@@ -37,28 +37,33 @@ public class SocketServer {
 //                backupSocket.bind(new InetSocketAddress(9020));
 //                backupSocket.accept();
 //                System.out.println(server + "my socket reuse address: " + server.getReuseAddress() + " get localPort" + server.getLocalPort());
-                server.setKeepAlive(true);
+//                server.setKeepAlive(true);
                 //没有数据可读时会超时
-                server.setSoTimeout(3 * 1000);
+                server.setSoTimeout(3000 * 1000);
                 InputStream inputStream = server.getInputStream();
                 OutputStream outputStream = server.getOutputStream();
-                byte[] bytes = new byte[Integer.MAX_VALUE - 2];
+                byte[] bytes = new byte[5000];
                 String toClient = ", hello i send to you my socket is 9020";
-                outputStream.write(toClient.getBytes());
+//                outputStream.write(toClient.getBytes());
+                outputStream.write(bytes);
                 System.out.println("i have receive some message from client");
                 System.out.println("begintime " + new Date());
-                while (true) {
-                int count = inputStream.read(bytes);
+//                while (true) {
+                    int count = inputStream.read(bytes);
+//                    if (count == -1) {
+//                        break;
+//                    }
 //                System.out.println("i read data from client: hhhhh" + count);
-                }
+//                }
+                System.out.println("close server port");
             } catch (Exception ex) {
                 System.out.println("endtime " + new Date());
                 ex.printStackTrace();
-
 //                System.exit(1);
             }
             try {
-                TimeUnit.SECONDS.sleep(20);
+                System.out.println("server sleep in here");
+                TimeUnit.SECONDS.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
