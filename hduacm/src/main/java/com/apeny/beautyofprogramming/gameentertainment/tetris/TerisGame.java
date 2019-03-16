@@ -1,5 +1,6 @@
 package com.apeny.beautyofprogramming.gameentertainment.tetris;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -40,6 +41,67 @@ public class TerisGame {
         System.out.println("Direction: left j, right l, down k, rotate c, speedup v, pause p, resume r, stop s, exit e, game over z");
         ChessBoard currentChessBoard = null;
         Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            String instructionStr = scanner.next();
+            int instruction = instructionStr.charAt(0);
+            switch (instruction) {
+                case START:
+                    if (currentChessBoard == null || currentChessBoard.isExited()) {
+                        currentChessBoard = new ChessBoard();
+                        currentChessBoard.newShape();
+                        currentChessBoard.start();
+                    }
+                    break;
+                case RIGHT:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.moveRight();
+                    }
+                    break;
+                case DOWN:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.moveDown();
+                    }
+                    break;
+                case LEFT:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.moveLeft();
+                    }
+                    break;
+                case ROTATE:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.rotateNewShape();
+                    }
+                    break;
+                case SPEEDUP:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.speedupMoveDown();
+                    }
+                    break;
+                case PAUSE:
+                case RESUME:
+                case EXIT:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.sendInstruction(instruction);
+                    }
+                    break;
+                case GAME_OVER:
+                    System.out.println("you had exited game.");
+                    System.exit(0);
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    /**
+     * 游戏主程序(Server Client)
+     */
+    public static void playGame(InputStream serverInputStream) {
+        System.out.println("Instruction: Teris Game Made by Monis, Congratulations to you, Enjoy it.");
+        System.out.println("Direction: left j, right l, down k, rotate c, speedup v, pause p, resume r, stop s, exit e, game over z");
+        ChessBoard currentChessBoard = null;
+        Scanner scanner = new Scanner(serverInputStream);
         while (scanner.hasNext()) {
             String instructionStr = scanner.next();
             int instruction = instructionStr.charAt(0);

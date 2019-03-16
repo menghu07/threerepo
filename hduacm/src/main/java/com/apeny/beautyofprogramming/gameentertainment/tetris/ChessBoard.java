@@ -23,12 +23,11 @@ public class ChessBoard {
      */
     private final Object DRAW_LOCK = new Object();
 
-    private static final int CONTINUE = 0;
+    private static final int PAUSE = 112;
 
-    private static final int PAUSE = 1;
+    private static final int CONTINUE = 114;
 
-    private static final int EXIT = 2;
-
+    private static final int EXIT = 101;
     /**
      * 当前操作方块
      */
@@ -98,7 +97,7 @@ public class ChessBoard {
             right[i] = ShapeConstants.PAN_SIZE;
         }
         moveDown = new MoveDown();
-        moveDownThread = new Thread(new MoveDown());
+        moveDownThread = new Thread(moveDown);
     }
 
     /**
@@ -110,7 +109,6 @@ public class ChessBoard {
         synchronized (DRAW_LOCK) {
             Random r = new Random();
             Shape newedShape = ShapeConstants.SHAPES[r.nextInt(ShapeConstants.ALL_SHAPES_SIZE)];
-//            Shape newedShape = ShapeConstants.SHAPES[17];
             int minY = newedShape.getMinY();
             x = (ShapeConstants.PAN_SIZE - ShapeConstants.BLOCK_SIZE) / 2;
             previousX = x;
@@ -404,7 +402,9 @@ public class ChessBoard {
      * @param instruction
      */
     public final void sendInstruction(Integer instruction) {
-        if (instruction == CONTINUE || instruction == PAUSE || instruction == EXIT) {
+        if (instruction == PAUSE) {
+            moveDown.nextInstruction.set(instruction);
+        } else if (instruction == CONTINUE  || instruction == EXIT) {
             moveDown.nextInstruction.set(instruction);
             moveDownThread.interrupt();
         }
@@ -479,15 +479,9 @@ public class ChessBoard {
             for (int j = 0; j < ShapeConstants.PAN_SIZE; j++) {
                 System.out.print(" " + BIG_PAN[i][j]);
             }
-            if (i == 0) {
-                //输出换行符
-                System.out.println(" (" + y + "," + x + ") Direction: left j, right l, down k, rotate c, speedup v, pause p, resume r,"
-                        + " stop s, exit e, game over z" + ":: " + Arrays.toString(down));
-            } else {
-                System.out.println();
-            }
+            System.out.println();
         }
-        System.out.println("--------------end----------------");
+//        System.out.println("--------------end----------------");
     }
 
     /**
@@ -704,6 +698,7 @@ public class ChessBoard {
             synchronized (DRAW_LOCK) {
                 current = null;
                 continued.set(EXIT);
+                System.out.println("exit auto Game.");
             }
         }
     }
