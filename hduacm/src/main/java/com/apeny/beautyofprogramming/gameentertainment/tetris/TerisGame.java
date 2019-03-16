@@ -13,6 +13,11 @@ public class TerisGame {
 
     private static final int LEFT = 106;
 
+    private static final int ROTATE = 99;
+
+    //加速下降
+    private static final int SPEEDUP = 118;
+
     private static final int START = 110;
 
     private static final int PAUSE = 112;
@@ -32,7 +37,7 @@ public class TerisGame {
      */
     private static void playGame() {
         System.out.println("Instruction: Teris Game Made by Monis, Congratulations to you, Enjoy it.");
-        System.out.println("Direction: left j, right l, down k, start n, pause p, resume r, exit e, game over z");
+        System.out.println("Direction: left j, right l, down k, rotate c, speedup v, pause p, resume r, stop s, exit e, game over z");
         ChessBoard currentChessBoard = null;
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
@@ -59,6 +64,16 @@ public class TerisGame {
                 case LEFT:
                     if (currentChessBoard != null) {
                         currentChessBoard.moveLeft();
+                    }
+                    break;
+                case ROTATE:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.rotateNewShape();
+                    }
+                    break;
+                case SPEEDUP:
+                    if (currentChessBoard != null) {
+                        currentChessBoard.speedupMoveDown();
                     }
                     break;
                 case PAUSE:
